@@ -33,14 +33,9 @@ C:\Semestr6\Kinect\KinectSetupDev\KinectSetupDev\obj\Debug\KinectSetupDev.pdb
 C:\Semestr6\Kinect\KinectSetupDev\KinectSetupDev\bin\Debug\MainWindow.xaml.cs
 C:\Semestr6\Kinect\KinectSetupDev\KinectSetupDev\bin\Debug\KinectSetupDev.exe
 C:\Semestr6\Kinect\KinectSetupDev\KinectSetupDev\bin\Debug\KinectSetupDev.pdb
-C:\Semestr6\Kinect\KinectSetupDev\KinectSetupDev\bin\Debug\Coding4Fun.Kinect.Wpf.dll
 C:\Semestr6\Kinect\KinectSetupDev\KinectSetupDev\bin\Debug\Kinect.Toolbox.dll
 C:\Semestr6\Kinect\KinectSetupDev\KinectSetupDev\bin\Debug\Microsoft.Kinect.dll
 C:\Semestr6\Kinect\KinectSetupDev\KinectSetupDev\bin\Debug\Microsoft.Kinect.Toolkit.dll
-C:\Semestr6\Kinect\KinectSetupDev\KinectSetupDev\bin\Debug\Microsoft.Samples.Kinect.WpfViewers.dll
-C:\Semestr6\Kinect\KinectSetupDev\KinectSetupDev\bin\Debug\Microsoft.Expression.Drawing.dll
-C:\Semestr6\Kinect\KinectSetupDev\KinectSetupDev\bin\Debug\Coding4Fun.Kinect.Wpf.pdb
-C:\Semestr6\Kinect\KinectSetupDev\KinectSetupDev\bin\Debug\Microsoft.Samples.Kinect.WpfViewers.pdb
 C:\Semestr6\Kinect\KinectSetupDev\KinectSetupDev\bin\Debug\Kinect.Toolbox.pdb
 C:\Semestr6\Kinect\KinectSetupDev\KinectSetupDev\bin\Debug\Microsoft.Kinect.xml
 C:\Semestr6\Kinect\KinectSetupDev\KinectSetupDev\obj\Debug\KinectSetupDev.csprojResolveAssemblyReference.cache

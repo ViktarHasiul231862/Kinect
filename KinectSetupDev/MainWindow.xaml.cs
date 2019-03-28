@@ -9,8 +9,6 @@ using System.IO;
 using System.IO.Compression;
 using System.Windows.Forms;
 
-using Coding4Fun.Kinect.Wpf.Controls;
-
 using Kinect.Toolbox.Record;
 
 using Microsoft.Kinect;
