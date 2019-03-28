@@ -134,20 +134,6 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\..\coding4fun\sourceCode\Coding4Fun.Kinect.Wpf\Coding4Fun.Kinect.Wpf.csproj">
-      <Project>{93af58cb-b493-402c-96df-12bcb22e9aa5}</Project>
-      <Name>Coding4Fun.Kinect.Wpf</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\..\KinectExplorer\KinectWpfViewers\Microsoft.Samples.Kinect.WpfViewers.csproj">
-      <Project>{4de23893-27e7-423f-9bb6-ba21dac2c45e}</Project>
-      <Name>Microsoft.Samples.Kinect.WpfViewers</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\..\KinectToolbox\sourceCode\Kinect.Toolbox.csproj">
-      <Project>{2c84ce43-cdab-4541-a55a-7f849e8ac247}</Project>
-      <Name>Kinect.Toolbox</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="human.jpg" />
   </ItemGroup>
   <ItemGroup>
@@ -155,6 +141,20 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="skeleton1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\coding4fun\sourceCode\Coding4Fun.Kinect.Wpf\Coding4Fun.Kinect.Wpf.csproj">
+      <Project>{93af58cb-b493-402c-96df-12bcb22e9aa5}</Project>
+      <Name>Coding4Fun.Kinect.Wpf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KinectExplorer\KinectWpfViewers\Microsoft.Samples.Kinect.WpfViewers.csproj">
+      <Project>{4de23893-27e7-423f-9bb6-ba21dac2c45e}</Project>
+      <Name>Microsoft.Samples.Kinect.WpfViewers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\KinectToolbox\sourceCode\Kinect.Toolbox.csproj">
+      <Project>{2c84ce43-cdab-4541-a55a-7f849e8ac247}</Project>
+      <Name>Kinect.Toolbox</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

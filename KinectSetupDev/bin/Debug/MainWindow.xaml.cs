@@ -51,19 +51,24 @@ namespace KinectSetupDev
         {
             skeleton_png.Visibility = Visibility.Collapsed;
             human_jpg.Visibility = Visibility.Visible;
-         //   human_jpg.Margin = new Thickness(112, 75, 320, 75);
+            human_jpg.Margin = new Thickness(393, 138, 392, 84);
+            skeleton_png.Margin = new Thickness(679, 138, 140, 84);
         }
 
         private void ComboBoxItem_Selected_Right(object sender, RoutedEventArgs e)
         {
             human_jpg.Visibility = Visibility.Collapsed;
             skeleton_png.Visibility = Visibility.Visible;
+            human_jpg.Margin = new Thickness(171, 138, 614, 84);
+            skeleton_png.Margin = new Thickness(393, 138, 392, 84);
         }
 
         private void ComboBoxItem_Selected_Both(object sender, RoutedEventArgs e)
         {
             human_jpg.Visibility = Visibility.Visible;
             skeleton_png.Visibility = Visibility.Visible;
+            human_jpg.Margin = new Thickness(171, 138, 614, 84);
+            skeleton_png.Margin = new Thickness(679, 138, 140, 84);
         }
 
         private void uploadFileButton_Click(object sender, RoutedEventArgs e)
