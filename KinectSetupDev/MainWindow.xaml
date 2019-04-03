@@ -8,25 +8,25 @@
         mc:Ignorable="d"
         Title="Kinect Skeleton Analyst" Height="750.453" Width="1198.651">
     <Grid x:Name="mainGrid" VerticalAlignment="Center">
-        <Grid x:Name="liveGrid" HorizontalAlignment="Left" Height="750" VerticalAlignment="Top" Width="1200">
-            <Button x:Name="startRecordingButton" Content="Rozpocznij&#xA;nagrywanie" HorizontalAlignment="Left" Margin="28,14,0,0" VerticalAlignment="Top" Width="184" Height="56"/>
-            <Image x:Name="skeleton_png" Margin="669,138,150,84" Stretch="Fill" Source="skeleton.png"/>
-            <Image x:Name="human_jpg" Margin="150,138,635,84" Source="human.jpg" Stretch="Fill"/>
-            <ComboBox x:Name="switchSideCombobox" Margin="541,14,541,680" VerticalAlignment="Center" Height="56" RenderTransformOrigin="1.254,1.017" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+        <Grid x:Name="liveGrid" HorizontalAlignment="Left" Height="750" VerticalAlignment="Top" Width="1200" d:IsHidden="True">
+            <Button x:Name="startRecordingButton" Content="Rozpocznij&#xA;nagrywanie" HorizontalAlignment="Left" Margin="677,610,0,0" VerticalAlignment="Top" Width="163" Height="56"/>
+            <Image x:Name="skeleton_png" Margin="677,42,142,180" Stretch="Fill" Source="skeleton.png"/>
+            <Image x:Name="human_jpg" Margin="135,42,650,180" Source="human.jpg" Stretch="Fill"/>
+            <ComboBox x:Name="switchSideCombobox" Margin="432,610,650,84" VerticalAlignment="Center" Height="56" RenderTransformOrigin="1.254,1.017" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                 <ComboBoxItem Content="Lewa strona" HorizontalAlignment="Left" Width="121" Selected="ComboBoxItem_Selected_Left"/>
                 <ComboBoxItem Content="Prawa strona" HorizontalAlignment="Left" Width="121" Selected="ComboBoxItem_Selected_Right"/>
                 <ComboBoxItem Content="Obie strony" HorizontalAlignment="Left" Width="121" Selected="ComboBoxItem_Selected_Both"/>
             </ComboBox>
-            <Button x:Name="uploadFileButton" Content="Przeslij plik" HorizontalAlignment="Left" Margin="846,14,0,0" VerticalAlignment="Top" Width="135" Click="uploadFileButton_Click" Height="56"/>
-            <Button x:Name="stopRecordingButton" Content="Wstrzymaj&#xA;nagrywanie" HorizontalAlignment="Left" Margin="280,14,0,0" VerticalAlignment="Top" Width="167" Click="stopRecordingButton_Click" Height="56"/>
+            <Button x:Name="uploadFileButton" Content="Przeslij plik" HorizontalAlignment="Left" Margin="135,610,0,0" VerticalAlignment="Top" Width="207" Click="uploadFileButton_Click" Height="56"/>
+            <Button x:Name="stopRecordingButton" Content="Wstrzymaj&#xA;nagrywanie" HorizontalAlignment="Left" Margin="902,610,0,0" VerticalAlignment="Top" Width="156" Click="stopRecordingButton_Click" Height="56"/>
         </Grid>
-        <Grid x:Name="movieGrid" HorizontalAlignment="Left" Height="710" VerticalAlignment="Top" Width="1181" d:IsHidden="True">
+        <Grid x:Name="movieGrid" HorizontalAlignment="Left" Height="710" VerticalAlignment="Top" Width="1181">
             <Button x:Name="startMovieAll" Content="Start/Stop&#xA;wszystkie" Margin="492,594,491,0" VerticalAlignment="Top" Height="42"/>
             <Button x:Name="startOrStopMovie2" Content="Start/Stop" Margin="790,594,210,0" VerticalAlignment="Top" Height="42"/>
             <Image x:Name="skeletonMovie2" Height="468" Margin="698,92,151,0" VerticalAlignment="Top" Source="skeleton1.png" Stretch="Fill"/>
             <Image x:Name="skeletonMovie1" HorizontalAlignment="Left" Height="468" Margin="151,92,0,0" VerticalAlignment="Top" Width="332" Source="skeleton1.png" Stretch="Fill"/>
             <Button x:Name="startOrStopMovie1" Content="Start/Stop" Margin="211,598,789,0" VerticalAlignment="Top" Height="38" Width="181"/>
-            <Button x:Name="backButton" Content="Wstecz" HorizontalAlignment="Left" Margin="1004,14,0,0" VerticalAlignment="Top" Width="159" Height="38" Click="backButton_Click" Visibility="Visible"/>
+            <Button x:Name="backButton" Content="Wstecz" HorizontalAlignment="Left" Margin="1047,598,0,0" VerticalAlignment="Top" Width="95" Height="38" Click="backButton_Click" Visibility="Visible"/>
         </Grid>
     </Grid>
 </Window>
