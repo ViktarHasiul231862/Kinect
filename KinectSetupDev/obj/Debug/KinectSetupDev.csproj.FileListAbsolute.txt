@@ -26,18 +26,14 @@ C:\Users\viktar\Documents\Visual Studio 2015\Projects\KinectSetupDev\KinectSetup
 C:\Users\viktar\Documents\Visual Studio 2015\Projects\KinectSetupDev\KinectSetupDev\bin\Debug\Kinect.Toolbox.pdb
 C:\Users\viktar\Documents\Visual Studio 2015\Projects\KinectSetupDev\KinectSetupDev\bin\Debug\MainWindow.xaml.cs
 C:\Semestr6\Kinect\KinectSetupDev\KinectSetupDev\bin\Debug\KinectSetupDev.exe.config
-C:\Semestr6\Kinect\KinectSetupDev\KinectSetupDev\obj\Debug\Interop.KinectManagement.dll
 C:\Semestr6\Kinect\KinectSetupDev\KinectSetupDev\obj\Debug\KinectSetupDev.csproj.ResolveComReference.cache
 C:\Semestr6\Kinect\KinectSetupDev\KinectSetupDev\obj\Debug\KinectSetupDev.exe
 C:\Semestr6\Kinect\KinectSetupDev\KinectSetupDev\obj\Debug\KinectSetupDev.pdb
 C:\Semestr6\Kinect\KinectSetupDev\KinectSetupDev\bin\Debug\MainWindow.xaml.cs
 C:\Semestr6\Kinect\KinectSetupDev\KinectSetupDev\bin\Debug\KinectSetupDev.exe
 C:\Semestr6\Kinect\KinectSetupDev\KinectSetupDev\bin\Debug\KinectSetupDev.pdb
-C:\Semestr6\Kinect\KinectSetupDev\KinectSetupDev\bin\Debug\Kinect.Toolbox.dll
 C:\Semestr6\Kinect\KinectSetupDev\KinectSetupDev\bin\Debug\Microsoft.Kinect.dll
 C:\Semestr6\Kinect\KinectSetupDev\KinectSetupDev\bin\Debug\Microsoft.Kinect.Toolkit.dll
-C:\Semestr6\Kinect\KinectSetupDev\KinectSetupDev\bin\Debug\Kinect.Toolbox.pdb
-C:\Semestr6\Kinect\KinectSetupDev\KinectSetupDev\bin\Debug\Microsoft.Kinect.xml
 C:\Semestr6\Kinect\KinectSetupDev\KinectSetupDev\obj\Debug\KinectSetupDev.csprojResolveAssemblyReference.cache
 C:\Semestr6\Kinect\KinectSetupDev\KinectSetupDev\obj\Debug\MainWindow.g.cs
 C:\Semestr6\Kinect\KinectSetupDev\KinectSetupDev\obj\Debug\App.g.cs

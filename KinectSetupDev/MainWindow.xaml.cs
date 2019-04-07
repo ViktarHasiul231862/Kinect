@@ -171,10 +171,10 @@ namespace KinectSetupDev
          //   manager.ToggleRecord();
         }
 
-      //  private void stopRecordingButton_Click(object sender, RoutedEventArgs e)
-      //  {
+        private void stopRecordingButton_Click(object sender, RoutedEventArgs e)
+        {
          //   manager.ToggleRecord();
-      //  }
+        }
 
         private void ComboBoxItem_Selected_Left(object sender, RoutedEventArgs e)
         {

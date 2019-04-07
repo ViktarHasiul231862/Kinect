@@ -32,7 +32,7 @@
             <Button x:Name="startOrStopMovie1" Content="Start/Stop" Margin="211,598,789,0" VerticalAlignment="Top" Height="38" Width="181"/>
             <Button x:Name="backButton" Content="Wstecz" HorizontalAlignment="Left" Margin="1047,598,0,0" VerticalAlignment="Top" Width="95" Height="38" Click="backButton_Click" Visibility="Visible"/>
         </Grid>
-        <Grid x:Name="statusGrid" d:IsHidden="True">
+        <Grid x:Name="statusGrid"  HorizontalAlignment="Left" Height="710" VerticalAlignment="Top" Width="1181" d:IsHidden="True">
             <StatusBar Name="statusBar" HorizontalAlignment="Left" Margin="902,610,0,0" VerticalAlignment="Top" Width="156" Height="56" Background="Red" Foreground="Black">
                 <StatusBarItem Content="{Binding StatusText}" />
             </StatusBar>
