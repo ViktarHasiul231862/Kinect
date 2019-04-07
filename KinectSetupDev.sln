@@ -5,8 +5,6 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KinectSetupDev", "KinectSetupDev\KinectSetupDev.csproj", "{F20554B8-2949-451E-8E9D-66706061DF57}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kinect.Toolbox", "..\KinectToolbox\sourceCode\Kinect.Toolbox.csproj", "{2C84CE43-CDAB-4541-A55A-7F849E8AC247}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{F20554B8-2949-451E-8E9D-66706061DF57}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F20554B8-2949-451E-8E9D-66706061DF57}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F20554B8-2949-451E-8E9D-66706061DF57}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2C84CE43-CDAB-4541-A55A-7F849E8AC247}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2C84CE43-CDAB-4541-A55A-7F849E8AC247}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2C84CE43-CDAB-4541-A55A-7F849E8AC247}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2C84CE43-CDAB-4541-A55A-7F849E8AC247}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

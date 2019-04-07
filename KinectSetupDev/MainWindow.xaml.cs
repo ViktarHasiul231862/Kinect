@@ -26,6 +26,9 @@ namespace KinectSetupDev
 
         private WriteableBitmap colorBitmap = null;
 
+        // new Variable
+        private WriteableBitmap skeletonBitmap = null;
+
         private string statusText = null;
  
         public MainWindow()
@@ -50,18 +53,20 @@ namespace KinectSetupDev
             this.DataContext = this;
 
             this.InitializeComponent();
-
-            movieGrid.Visibility = Visibility.Hidden;
-            liveGrid.Visibility = Visibility.Visible;
+         
             switchSideCombobox.SelectedIndex = 2;
             this.MinWidth = 1200;
             this.MinHeight = 750;
             this.MaxWidth = 1200;
             this.MaxHeight = 750;
+
+            movieGrid.Visibility = Visibility.Hidden;
+            liveGrid.Visibility = this.kinectSensor.IsAvailable ? Visibility.Visible : Visibility.Hidden;
+            statusGrid.Visibility = this.kinectSensor.IsAvailable ? Visibility.Hidden : Visibility.Visible;
         }
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ImageSource ImageSource
+        public ImageSource humanSource
         {
             get
             {
@@ -69,6 +74,16 @@ namespace KinectSetupDev
             }
         }
 
+        //added by Victor
+        public ImageSource skeletonSource
+        {
+            get
+            {
+                // create this variable
+                return this.skeletonBitmap;
+            }
+        }
+        //
         public string StatusText
         {
             get
@@ -135,8 +150,20 @@ namespace KinectSetupDev
 
         private void Sensor_IsAvailableChanged(object sender, IsAvailableChangedEventArgs e)
         {
-            this.StatusText = this.kinectSensor.IsAvailable ? Properties.Resources.RunningStatusText
-                                                            : Properties.Resources.SensorNotAvailableStatusText;
+            if (this.kinectSensor.IsAvailable)
+            {
+                this.StatusText = Properties.Resources.RunningStatusText;
+                movieGrid.Visibility = Visibility.Hidden;
+                liveGrid.Visibility = Visibility.Visible;
+                statusGrid.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                this.StatusText = Properties.Resources.SensorNotAvailableStatusText;
+                movieGrid.Visibility = Visibility.Hidden;
+                liveGrid.Visibility = Visibility.Hidden;
+                statusGrid.Visibility = Visibility.Visible;
+            }
         }
 
         private void startRecordingButton_click(object sender, RoutedEventArgs e)
@@ -144,33 +171,33 @@ namespace KinectSetupDev
          //   manager.ToggleRecord();
         }
 
-        private void stopRecordingButton_Click(object sender, RoutedEventArgs e)
-        {
+      //  private void stopRecordingButton_Click(object sender, RoutedEventArgs e)
+      //  {
          //   manager.ToggleRecord();
-        }
+      //  }
 
         private void ComboBoxItem_Selected_Left(object sender, RoutedEventArgs e)
         {
-            skeleton_png.Visibility = Visibility.Collapsed;
-            human_jpg.Visibility = Visibility.Visible;
-            human_jpg.Margin = new Thickness(393, 42, 392, 180);
-            skeleton_png.Margin = new Thickness(679, 42, 140, 180);
+            skeletonViewBox.Visibility = Visibility.Collapsed;
+            humanViewBox.Visibility = Visibility.Visible;
+            humanViewBox.Margin = new Thickness(393, 42, 392, 180);
+            skeletonViewBox.Margin = new Thickness(679, 42, 140, 180);
         }
 
         private void ComboBoxItem_Selected_Right(object sender, RoutedEventArgs e)
         {
-            human_jpg.Visibility = Visibility.Collapsed;
-            skeleton_png.Visibility = Visibility.Visible;
-            human_jpg.Margin = new Thickness(171, 42, 614, 180);
-            skeleton_png.Margin = new Thickness(393, 42, 392, 180);
+            humanViewBox.Visibility = Visibility.Collapsed;
+            skeletonViewBox.Visibility = Visibility.Visible;
+            humanViewBox.Margin = new Thickness(171, 42, 614, 180);
+            skeletonViewBox.Margin = new Thickness(393, 42, 392, 180);
         }
 
         private void ComboBoxItem_Selected_Both(object sender, RoutedEventArgs e)
         {
-            human_jpg.Visibility = Visibility.Visible;
-            skeleton_png.Visibility = Visibility.Visible;
-            human_jpg.Margin = new Thickness(135, 42, 650, 180);
-            skeleton_png.Margin = new Thickness(677, 42, 142, 180);
+            humanViewBox.Visibility = Visibility.Visible;
+            skeletonViewBox.Visibility = Visibility.Visible;
+            humanViewBox.Margin = new Thickness(135, 42, 650, 180);
+            skeletonViewBox.Margin = new Thickness(677, 42, 142, 180);
         }
 
         private void uploadFileButton_Click(object sender, RoutedEventArgs e)
