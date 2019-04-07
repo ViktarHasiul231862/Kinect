@@ -9,11 +9,10 @@ using System.IO;
 using System.IO.Compression;
 using System.Windows.Forms;
 using System.Drawing;
-
-using Kinect.Toolbox.Record;
-
+using System.ComponentModel;
 using Microsoft.Kinect;
-
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 namespace KinectSetupDev
 {
     /// <summary>
@@ -21,10 +20,37 @@ namespace KinectSetupDev
     /// </summary>
     public partial class MainWindow : Window
     {
-       // KinectRecordManager manager;
+        private KinectSensor kinectSensor = null;
+
+        private ColorFrameReader colorFrameReader = null;
+
+        private WriteableBitmap colorBitmap = null;
+
+        private string statusText = null;
+ 
         public MainWindow()
         {
-            InitializeComponent();
+           
+            this.kinectSensor = KinectSensor.GetDefault();
+
+            this.colorFrameReader = this.kinectSensor.ColorFrameSource.OpenReader();
+
+            this.colorFrameReader.FrameArrived += this.Reader_ColorFrameArrived;
+
+            FrameDescription colorFrameDescription = this.kinectSensor.ColorFrameSource.CreateFrameDescription(ColorImageFormat.Bgra);
+
+            this.colorBitmap = new WriteableBitmap(colorFrameDescription.Width, colorFrameDescription.Height, 96.0, 96.0, PixelFormats.Bgr32, null);
+
+            this.kinectSensor.IsAvailableChanged += this.Sensor_IsAvailableChanged;
+
+            this.kinectSensor.Open();
+
+            this.StatusText = this.kinectSensor.IsAvailable ? Properties.Resources.RunningStatusText
+                                                            : Properties.Resources.NoSensorStatusText;
+            this.DataContext = this;
+
+            this.InitializeComponent();
+
             movieGrid.Visibility = Visibility.Hidden;
             liveGrid.Visibility = Visibility.Visible;
             switchSideCombobox.SelectedIndex = 2;
@@ -32,8 +58,85 @@ namespace KinectSetupDev
             this.MinHeight = 750;
             this.MaxWidth = 1200;
             this.MaxHeight = 750;
+        }
+        public event PropertyChangedEventHandler PropertyChanged;
 
-            //  manager = new KinectRecordManager();
+        public ImageSource ImageSource
+        {
+            get
+            {
+                return this.colorBitmap;
+            }
+        }
+
+        public string StatusText
+        {
+            get
+            {
+                return this.statusText;
+            }
+
+            set
+            {
+                if (this.statusText != value)
+                {
+                    this.statusText = value;
+
+                    if (this.PropertyChanged != null)
+                    {
+                        this.PropertyChanged(this, new PropertyChangedEventArgs("StatusText"));
+                    }
+                }
+            }
+        }
+
+        private void MainWindow_Closing(object sender, CancelEventArgs e)
+        {
+            if (this.colorFrameReader != null)
+            {
+                this.colorFrameReader.Dispose();
+                this.colorFrameReader = null;
+            }
+
+            if (this.kinectSensor != null)
+            {
+                this.kinectSensor.Close();
+                this.kinectSensor = null;
+            }
+        }
+
+        private void Reader_ColorFrameArrived(object sender, ColorFrameArrivedEventArgs e)
+        {
+            using (ColorFrame colorFrame = e.FrameReference.AcquireFrame())
+            {
+                if (colorFrame != null)
+                {
+                    FrameDescription colorFrameDescription = colorFrame.FrameDescription;
+
+                    using (KinectBuffer colorBuffer = colorFrame.LockRawImageBuffer())
+                    {
+                        this.colorBitmap.Lock();
+
+                        if ((colorFrameDescription.Width == this.colorBitmap.PixelWidth) && (colorFrameDescription.Height == this.colorBitmap.PixelHeight))
+                        {
+                            colorFrame.CopyConvertedFrameDataToIntPtr(
+                                this.colorBitmap.BackBuffer,
+                                (uint)(colorFrameDescription.Width * colorFrameDescription.Height * 4),
+                                ColorImageFormat.Bgra);
+
+                            this.colorBitmap.AddDirtyRect(new Int32Rect(0, 0, this.colorBitmap.PixelWidth, this.colorBitmap.PixelHeight));
+                        }
+
+                        this.colorBitmap.Unlock();
+                    }
+                }
+            }
+        }
+
+        private void Sensor_IsAvailableChanged(object sender, IsAvailableChangedEventArgs e)
+        {
+            this.StatusText = this.kinectSensor.IsAvailable ? Properties.Resources.RunningStatusText
+                                                            : Properties.Resources.SensorNotAvailableStatusText;
         }
 
         private void startRecordingButton_click(object sender, RoutedEventArgs e)
@@ -80,134 +183,6 @@ namespace KinectSetupDev
         {
             movieGrid.Visibility = Visibility.Hidden;
             liveGrid.Visibility = Visibility.Visible;
-
         }
-    }
-
-    class KinectRecordManager
-    {
-        #region Fields
-
-        private BufferedStream ColorRecordStream;
-        private BufferedStream DepthRecordStream;
-        private KinectRecorder KinectColorRecorder;
-        private KinectRecorder KinectDepthRecorder;
-        private KinectSensor KinectSensor;
-        private KinectRecorder KinectSkeletonRecorder;
-        private BufferedStream SkeletonRecordStream;
-
-        #endregion Fields
-
-        #region Constructors
-
-        public KinectRecordManager()
-        {
-            Recording = false;
-            RecordPath = "";
-            RecordFileName = "";
-            KinectSensor = KinectSensor.KinectSensors.FirstOrDefault(e => e.Status == KinectStatus.Connected);
-            KinectSensor.AllFramesReady += this.OnAllFramesReady;
-        }
-
-        #endregion Constructors
-
-        #region Properties
-
-        public String RecordFileName
-        {
-            get; set;
-        }
-
-        public bool Recording
-        {
-            get; private set;
-        }
-
-        public String RecordPath
-        {
-            get; set;
-        }
-
-        #endregion Properties
-
-        #region Methods
-
-        public void StartRecording()
-        {
-            if (!Recording)
-            {
-                System.Diagnostics.Debug.WriteLine("Start recording...");
-                string logFile = Path.Combine(RecordPath, RecordFileName + ".log");
-                string skeletonFile = Path.Combine(RecordPath, RecordFileName + "_skeleton.data");
-                string colorFile = Path.Combine(RecordPath, RecordFileName + "_color.data");
-                string depthFile = Path.Combine(RecordPath, RecordFileName + "_depth.data");
-                LogStartTime(logFile);
-                SkeletonRecordStream = new BufferedStream(new FileStream(skeletonFile, FileMode.Create));
-                ColorRecordStream = new BufferedStream(new FileStream(colorFile, FileMode.Create));
-                DepthRecordStream = new BufferedStream(new FileStream(depthFile, FileMode.Create));
-
-                KinectSkeletonRecorder = new KinectRecorder(KinectRecordOptions.Skeletons, SkeletonRecordStream);
-                KinectColorRecorder = new KinectRecorder(KinectRecordOptions.Color, ColorRecordStream);
-                KinectDepthRecorder = new KinectRecorder(KinectRecordOptions.Depth, DepthRecordStream);
-                Recording = true;
-            }
-        }
-
-        public void StopRecording()
-        {
-            if (Recording)
-            {
-                System.Diagnostics.Debug.WriteLine("Stop recording...");
-                SkeletonRecordStream.Flush();
-                ColorRecordStream.Flush();
-                DepthRecordStream.Flush();
-
-                KinectSkeletonRecorder.Stop();
-                KinectColorRecorder.Stop();
-                KinectDepthRecorder.Stop();
-                Recording = false;
-            }
-        }
-
-        public void ToggleRecord()
-        {
-            if (!Recording)
-            {
-                StartRecording();
-            }
-            else
-            {
-                StopRecording();
-            }
-        }
-
-        private void LogStartTime(string logFile)
-        {
-            File.WriteAllText(logFile, "startTime: " + System.DateTime.Now.Ticks + "\n");
-        }
-
-        private void OnAllFramesReady(object sender, AllFramesReadyEventArgs e)
-        {
-            if (Recording)
-            {
-                using (SkeletonFrame SkeletonFrame = e.OpenSkeletonFrame())
-                {
-                    if (SkeletonFrame != null)
-                        KinectSkeletonRecorder.Record(SkeletonFrame);
-                }
-                using (ColorImageFrame ColorImageFrame = e.OpenColorImageFrame())
-                {
-                    if (ColorImageFrame != null)
-                        KinectColorRecorder.Record(ColorImageFrame);
-                }
-                using (DepthImageFrame DepthImageFrame = e.OpenDepthImageFrame())
-                {
-                    if (DepthImageFrame != null)
-                        KinectDepthRecorder.Record(DepthImageFrame);
-                }
-            }
-        }
-
-        #endregion Methods
     }
 }

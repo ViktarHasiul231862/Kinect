@@ -106,15 +106,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <COMReference Include="KinectManagement">
-      <Guid>{B167C0CB-E5E7-40FC-BA4E-6711286A2FDE}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
     <COMReference Include="Microsoft.Vbe.Interop.Forms">
       <Guid>{0D452EE1-E08F-101A-852E-02608C4D0BB4}</Guid>
       <VersionMajor>2</VersionMajor>
@@ -142,12 +133,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="skeleton1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\KinectToolbox\sourceCode\Kinect.Toolbox.csproj">
-      <Project>{2c84ce43-cdab-4541-a55a-7f849e8ac247}</Project>
-      <Name>Kinect.Toolbox</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
