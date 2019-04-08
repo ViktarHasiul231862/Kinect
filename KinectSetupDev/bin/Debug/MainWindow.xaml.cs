@@ -1,20 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.IO;
-using System.IO.Compression;
-using System.Windows.Forms;
-using System.Drawing;
-using System.ComponentModel;
-using Microsoft.Kinect;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
+
+
 namespace KinectSetupDev
 {
+    using System.Text;
+    using System.Threading.Tasks;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.IO;
+    using System.IO.Compression;
+    using System.Windows.Forms;
+    using System.ComponentModel;
+    using Microsoft.Kinect;
+    using System.Windows.Media;
+    using System.Windows.Media.Imaging;
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Globalization;
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -26,15 +31,117 @@ namespace KinectSetupDev
 
         private WriteableBitmap colorBitmap = null;
 
-        // new Variable
-        private WriteableBitmap skeletonBitmap = null;
-
+        // status kinecta
         private string statusText = null;
- 
+
+        /*// promień znaczników rąk
+        private const double HandSize = 30;*/
+
+        // grubość połączeń
+        private const double JointThickness = 3;
+
+        // grubość krawędzi określających wyjście spoza obszaru kamery
+        private const double ClipBoundsThickness = 10;
+
+        private const float InferredZPositionClamp = 0.1f;
+
+        //figury do rysowania znacznika rąk
+        // private readonly Brush handClosedBrush = new SolidColorBrush(Color.FromArgb(128, 255, 0, 0));
+
+        // private readonly Brush handOpenBrush = new SolidColorBrush(Color.FromArgb(128, 0, 255, 0));
+
+        // private readonly Brush handLassoBrush = new SolidColorBrush(Color.FromArgb(128, 0, 0, 255));
+
+        // rysowania śledzonych punktow przecięcia
+        private readonly Brush trackedJointBrush = new SolidColorBrush(Color.FromArgb(255, 68, 192, 68));
+
+        private readonly Brush inferredJointBrush = Brushes.Yellow;
+    
+        private readonly Pen inferredBonePen = new Pen(Brushes.Gray, 1);
+
+        // grupa rysujaca do renderowania obrazu kośćca na wyjściu
+        private DrawingGroup drawingGroup;
+
+        // to co się wyświetli
+        private DrawingImage skeletonSource;
+
+        // mapowanie wspolrzednych
+        private CoordinateMapper coordinateMapper = null;
+
+        // odczyt ramek kośćca
+        private BodyFrameReader bodyFrameReader = null;
+
+        // tablica na kośćce 
+        private Body[] bodies = null;
+
+        private List<Tuple<JointType, JointType>> bones;
+
+        private int displayWidth;
+
+        private int displayHeight;
+
+        // lista  na kolory dla każdego kośćca
+        private List<Pen> bodyColors;
+
         public MainWindow()
         {
-           
+                      
             this.kinectSensor = KinectSensor.GetDefault();
+
+            this.coordinateMapper = this.kinectSensor.CoordinateMapper;
+
+            FrameDescription frameDescription = this.kinectSensor.DepthFrameSource.FrameDescription;
+
+            this.displayWidth = frameDescription.Width;
+            this.displayHeight = frameDescription.Height;
+
+            this.bodyFrameReader = this.kinectSensor.BodyFrameSource.OpenReader();
+
+            this.bones = new List<Tuple<JointType, JointType>>();
+
+            // tors
+            this.bones.Add(new Tuple<JointType, JointType>(JointType.Head, JointType.Neck));
+            this.bones.Add(new Tuple<JointType, JointType>(JointType.Neck, JointType.SpineShoulder));
+            this.bones.Add(new Tuple<JointType, JointType>(JointType.SpineShoulder, JointType.SpineMid));
+            this.bones.Add(new Tuple<JointType, JointType>(JointType.SpineMid, JointType.SpineBase));
+            this.bones.Add(new Tuple<JointType, JointType>(JointType.SpineShoulder, JointType.ShoulderRight));
+            this.bones.Add(new Tuple<JointType, JointType>(JointType.SpineShoulder, JointType.ShoulderLeft));
+            this.bones.Add(new Tuple<JointType, JointType>(JointType.SpineBase, JointType.HipRight));
+            this.bones.Add(new Tuple<JointType, JointType>(JointType.SpineBase, JointType.HipLeft));
+
+            // prawa reka
+            this.bones.Add(new Tuple<JointType, JointType>(JointType.ShoulderRight, JointType.ElbowRight));
+            this.bones.Add(new Tuple<JointType, JointType>(JointType.ElbowRight, JointType.WristRight));
+            this.bones.Add(new Tuple<JointType, JointType>(JointType.WristRight, JointType.HandRight));
+            this.bones.Add(new Tuple<JointType, JointType>(JointType.HandRight, JointType.HandTipRight));
+            this.bones.Add(new Tuple<JointType, JointType>(JointType.WristRight, JointType.ThumbRight));
+
+            // lewa reka
+            this.bones.Add(new Tuple<JointType, JointType>(JointType.ShoulderLeft, JointType.ElbowLeft));
+            this.bones.Add(new Tuple<JointType, JointType>(JointType.ElbowLeft, JointType.WristLeft));
+            this.bones.Add(new Tuple<JointType, JointType>(JointType.WristLeft, JointType.HandLeft));
+            this.bones.Add(new Tuple<JointType, JointType>(JointType.HandLeft, JointType.HandTipLeft));
+            this.bones.Add(new Tuple<JointType, JointType>(JointType.WristLeft, JointType.ThumbLeft));
+
+            // prawa noga
+            this.bones.Add(new Tuple<JointType, JointType>(JointType.HipRight, JointType.KneeRight));
+            this.bones.Add(new Tuple<JointType, JointType>(JointType.KneeRight, JointType.AnkleRight));
+            this.bones.Add(new Tuple<JointType, JointType>(JointType.AnkleRight, JointType.FootRight));
+
+            // lewa noga
+            this.bones.Add(new Tuple<JointType, JointType>(JointType.HipLeft, JointType.KneeLeft));
+            this.bones.Add(new Tuple<JointType, JointType>(JointType.KneeLeft, JointType.AnkleLeft));
+            this.bones.Add(new Tuple<JointType, JointType>(JointType.AnkleLeft, JointType.FootLeft));
+
+            // kolory dla kośćców max 6
+            this.bodyColors = new List<Pen>();
+
+            this.bodyColors.Add(new Pen(Brushes.Red, 6));
+            this.bodyColors.Add(new Pen(Brushes.Orange, 6));
+            this.bodyColors.Add(new Pen(Brushes.Green, 6));
+            this.bodyColors.Add(new Pen(Brushes.Blue, 6));
+            this.bodyColors.Add(new Pen(Brushes.Indigo, 6));
+            this.bodyColors.Add(new Pen(Brushes.Violet, 6));
 
             this.colorFrameReader = this.kinectSensor.ColorFrameSource.OpenReader();
 
@@ -50,10 +157,15 @@ namespace KinectSetupDev
 
             this.StatusText = this.kinectSensor.IsAvailable ? Properties.Resources.RunningStatusText
                                                             : Properties.Resources.NoSensorStatusText;
+
+            this.drawingGroup = new DrawingGroup();
+
+            this.skeletonSource = new DrawingImage(this.drawingGroup);
+
             this.DataContext = this;
 
             this.InitializeComponent();
-         
+
             switchSideCombobox.SelectedIndex = 2;
             this.MinWidth = 1200;
             this.MinHeight = 750;
@@ -61,8 +173,7 @@ namespace KinectSetupDev
             this.MaxHeight = 750;
 
             movieGrid.Visibility = Visibility.Hidden;
-            liveGrid.Visibility = this.kinectSensor.IsAvailable ? Visibility.Visible : Visibility.Hidden;
-            statusGrid.Visibility = this.kinectSensor.IsAvailable ? Visibility.Hidden : Visibility.Visible;
+            liveGrid.Visibility = Visibility.Visible;
         }
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -74,16 +185,15 @@ namespace KinectSetupDev
             }
         }
 
-        //added by Victor
-        public ImageSource skeletonSource
+        public ImageSource SkeletonSource
         {
             get
             {
-                // create this variable
-                return this.skeletonBitmap;
+                return this.skeletonSource;
             }
         }
-        //
+
+        // wyswietla status dotyczacy podlaczenia kinecta
         public string StatusText
         {
             get
@@ -105,6 +215,14 @@ namespace KinectSetupDev
             }
         }
 
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (this.bodyFrameReader != null)
+            {
+                this.bodyFrameReader.FrameArrived += this.Reader_FrameArrived;
+            }
+        }
+
         private void MainWindow_Closing(object sender, CancelEventArgs e)
         {
             if (this.colorFrameReader != null)
@@ -120,6 +238,181 @@ namespace KinectSetupDev
             }
         }
 
+        // odczyt ramek kośca
+        private void Reader_FrameArrived(object sender, BodyFrameArrivedEventArgs e)
+        {
+            bool dataReceived = false;
+
+            using (BodyFrame bodyFrame = e.FrameReference.AcquireFrame())
+            {
+                if (bodyFrame != null)
+                {
+                    if (this.bodies == null)
+                    {
+                        this.bodies = new Body[bodyFrame.BodyCount];
+                    }
+                    // pierwsze wywołania funkcji GetAndRefreshBodyData doda nowy kościeć do tablicy bodies
+                    // kośćce będą w niej dopóki nie znikną z pola widzenia sensora, czyli wyniosą null
+                    bodyFrame.GetAndRefreshBodyData(this.bodies);
+                    dataReceived = true;
+                }
+            }
+
+            if (dataReceived)
+            {
+                using (DrawingContext dc = this.drawingGroup.Open())
+                {
+                    // czarne tło
+                    dc.DrawRectangle(Brushes.Black, null, new Rect(0.0, 0.0, this.displayWidth, this.displayHeight));
+
+                    int penIndex = 0;
+                    foreach (Body body in this.bodies)
+                    {
+                        Pen drawPen = this.bodyColors[penIndex++];
+
+                        if (body.IsTracked)
+                        {
+                            this.DrawClippedEdges(body, dc);
+
+                            IReadOnlyDictionary<JointType, Joint> joints = body.Joints;
+
+                            Dictionary<JointType, Point> jointPoints = new Dictionary<JointType, Point>();
+
+                            foreach (JointType jointType in joints.Keys)
+                            {
+                                CameraSpacePoint position = joints[jointType].Position;
+                                if (position.Z < 0)
+                                {
+                                    position.Z = InferredZPositionClamp;
+                                }
+
+                                DepthSpacePoint depthSpacePoint = this.coordinateMapper.MapCameraPointToDepthSpace(position);
+                                jointPoints[jointType] = new Point(depthSpacePoint.X, depthSpacePoint.Y);
+                            }
+
+                            this.DrawBody(joints, jointPoints, dc, drawPen);
+
+                            // możliwość dodania znaczników na jakiś punktach np. na rękach
+                            /*this.DrawHand(body.HandLeftState, jointPoints[JointType.HandLeft], dc);
+                            this.DrawHand(body.HandRightState, jointPoints[JointType.HandRight], dc);*/
+                        }
+                    }
+                    // ochrona rysowania poza polem renderowania
+                    this.drawingGroup.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, this.displayWidth, this.displayHeight));
+                }
+            }
+        }
+
+        // rysowanie torsu
+        private void DrawBody(IReadOnlyDictionary<JointType, Joint> joints, IDictionary<JointType, Point> jointPoints, DrawingContext drawingContext, Pen drawingPen)
+        {
+            // rysuj kości
+            foreach (var bone in this.bones)
+            {
+                this.DrawBone(joints, jointPoints, bone.Item1, bone.Item2, drawingContext, drawingPen);
+            }
+
+            // rysuj punkty połączeń
+            foreach (JointType jointType in joints.Keys)
+            {
+                Brush drawBrush = null;
+
+                TrackingState trackingState = joints[jointType].TrackingState;
+
+                if (trackingState == TrackingState.Tracked)
+                {
+                    drawBrush = this.trackedJointBrush;
+                }
+                else if (trackingState == TrackingState.Inferred)
+                {
+                    drawBrush = this.inferredJointBrush;
+                }
+
+                if (drawBrush != null)
+                {
+                    drawingContext.DrawEllipse(drawBrush, null, jointPoints[jointType], JointThickness, JointThickness);
+                }
+            }
+        }
+
+        // rysuj kości od punktu łączącego joint do innego punktu lączącego
+        private void DrawBone(IReadOnlyDictionary<JointType, Joint> joints, IDictionary<JointType, Point> jointPoints, JointType jointType0, JointType jointType1, DrawingContext drawingContext, Pen drawingPen)
+        {
+            Joint joint0 = joints[jointType0];
+            Joint joint1 = joints[jointType1];
+
+            if (joint0.TrackingState == TrackingState.NotTracked ||
+                joint1.TrackingState == TrackingState.NotTracked)
+            {
+                return;
+            }
+
+            Pen drawPen = this.inferredBonePen;
+            if ((joint0.TrackingState == TrackingState.Tracked) && (joint1.TrackingState == TrackingState.Tracked))
+            {
+                drawPen = drawingPen;
+            }
+
+            drawingContext.DrawLine(drawPen, jointPoints[jointType0], jointPoints[jointType1]);
+        }
+
+        // rysuj znaczniki na rękach (opcjonalne)
+        /*private void DrawHand(HandState handState, Point handPosition, DrawingContext drawingContext)
+        {
+            switch (handState)
+            {
+                case HandState.Closed:
+                    drawingContext.DrawEllipse(this.handClosedBrush, null, handPosition, HandSize, HandSize);
+                    break;
+
+                case HandState.Open:
+                    drawingContext.DrawEllipse(this.handOpenBrush, null, handPosition, HandSize, HandSize);
+                    break;
+
+                case HandState.Lasso:
+                    drawingContext.DrawEllipse(this.handLassoBrush, null, handPosition, HandSize, HandSize);
+                    break;
+            }
+        }*/
+
+        // rysuj krawędzie pokazujące wyjście spoza obszaru sensora
+        private void DrawClippedEdges(Body body, DrawingContext drawingContext)
+        {
+            FrameEdges clippedEdges = body.ClippedEdges;
+
+            if (clippedEdges.HasFlag(FrameEdges.Bottom))
+            {
+                drawingContext.DrawRectangle(
+                    Brushes.Red,
+                    null,
+                    new Rect(0, this.displayHeight - ClipBoundsThickness, this.displayWidth, ClipBoundsThickness));
+            }
+
+            if (clippedEdges.HasFlag(FrameEdges.Top))
+            {
+                drawingContext.DrawRectangle(
+                    Brushes.Red,
+                    null,
+                    new Rect(0, 0, this.displayWidth, ClipBoundsThickness));
+            }
+
+            if (clippedEdges.HasFlag(FrameEdges.Left))
+            {
+                drawingContext.DrawRectangle(
+                    Brushes.Red,
+                    null,
+                    new Rect(0, 0, ClipBoundsThickness, this.displayHeight));
+            }
+
+            if (clippedEdges.HasFlag(FrameEdges.Right))
+            {
+                drawingContext.DrawRectangle(
+                    Brushes.Red,
+                    null,
+                    new Rect(this.displayWidth - ClipBoundsThickness, 0, ClipBoundsThickness, this.displayHeight));
+            }
+        }
+        // odczyt kolorowego obrazu
         private void Reader_ColorFrameArrived(object sender, ColorFrameArrivedEventArgs e)
         {
             using (ColorFrame colorFrame = e.FrameReference.AcquireFrame())
@@ -148,6 +441,7 @@ namespace KinectSetupDev
             }
         }
 
+        // czy sensor jest podłączony/dostępny
         private void Sensor_IsAvailableChanged(object sender, IsAvailableChangedEventArgs e)
         {
             if (this.kinectSensor.IsAvailable)
@@ -155,14 +449,12 @@ namespace KinectSetupDev
                 this.StatusText = Properties.Resources.RunningStatusText;
                 movieGrid.Visibility = Visibility.Hidden;
                 liveGrid.Visibility = Visibility.Visible;
-                statusGrid.Visibility = Visibility.Hidden;
             }
             else
             {
                 this.StatusText = Properties.Resources.SensorNotAvailableStatusText;
                 movieGrid.Visibility = Visibility.Hidden;
                 liveGrid.Visibility = Visibility.Hidden;
-                statusGrid.Visibility = Visibility.Visible;
             }
         }
 
