@@ -447,14 +447,10 @@ namespace KinectSetupDev
             if (this.kinectSensor.IsAvailable)
             {
                 this.StatusText = Properties.Resources.RunningStatusText;
-                movieGrid.Visibility = Visibility.Hidden;
-                liveGrid.Visibility = Visibility.Visible;
             }
             else
             {
                 this.StatusText = Properties.Resources.SensorNotAvailableStatusText;
-                movieGrid.Visibility = Visibility.Hidden;
-                liveGrid.Visibility = Visibility.Hidden;
             }
         }
 
