@@ -20,6 +20,8 @@ namespace KinectSetupDev
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Globalization;
+    using System.Windows.Threading;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -82,6 +84,9 @@ namespace KinectSetupDev
 
         // lista  na kolory dla każdego kośćca
         private List<Pen> bodyColors;
+
+        bool movie1IsPlaying = false;
+        bool movie2IsPlaying = false;
 
         public MainWindow()
         {
@@ -174,7 +179,40 @@ namespace KinectSetupDev
 
             movieGrid.Visibility = Visibility.Hidden;
             liveGrid.Visibility = Visibility.Visible;
+
+            DispatcherTimer timer1 = new DispatcherTimer();
+            timer1.Interval = TimeSpan.FromSeconds(1);
+            timer1.Tick += timer_Tick1;
+            timer1.Start();
+
+            DispatcherTimer timer2 = new DispatcherTimer();
+            timer2.Interval = TimeSpan.FromSeconds(1);
+            timer2.Tick += timer_Tick2;
+            timer2.Start();
         }
+
+        void timer_Tick1(object sender, EventArgs e)
+        {
+            if (kosciecVideo1.Source != null)
+            {
+                if (kosciecVideo1.NaturalDuration.HasTimeSpan)
+                    labelKosciec1.Content = String.Format("{0} / {1}", kosciecVideo1.Position.ToString(@"mm\:ss"), kosciecVideo1.NaturalDuration.TimeSpan.ToString(@"mm\:ss"));
+            }
+            else
+                labelKosciec1.Content = "No file selected...";
+        }
+
+        void timer_Tick2(object sender, EventArgs e)
+        {
+            if (kosciecVideo2.Source != null)
+            {
+                if (kosciecVideo2.NaturalDuration.HasTimeSpan)
+                    labelKosciec2.Content = String.Format("{0} / {1}", kosciecVideo2.Position.ToString(@"mm\:ss"), kosciecVideo2.NaturalDuration.TimeSpan.ToString(@"mm\:ss"));
+            }
+            else
+                labelKosciec2.Content = "No file selected...";
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public ImageSource humanSource
@@ -492,12 +530,74 @@ namespace KinectSetupDev
         {
             movieGrid.Visibility = Visibility.Visible;
             liveGrid.Visibility = Visibility.Hidden;
+            OpenFileDialog openFileDialog1 = new OpenFileDialog();
+            openFileDialog1.InitialDirectory = "C:\\";
+            //    openFileDialog.Filter = "(*.avi)";
+
+            if (openFileDialog1.ShowDialog() != 0)
+            {
+                //Get the path of specified file
+                kosciecVideo1.Source = new Uri(openFileDialog1.FileName, UriKind.Absolute);
+            }
+            OpenFileDialog openFileDialog2 = new OpenFileDialog();
+            openFileDialog2.InitialDirectory = "C:\\";
+            //    openFileDialog.Filter = "(*.avi)";
+
+            if (openFileDialog2.ShowDialog() != 0)
+            {
+                //Get the path of specified file
+                kosciecVideo2.Source = new Uri(openFileDialog2.FileName, UriKind.Absolute);
+            }
         }
 
         private void backButton_Click(object sender, RoutedEventArgs e)
         {
             movieGrid.Visibility = Visibility.Hidden;
             liveGrid.Visibility = Visibility.Visible;
+            if (movie1IsPlaying) kosciecVideo1.Stop();
+            if (movie2IsPlaying) kosciecVideo2.Stop();
+        }
+
+        private void startOrStopMovie1_Click(object sender, RoutedEventArgs e)
+        {
+            if(!movie1IsPlaying)
+            {
+                kosciecVideo1.Play();
+                movie1IsPlaying = true;
+            }
+            else
+            {
+                kosciecVideo1.Stop();
+                movie1IsPlaying = false;
+            }
+        }
+
+        private void startOrStopMovie2_Click(object sender, RoutedEventArgs e)
+        {
+            if (!movie2IsPlaying)
+            {
+                kosciecVideo2.Play();
+                movie2IsPlaying = true;
+            }
+            else
+            {
+                kosciecVideo2.Stop();
+                movie2IsPlaying = false;
+            }
+        }
+
+        private void startMovieAll_Click(object sender, RoutedEventArgs e)
+        {
+            if(movie1IsPlaying || movie2IsPlaying)
+            {
+                kosciecVideo1.Stop();
+                kosciecVideo2.Stop();
+            }
+            else
+            {
+                kosciecVideo1.Play();
+                kosciecVideo2.Play();
+            }
         }
     }
 }

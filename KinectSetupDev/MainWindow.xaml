@@ -10,7 +10,7 @@
         Closing="MainWindow_Closing"
         Title="Kinect Skeleton Analyst" Height="750.453" Width="1198.651">
     <Grid x:Name="mainGrid" VerticalAlignment="Center">
-        <Grid x:Name="liveGrid" HorizontalAlignment="Left" Height="750" VerticalAlignment="Top" Width="1200">
+        <Grid x:Name="liveGrid" HorizontalAlignment="Left" Height="750" VerticalAlignment="Top" Width="1200" d:IsHidden="True">
             <Button x:Name="startRecordingButton" Content="Rozpocznij&#xA;nagrywanie" HorizontalAlignment="Left" Margin="725,610,0,0" VerticalAlignment="Top" Width="163" Height="56"/>
             <Viewbox x:Name="humanViewBox" Margin="135,42,650,180">
                 <Image Source="{Binding humanSource}" Stretch="UniformToFill" />
@@ -29,13 +29,15 @@
                 <StatusBarItem Content="{Binding StatusText}" />
             </StatusBar>
         </Grid>
-        <Grid x:Name="movieGrid" HorizontalAlignment="Left" Height="710" VerticalAlignment="Top" Width="1181" d:IsHidden="True">
-            <Button x:Name="startMovieAll" Content="Start/Stop&#xA;wszystkie" Margin="492,594,491,0" VerticalAlignment="Top" Height="42"/>
-            <Button x:Name="startOrStopMovie2" Content="Start/Stop" Margin="790,594,210,0" VerticalAlignment="Top" Height="42"/>
-            <Image x:Name="skeletonMovie2" Height="382" Margin="693,92,210,0" VerticalAlignment="Top" Source="skeleton1.png" Stretch="Fill"/>
-            <Image x:Name="skeletonMovie1" HorizontalAlignment="Left" Height="382" Margin="211,92,0,0" VerticalAlignment="Top" Width="281" Source="skeleton1.png" Stretch="Fill"/>
-            <Button x:Name="startOrStopMovie1" Content="Start/Stop" Margin="211,598,789,0" VerticalAlignment="Top" Height="38" Width="181"/>
+        <Grid x:Name="movieGrid" HorizontalAlignment="Left" Height="710" VerticalAlignment="Top" Width="1181">
+            <Button x:Name="startMovieAll" Content="Start/Stop&#xA;wszystkie" Margin="492,594,491,0" VerticalAlignment="Top" Height="42" Click="startMovieAll_Click"/>
+            <Button x:Name="startOrStopMovie2" Content="Start/Stop" Margin="790,594,210,0" VerticalAlignment="Top" Height="42" Click="startOrStopMovie2_Click"/>
+            <Button x:Name="startOrStopMovie1" Content="Start/Stop" Margin="211,598,789,0" VerticalAlignment="Top" Height="38" Width="181" Click="startOrStopMovie1_Click"/>
             <Button x:Name="backButton" Content="Wstecz" HorizontalAlignment="Left" Margin="1047,598,0,0" VerticalAlignment="Top" Width="95" Height="38" Click="backButton_Click" Visibility="Visible"/>
+            <MediaElement x:Name="kosciecVideo1" HorizontalAlignment="Left" Height="382" Margin="136,92,0,0"  LoadedBehavior="Manual" VerticalAlignment="Top" Width="348"/>
+            <MediaElement x:Name="kosciecVideo2" HorizontalAlignment="Left" Height="382" Margin="708,92,0,0"  LoadedBehavior="Manual" VerticalAlignment="Top" Width="352"/>
+            <Label x:Name="labelKosciec1" HorizontalAlignment="Left" Margin="240,498,0,0" VerticalAlignment="Top" Height="42" Width="152"/>
+            <Label x:Name="labelKosciec2" Content="" HorizontalAlignment="Left" Margin="822,498,0,0" VerticalAlignment="Top" Height="42" Width="149"/>
         </Grid>
     </Grid>
 </Window>
