@@ -538,6 +538,10 @@ namespace KinectSetupDev
             {
                 //Get the path of specified file
                 kosciecVideo1.Source = new Uri(openFileDialog1.FileName, UriKind.Absolute);
+                if (openFileDialog1.FileName.EndsWith(".avi"))
+                    labelKosciec1.Content = "Nacisnij start";
+                else
+                    labelKosciec1.Content = "Niepoprawny format pliku";
             }
             OpenFileDialog openFileDialog2 = new OpenFileDialog();
             openFileDialog2.InitialDirectory = "C:\\";
@@ -547,6 +551,10 @@ namespace KinectSetupDev
             {
                 //Get the path of specified file
                 kosciecVideo2.Source = new Uri(openFileDialog2.FileName, UriKind.Absolute);
+                if (openFileDialog2.FileName.EndsWith(".avi"))
+                    labelKosciec2.Content = "Nacisnij start";
+                else
+                    labelKosciec2.Content = "Niepoprawny format pliku";
             }
         }
 
@@ -558,50 +566,71 @@ namespace KinectSetupDev
             if (movie2IsPlaying) kosciecVideo2.Stop();
         }
 
-        private void startOrStopMovie1_Click(object sender, RoutedEventArgs e)
+        private void startKosciec1_Click(object sender, RoutedEventArgs e)
         {
-            if(!movie1IsPlaying)
+            if (!movie1IsPlaying)
             {
                 kosciecVideo1.Play();
                 movie1IsPlaying = true;
             }
-            else
-            {
-                kosciecVideo1.Stop();
-                movie1IsPlaying = false;
-            }
         }
 
-        private void startOrStopMovie2_Click(object sender, RoutedEventArgs e)
+        private void startKosciec2_Click(object sender, RoutedEventArgs e)
         {
             if (!movie2IsPlaying)
             {
                 kosciecVideo2.Play();
                 movie2IsPlaying = true;
             }
-            else
-            {
-                kosciecVideo2.Stop();
-                movie2IsPlaying = false;
-            }
         }
 
         private void startMovieAll_Click(object sender, RoutedEventArgs e)
         {
-           if (movie1IsPlaying || movie2IsPlaying)
-            {
-                kosciecVideo1.Stop();
-                kosciecVideo2.Stop();
-                movie1IsPlaying = false;
-                movie2IsPlaying = false;
-            }
-            else
-            {
-                kosciecVideo1.Play();
-                kosciecVideo2.Play();
-                movie1IsPlaying = true;
-                movie2IsPlaying = true;
-            }
+            kosciecVideo1.Play();
+            kosciecVideo2.Play();
+            movie1IsPlaying = true;
+            movie2IsPlaying = true;
+        }
+
+        private void pauseKosciec1_Click(object sender, RoutedEventArgs e)
+        {
+            kosciecVideo1.Pause();
+            movie1IsPlaying = false;
+        }
+
+        private void pauseKosciec2_Click(object sender, RoutedEventArgs e)
+        {
+            kosciecVideo2.Pause();
+            movie2IsPlaying = false;
+        }
+
+        private void pauseAll_Click(object sender, RoutedEventArgs e)
+        {
+            kosciecVideo1.Pause();
+            kosciecVideo2.Pause();
+            movie1IsPlaying = false;
+            movie2IsPlaying = false;
+        }
+
+        private void stopKosciec1_Click(object sender, RoutedEventArgs e)
+        {
+            kosciecVideo1.Stop();
+            movie1IsPlaying = false;
+        }
+
+        private void stopKosciec2_Click(object sender, RoutedEventArgs e)
+        {
+            kosciecVideo2.Stop();
+            movie2IsPlaying = false;
+        }
+
+        private void stopAll_Click(object sender, RoutedEventArgs e)
+        {
+            kosciecVideo1.Stop();
+            movie1IsPlaying = false;
+            kosciecVideo2.Stop();
+            movie2IsPlaying = false;
         }
     }
 }
+

@@ -30,14 +30,20 @@
             </StatusBar>
         </Grid>
         <Grid x:Name="movieGrid" HorizontalAlignment="Left" Height="710" VerticalAlignment="Top" Width="1181">
-            <Button x:Name="startMovieAll" Content="Start/Stop&#xA;wszystkie" Margin="492,594,491,0" VerticalAlignment="Top" Height="42" Click="startMovieAll_Click"/>
-            <Button x:Name="startOrStopMovie2" Content="Start/Stop" Margin="790,594,210,0" VerticalAlignment="Top" Height="42" Click="startOrStopMovie2_Click"/>
-            <Button x:Name="startOrStopMovie1" Content="Start/Stop" Margin="211,598,789,0" VerticalAlignment="Top" Height="38" Width="181" Click="startOrStopMovie1_Click"/>
-            <Button x:Name="backButton" Content="Wstecz" HorizontalAlignment="Left" Margin="1047,598,0,0" VerticalAlignment="Top" Width="95" Height="38" Click="backButton_Click" Visibility="Visible"/>
-            <MediaElement x:Name="kosciecVideo1" HorizontalAlignment="Left" Height="382" Margin="136,92,0,0"  LoadedBehavior="Manual" VerticalAlignment="Top" Width="348"/>
-            <MediaElement x:Name="kosciecVideo2" HorizontalAlignment="Left" Height="382" Margin="708,92,0,0"  LoadedBehavior="Manual" VerticalAlignment="Top" Width="352"/>
+            <Button x:Name="startMovieAll" Content="Start" Margin="534,258,517,0" VerticalAlignment="Top" Height="38" Click="startMovieAll_Click"/>
+            <Button x:Name="startKosciec2" Content="Start" Margin="720,540,365,0" VerticalAlignment="Top" Height="38" Click="startKosciec2_Click" Width="95"/>
+            <Button x:Name="startKosciec1" Content="Start" Margin="136,540,941,0" VerticalAlignment="Top" Height="38" Click="startKosciec1_Click" Width="95"/>
+            <Button x:Name="backButton" Content="Wstecz" HorizontalAlignment="Left" Margin="1059,601,0,0" VerticalAlignment="Top" Width="95" Height="38" Click="backButton_Click" Visibility="Visible"/>
+            <MediaElement x:Name="kosciecVideo1" HorizontalAlignment="Left" Height="271" Margin="136,203,0,0"  LoadedBehavior="Manual" VerticalAlignment="Top" Width="348"/>
+            <MediaElement x:Name="kosciecVideo2" HorizontalAlignment="Left" Height="271" Margin="708,203,0,0"  LoadedBehavior="Manual" VerticalAlignment="Top" Width="352"/>
             <Label x:Name="labelKosciec1" HorizontalAlignment="Left" Margin="240,498,0,0" VerticalAlignment="Top" Height="42" Width="152"/>
             <Label x:Name="labelKosciec2" Content="" HorizontalAlignment="Left" Margin="822,498,0,0" VerticalAlignment="Top" Height="42" Width="149"/>
+            <Button x:Name="pauseKosciec1" Content="Wstrzymaj" HorizontalAlignment="Left" Margin="261,540,0,0" VerticalAlignment="Top" Width="95" Height="38" Click="pauseKosciec1_Click"/>
+            <Button x:Name="pauseKosciec2" Content="Wstrzymaj" HorizontalAlignment="Left" Margin="840,540,0,0" VerticalAlignment="Top" Width="95" Height="38" Click="pauseKosciec2_Click"/>
+            <Button x:Name="pauseAll" Content="Wstrzymaj" HorizontalAlignment="Left" Margin="534,324,0,0" VerticalAlignment="Top" Width="130" Height="40" Click="pauseAll_Click"/>
+            <Button x:Name="stopKosciec1" Content="Stop" HorizontalAlignment="Left" Margin="382,540,0,0" VerticalAlignment="Top" Width="95" Height="38" Click="stopKosciec1_Click"/>
+            <Button x:Name="stopKosciec2" Content="Stop" HorizontalAlignment="Left" Margin="965,540,0,0" VerticalAlignment="Top" Width="95" Height="38" Click="stopKosciec2_Click"/>
+            <Button x:Name="stopAll" Content="Stop" HorizontalAlignment="Left" Margin="534,387,0,0" VerticalAlignment="Top" Width="130" Height="38" Click="stopAll_Click"/>
         </Grid>
     </Grid>
 </Window>
