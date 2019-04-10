@@ -588,15 +588,19 @@ namespace KinectSetupDev
 
         private void startMovieAll_Click(object sender, RoutedEventArgs e)
         {
-            if(movie1IsPlaying || movie2IsPlaying)
+           if (movie1IsPlaying || movie2IsPlaying)
             {
                 kosciecVideo1.Stop();
                 kosciecVideo2.Stop();
+                movie1IsPlaying = false;
+                movie2IsPlaying = false;
             }
             else
             {
                 kosciecVideo1.Play();
                 kosciecVideo2.Play();
+                movie1IsPlaying = true;
+                movie2IsPlaying = true;
             }
         }
     }
