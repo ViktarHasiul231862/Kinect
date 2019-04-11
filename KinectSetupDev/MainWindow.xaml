@@ -10,7 +10,7 @@
         Closing="MainWindow_Closing"
         Title="Kinect Skeleton Analyst" Height="750.453" Width="1198.651">
     <Grid x:Name="mainGrid" VerticalAlignment="Center">
-        <Grid x:Name="liveGrid" HorizontalAlignment="Left" Height="750" VerticalAlignment="Top" Width="1200" d:IsHidden="True">
+        <Grid x:Name="liveGrid" HorizontalAlignment="Left" Height="750" VerticalAlignment="Top" Width="1200">
             <Button x:Name="startRecordingButton" Content="Rozpocznij&#xA;nagrywanie" HorizontalAlignment="Left" Margin="725,610,0,0" VerticalAlignment="Top" Width="163" Height="56"/>
             <Viewbox x:Name="humanViewBox" Margin="135,42,650,180">
                 <Image Source="{Binding humanSource}" Stretch="UniformToFill" />
@@ -25,11 +25,9 @@
             </ComboBox>
             <Button x:Name="uploadFileButton" Content="Przeslij plik" HorizontalAlignment="Left" Margin="308,610,0,84" Width="171" Click="uploadFileButton_Click"/>
             <Button x:Name="stopRecordingButton1" Content="Wstrzymaj&#xA;nagrywanie" HorizontalAlignment="Left" Margin="934,610,0,0" VerticalAlignment="Top" Width="156" Click="stopRecordingButton_Click" Height="56"/>
-            <StatusBar Name="statusBar" HorizontalAlignment="Left" Margin="80,610,0,82" Width="156" Background="Red" Foreground="Black">
-                <StatusBarItem Content="{Binding StatusText}" />
-            </StatusBar>
+            <Label x:Name="statusLabel" Background="Red" HorizontalAlignment="Left" Margin="61,610,0,0" VerticalAlignment="Top" Width="128" Height="56" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
         </Grid>
-        <Grid x:Name="movieGrid" HorizontalAlignment="Left" Height="710" VerticalAlignment="Top" Width="1181">
+        <Grid x:Name="movieGrid" HorizontalAlignment="Left" Height="710" VerticalAlignment="Top" Width="1181" d:IsHidden="True">
             <Button x:Name="startMovieAll" Content="Start" Margin="534,258,517,0" VerticalAlignment="Top" Height="38" Click="startMovieAll_Click"/>
             <Button x:Name="startKosciec2" Content="Start" Margin="720,540,365,0" VerticalAlignment="Top" Height="38" Click="startKosciec2_Click" Width="95"/>
             <Button x:Name="startKosciec1" Content="Start" Margin="136,540,941,0" VerticalAlignment="Top" Height="38" Click="startKosciec1_Click" Width="95"/>

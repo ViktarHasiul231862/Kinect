@@ -160,8 +160,8 @@ namespace KinectSetupDev
 
             this.kinectSensor.Open();
 
-            this.StatusText = this.kinectSensor.IsAvailable ? Properties.Resources.RunningStatusText
-                                                            : Properties.Resources.NoSensorStatusText;
+       
+           
 
             this.drawingGroup = new DrawingGroup();
 
@@ -170,6 +170,12 @@ namespace KinectSetupDev
             this.DataContext = this;
 
             this.InitializeComponent();
+
+            this.statusLabel.Content = this.kinectSensor.IsAvailable ? "Kinect działa"
+              : "Kinect nie dziala";
+
+            this.statusLabel.Background = this.kinectSensor.IsAvailable ? Brushes.Green
+              : Brushes.Red;
 
             switchSideCombobox.SelectedIndex = 2;
             this.MinWidth = 1200;
@@ -228,28 +234,6 @@ namespace KinectSetupDev
             get
             {
                 return this.skeletonSource;
-            }
-        }
-
-        // wyswietla status dotyczacy podlaczenia kinecta
-        public string StatusText
-        {
-            get
-            {
-                return this.statusText;
-            }
-
-            set
-            {
-                if (this.statusText != value)
-                {
-                    this.statusText = value;
-
-                    if (this.PropertyChanged != null)
-                    {
-                        this.PropertyChanged(this, new PropertyChangedEventArgs("StatusText"));
-                    }
-                }
             }
         }
 
@@ -484,11 +468,22 @@ namespace KinectSetupDev
         {
             if (this.kinectSensor.IsAvailable)
             {
-                this.StatusText = Properties.Resources.RunningStatusText;
+                this.statusLabel.Content = "Kinect podłączony";
+                this.statusLabel.Background = Brushes.Green;
+                humanViewBox.Visibility = Visibility.Visible;
+                skeletonViewBox.Visibility = Visibility.Visible;
+                startRecordingButton.IsEnabled = true;
+                stopRecordingButton1.IsEnabled = true;
+
             }
             else
             {
-                this.StatusText = Properties.Resources.SensorNotAvailableStatusText;
+                this.statusLabel.Content = "Kinect nie podłączony";
+                this.statusLabel.Background = Brushes.Red;
+                humanViewBox.Visibility = Visibility.Hidden;
+                skeletonViewBox.Visibility = Visibility.Hidden;
+                startRecordingButton.IsEnabled = false;
+                stopRecordingButton1.IsEnabled = false;
             }
         }
 
