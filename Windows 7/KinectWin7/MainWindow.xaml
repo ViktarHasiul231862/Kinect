@@ -9,7 +9,7 @@
         Title="Kinect Skeleton Analyst" Height="750.453" Width="1198.651">
     <Grid x:Name="mainGrid" VerticalAlignment="Center">
         <Grid x:Name="movieGrid" HorizontalAlignment="Left" Height="710" VerticalAlignment="Top" Width="1181">
-            <Button x:Name="uploadFileButton" Content="Przeslij pliki" HorizontalAlignment="Left" Margin="136,49,0,615" Width="174" Click="uploadFileButton_Click"/>
+            <Button x:Name="uploadFileButton" Content="Wczytaj pliki" HorizontalAlignment="Left" Margin="136,49,0,615" Width="174" Click="uploadFileButton_Click"/>
             <Button x:Name="startMovieAll" IsEnabled="False" Content="Start" Margin="534,258,517,0" VerticalAlignment="Top" Height="38" Click="startMovieAll_Click"/>
             <Button x:Name="startKosciec2" IsEnabled="False" Content="Start" Margin="720,540,365,0" VerticalAlignment="Top" Height="38" Click="startKosciec2_Click" Width="95"/>
             <Button x:Name="startKosciec1" IsEnabled="False" Content="Start" Margin="136,540,941,0" VerticalAlignment="Top" Height="38" Click="startKosciec1_Click" Width="95"/>

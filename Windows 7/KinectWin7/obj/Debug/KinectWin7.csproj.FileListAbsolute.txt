@@ -15,3 +15,17 @@ c:\users\viktar\documents\visual studio 2015\Projects\KinectWin7\KinectWin7\obj\
 C:\Semestr6\Kinect\KinectSetupDev\Windows 7\KinectWin7\bin\Debug\KinectWin7.exe.config
 C:\Semestr6\Kinect\KinectSetupDev\Windows 7\KinectWin7\obj\Debug\KinectWin7.exe
 C:\Semestr6\Kinect\KinectSetupDev\Windows 7\KinectWin7\obj\Debug\KinectWin7.pdb
+C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\bin\Debug\KinectWin7.exe.config
+C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\obj\Debug\KinectWin7.exe
+C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\obj\Debug\KinectWin7.pdb
+C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\bin\Debug\KinectWin7.exe
+C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\bin\Debug\KinectWin7.pdb
+C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\obj\Debug\KinectWin7.csprojResolveAssemblyReference.cache
+C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\obj\Debug\MainWindow.g.cs
+C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\obj\Debug\App.g.cs
+C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\obj\Debug\KinectWin7_MarkupCompile.cache
+C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\obj\Debug\KinectWin7_MarkupCompile.lref
+C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\obj\Debug\MainWindow.baml
+C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\obj\Debug\KinectWin7.g.resources
+C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\obj\Debug\KinectWin7.Properties.Resources.resources
+C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\obj\Debug\KinectWin7.csproj.GenerateResource.Cache

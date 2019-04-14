@@ -16,3 +16,6 @@ c:\users\viktar\documents\visual studio 2015\Projects\KinectWin10\KinectWin10\ob
 C:\Semestr6\Kinect\KinectSetupDev\Windows 10\KinectWin10\bin\Debug\KinectWin10.exe.config
 C:\Semestr6\Kinect\KinectSetupDev\Windows 10\KinectWin10\obj\Debug\KinectWin10.exe
 C:\Semestr6\Kinect\KinectSetupDev\Windows 10\KinectWin10\obj\Debug\KinectWin10.pdb
+C:\Semestr6\Kinect\Kinect\Windows 10\KinectWin10\bin\Debug\KinectWin10.exe.config
+C:\Semestr6\Kinect\Kinect\Windows 10\KinectWin10\obj\Debug\KinectWin10.exe
+C:\Semestr6\Kinect\Kinect\Windows 10\KinectWin10\obj\Debug\KinectWin10.pdb
