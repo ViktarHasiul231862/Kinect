@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="Kinect Skeleton Analyst" Height="750.453" Width="1198.651">
     <Grid x:Name="mainGrid" VerticalAlignment="Center">
-        <Grid x:Name="movieGrid" HorizontalAlignment="Left" Height="710" VerticalAlignment="Top" Width="1181">
+        <Grid x:Name="movieGrid" HorizontalAlignment="Left" Height="710" VerticalAlignment="Top" Width="1181" Margin="-18,0,0,0">
             <Button x:Name="uploadAviFiles" Content="Wczytaj pliki &quot;.avi&quot;" HorizontalAlignment="Left" Margin="98,50,0,614" Width="170" Click="uploadAviFiles_Click"/>
             <Button x:Name="startMovieAll" IsEnabled="False" Content="Start" Margin="534,258,517,0" VerticalAlignment="Top" Height="38" Click="startMovieAll_Click"/>
             <Button x:Name="startKosciec2" IsEnabled="False" Content="Start" Margin="720,540,365,0" VerticalAlignment="Top" Height="38" Click="startKosciec2_Click" Width="95"/>
@@ -24,9 +24,10 @@
             <Button x:Name="stopKosciec2" IsEnabled="False" Content="Stop" HorizontalAlignment="Left" Margin="965,540,0,0" VerticalAlignment="Top" Width="95" Height="38" Click="stopKosciec2_Click"/>
             <Button x:Name="stopAll" IsEnabled="False" Content="Stop" HorizontalAlignment="Left" Margin="534,387,0,0" VerticalAlignment="Top" Width="130" Height="38" Click="stopAll_Click"/>
             <Button x:Name="uploadSkeletonFiles" Content="Wczytaj pliki &quot;.kosciec&quot;" HorizontalAlignment="Left" Margin="314,50,0,614" Width="170" Click="uploadSkeletonFiles_Click"/>
-            <Image x:Name="kosciecVideoKosciec1" Source="{Binding SkeletonSource1}" Stretch="UniformToFill" HorizontalAlignment="Left" Height="306" Margin="151,168,0,0" VerticalAlignment="Top" Width="326"/>
-            <Image x:Name="kosciecVideoKosciec2" Source="{Binding SkeletonSource2}" Stretch="UniformToFill" HorizontalAlignment="Left" Height="306" Margin="734,168,0,0" VerticalAlignment="Top" Width="326"/>
+            <Image x:Name="kosciecVideoKosciec1" Stretch="UniformToFill" HorizontalAlignment="Left" Height="306" Margin="151,168,0,0" VerticalAlignment="Top" Width="326"/>
+            <Image x:Name="kosciecVideoKosciec2" Stretch="UniformToFill" HorizontalAlignment="Left" Height="306" Margin="734,168,0,0" VerticalAlignment="Top" Width="326"/>
             <Button x:Name="button" Content="Record&#xD;&#xA;fake skeleton&#xD;&#xA;" HorizontalAlignment="Left" Margin="876,50,0,0" VerticalAlignment="Top" Width="95" Height="46" Click="recordFakeSkeleton_Click" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <Label x:Name="millisecondsTracker" HorizontalAlignment="Left" Margin="595,134,0,0" VerticalAlignment="Top"/>
         </Grid>
     </Grid>
 </Window>

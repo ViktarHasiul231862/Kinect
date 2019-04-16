@@ -5,35 +5,13 @@ using System.Linq;
 
 namespace KinectSetupDev
 {
-    using System.Text;
-    using System.Threading.Tasks;
     using System.Windows;
-    using System.Windows.Controls;
     using System.IO;
-    using System.IO.Compression;
     using System.Windows.Forms;
-    using System.ComponentModel;
     using System.Windows.Media;
-    using System.Windows.Media.Imaging;
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Globalization;
     using System.Windows.Threading;
-    using System.Windows.Shapes;
-
-
-    public static class ExtensionMethods
-    {
-
-        private static Action EmptyDelegate = delegate () { };
-
-
-        public static void Refresh(this UIElement uiElement)
-        {
-            uiElement.Dispatcher.Invoke(DispatcherPriority.Render, EmptyDelegate);
-        }
-    }
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -79,12 +57,7 @@ namespace KinectSetupDev
         bool movie1IsPlaying = false;
         bool movie2IsPlaying = false;
 
-        bool kosciec1IsPlaying = false;
-        bool kosciec2IsPlaying = false;
-
         bool isMovieAvi = true;
-
-        // bool recording = false;
 
         string recordingPath = "";
 
@@ -130,6 +103,13 @@ namespace KinectSetupDev
         private List<Tuple<JointType, JointType>> bones;
 
         private List<Pen> bodyColors;
+
+        bool playKosciecMovie1 = false;
+        bool playKosciecMovie2 = false;
+        int currentFrameKosciec1 = 0;
+        int currentFrameKosciec2 = 0;
+
+        int framesPerSecond = 20;
 
         public MainWindow()
         {
@@ -199,22 +179,16 @@ namespace KinectSetupDev
             timer2.Interval = TimeSpan.FromSeconds(1);
             timer2.Tick += timer_Tick2;
             timer2.Start();
-        }
 
-        public ImageSource SkeletonSource1
-        {
-            get
-            {
-                return this.skeletonMovie1;
-            }
-        }
+            DispatcherTimer timer3 = new DispatcherTimer();
+            timer3.Interval = TimeSpan.FromMilliseconds(1000/framesPerSecond);
+            timer3.Tick += timer_Tick3;
+            timer3.Start();
 
-        public ImageSource SkeletonSource2
-        {
-            get
-            {
-                return this.skeletonMovie2;
-            }
+            DispatcherTimer timer4 = new DispatcherTimer();
+            timer4.Interval = TimeSpan.FromMilliseconds(1000/framesPerSecond);
+            timer4.Tick += timer_Tick4;
+            timer4.Start();
         }
 
         void timer_Tick1(object sender, EventArgs e)
@@ -224,8 +198,8 @@ namespace KinectSetupDev
                 if (kosciecVideoAvi1.NaturalDuration.HasTimeSpan)
                     labelKosciec1.Content = String.Format("{0} / {1}", kosciecVideoAvi1.Position.ToString(@"mm\:ss"), kosciecVideoAvi1.NaturalDuration.TimeSpan.ToString(@"mm\:ss"));
             }
-            //   else
-            //       labelKosciec1.Content = "Nie wybrano pliku...";
+            //else
+                //labelKosciec1.Content = "Nie wybrano pliku...";
         }
 
         void timer_Tick2(object sender, EventArgs e)
@@ -234,6 +208,72 @@ namespace KinectSetupDev
             {
                 if (kosciecVideoAvi2.NaturalDuration.HasTimeSpan)
                     labelKosciec2.Content = String.Format("{0} / {1}", kosciecVideoAvi2.Position.ToString(@"mm\:ss"), kosciecVideoAvi2.NaturalDuration.TimeSpan.ToString(@"mm\:ss"));
+            }
+            //  else
+            //       labelKosciec2.Content = "Nie wybrano pliku...";
+        }
+
+        void timer_Tick3(object sender, EventArgs e)
+        {
+            if (!isMovieAvi && playKosciecMovie1)
+            {
+                if (currentFrameKosciec1 < allFrames1.Count)
+                {
+                    SkeletonToRecord frame = allFrames1[currentFrameKosciec1];
+                    using (DrawingContext dc = this.drawingGroup1.Open())
+                    {
+                        // czarne tło
+                        dc.DrawRectangle(Brushes.Black, null, new Rect(0.0, 0.0, kosciecVideoKosciec1.Width, kosciecVideoKosciec1.Height));
+
+                        for (int body = 0; body < frame.frameOfPeople.Count; ++body)
+                        {
+                            foreach (var bone in this.bones)
+                            {
+                                Pen drawPen = this.bodyColors[body];
+
+                                dc.DrawLine(drawPen, new Point(frame.frameOfPeople[body][(int)bone.Item1].X * 1000 + 100, frame.frameOfPeople[body][(int)bone.Item1].Y * 1000 + 100),
+                                    new Point(frame.frameOfPeople[body][(int)bone.Item2].X * 1000 + 100, frame.frameOfPeople[body][(int)bone.Item2].Y * 1000 + 100));
+                                kosciecVideoKosciec1.Source = skeletonMovie1;
+                            }
+                        }
+                        labelKosciec1.Content = String.Format("{0} / {1}", string.Format("{0:F1}",(double)currentFrameKosciec1/allFrames1.Count* (double)allFrames1.Count / framesPerSecond),
+                             string.Format("{0:F1}", (double)allFrames1.Count / framesPerSecond));
+                        currentFrameKosciec1++;
+                    }
+                }
+            }
+            //  else
+            //       labelKosciec2.Content = "Nie wybrano pliku...";
+        }
+
+        void timer_Tick4(object sender, EventArgs e)
+        {
+            if (!isMovieAvi && playKosciecMovie2)
+            {
+                if (currentFrameKosciec2 < allFrames2.Count)
+                {
+                    SkeletonToRecord frame = allFrames2[currentFrameKosciec2];
+                    using (DrawingContext dc = this.drawingGroup2.Open())
+                    {
+                        // czarne tło
+                        dc.DrawRectangle(Brushes.Black, null, new Rect(0.0, 0.0, kosciecVideoKosciec2.Width, kosciecVideoKosciec2.Height));
+
+                        for (int body = 0; body < frame.frameOfPeople.Count; ++body)
+                        {
+                            foreach (var bone in this.bones)
+                            {
+                                Pen drawPen = this.bodyColors[body];
+
+                                dc.DrawLine(drawPen, new Point(frame.frameOfPeople[body][(int)bone.Item1].X * 1000 + 100, frame.frameOfPeople[body][(int)bone.Item1].Y * 1000 + 100),
+                                    new Point(frame.frameOfPeople[body][(int)bone.Item2].X * 1000 + 100, frame.frameOfPeople[body][(int)bone.Item2].Y * 1000 + 100));
+                                kosciecVideoKosciec2.Source = skeletonMovie2;
+                            }
+                        }
+                        labelKosciec2.Content = String.Format("{0} / {1}", string.Format("{0:F1}", (double)currentFrameKosciec2 / allFrames2.Count * (double)allFrames2.Count / framesPerSecond),
+                           string.Format("{0:F1}", (double)allFrames2.Count / framesPerSecond));
+                        currentFrameKosciec2++;
+                    }
+                }
             }
             //  else
             //       labelKosciec2.Content = "Nie wybrano pliku...";
@@ -337,9 +377,7 @@ namespace KinectSetupDev
             }
             else
             {
-                System.Threading.Thread t = new System.Threading.Thread(() => playKosciec(kosciecVideoKosciec1, true));
-                t.Start();
-                // playKosciec(kosciecVideoKosciec1, true);
+                playKosciecMovie1 = true;
             }
         }
 
@@ -355,7 +393,7 @@ namespace KinectSetupDev
             }
             else
             {
-                playKosciec(kosciecVideoKosciec2, false);
+                playKosciecMovie2 = true;
             }
         }
 
@@ -370,7 +408,8 @@ namespace KinectSetupDev
             }
             else
             {
-
+                playKosciecMovie1 = true;
+                playKosciecMovie2 = true;
             }
         }
 
@@ -383,7 +422,7 @@ namespace KinectSetupDev
             }
             else
             {
-
+                playKosciecMovie1 = false;
             }
         }
 
@@ -396,7 +435,7 @@ namespace KinectSetupDev
             }
             else
             {
-
+                playKosciecMovie2 = false;
             }
         }
 
@@ -411,7 +450,8 @@ namespace KinectSetupDev
             }
             else
             {
-
+                playKosciecMovie1 = false;
+                playKosciecMovie2 = false;
             }
         }
 
@@ -424,7 +464,8 @@ namespace KinectSetupDev
             }
             else
             {
-
+                playKosciecMovie1 = false;
+                currentFrameKosciec1 = 0;
             }
         }
 
@@ -434,6 +475,11 @@ namespace KinectSetupDev
             {
                 kosciecVideoAvi2.Stop();
                 movie2IsPlaying = false;
+            }
+            else
+            {
+                playKosciecMovie2 = false;
+                currentFrameKosciec2 = 0;
             }
         }
 
@@ -448,49 +494,11 @@ namespace KinectSetupDev
             }
             else
             {
-
+                playKosciecMovie1 = false;
+                currentFrameKosciec1 = 0;
+                playKosciecMovie2 = false;
+                currentFrameKosciec2 = 0;
             }
-        }
-
-        private void DoUpdates(object sender, EventArgs e)
-        {
-            // Update canvas
-        }
-
-        private void playKosciec(System.Windows.Controls.Image image, bool firstKosciec)
-        {
-            this.Dispatcher.Invoke(() =>
-            {
-                int counter = 1;
-                using (DrawingContext dc = firstKosciec ? this.drawingGroup1.Open() : this.drawingGroup2.Open())
-                {
-                    // czarne tło
-                    dc.DrawRectangle(Brushes.Black, null, new Rect(0.0, 0.0, kosciecVideoKosciec1.Width, kosciecVideoKosciec1.Height));
-                    List<SkeletonToRecord> frames = firstKosciec ? allFrames1 : allFrames2;
-                    foreach (var frame in frames)
-                    {
-                        for (int body = 0; body < frame.frameOfPeople.Count; ++body)
-                        {
-                            foreach (var bone in this.bones)
-                            {
-                                Pen drawPen = this.bodyColors[body];
-                                //  dc.DrawLine(drawPen, new Point(frame.frameOfPeople[body][(int)bone.Item1].X*1000+100, frame.frameOfPeople[body][(int)bone.Item1].Y * 1000+100),
-                                //     new Point(frame.frameOfPeople[body][(int)bone.Item2].X * 1000+100, frame.frameOfPeople[body][(int)bone.Item2].Y * 1000+100));
-
-                                dc.DrawLine(drawPen, new Point(frame.frameOfPeople[body][(int)bone.Item1].X * 1000 + 100, frame.frameOfPeople[body][(int)bone.Item1].Y * 1000 + 100),
-                                  new Point(frame.frameOfPeople[body][(int)bone.Item2].X * 1000 + 100, frame.frameOfPeople[body][(int)bone.Item2].Y * 1000 + 100));
-
-                                image.Source = skeletonMovie1;
-                                image.Refresh();
-                            }
-                        }
-                        System.Threading.Thread.Sleep(80);
-                        labelKosciec1.Content = counter;
-                        labelKosciec1.Refresh();
-                        counter++;
-                    }
-                }
-            });
         }
 
         private void uploadSkeletonFiles_Click(object sender, RoutedEventArgs e)
