@@ -57,7 +57,9 @@ namespace KinectSetupDev
         bool movie1IsPlaying = false;
         bool movie2IsPlaying = false;
 
-        bool isMovieAvi = true;
+        bool isMovieAvi1 = true;
+        bool isMovieAvi2 = true;
+
 
         string recordingPath = "";
 
@@ -116,6 +118,10 @@ namespace KinectSetupDev
         DispatcherTimer timer2;
         DispatcherTimer timer3;
         DispatcherTimer timer4;
+
+        bool file1LoadedCorrectly = false;
+        bool file2LoadedCorrectly = false;
+
 
         public MainWindow()
         {
@@ -221,7 +227,7 @@ namespace KinectSetupDev
 
         void timer_Tick3(object sender, EventArgs e)
         {
-            if (!isMovieAvi && playKosciecMovie1)
+            if (!isMovieAvi1 && playKosciecMovie1)
             {
                 if (currentFrameKosciec1 < allFrames1.Count)
                 {
@@ -254,7 +260,7 @@ namespace KinectSetupDev
 
         void timer_Tick4(object sender, EventArgs e)
         {
-            if (!isMovieAvi && playKosciecMovie2)
+            if (!isMovieAvi2 && playKosciecMovie2)
             {
                 if (currentFrameKosciec2 < allFrames2.Count)
                 {
@@ -301,83 +307,10 @@ namespace KinectSetupDev
             return (T)binaryFormatter.Deserialize(stream);
         }
 
-        private void uploadAviFiles_Click(object sender, RoutedEventArgs e)
-        {
-            kosciecVideoAvi1.Visibility = Visibility.Visible;
-            kosciecVideoAvi2.Visibility = Visibility.Visible;
-            kosciecVideoKosciec1.Visibility = Visibility.Hidden;
-            kosciecVideoKosciec2.Visibility = Visibility.Hidden;
-            bool file1LoadedCorrectly = false;
-            bool file2LoadedCorrectly = false;
-            OpenFileDialog openFileDialog1 = new OpenFileDialog();
-            openFileDialog1.InitialDirectory = "C:\\";
-            //    openFileDialog.Filter = "(*.avi)";
-
-            if (openFileDialog1.ShowDialog() != 0)
-            {
-                //Get the path of specified file
-                if (openFileDialog1.FileName != "")
-                {
-                    kosciecVideoAvi1.Source = new Uri(openFileDialog1.FileName, UriKind.Absolute);
-                    if (openFileDialog1.FileName.EndsWith(".avi"))
-                    {
-                        labelKosciec1.Content = "Nacisnij start";
-                        startKosciec1.IsEnabled = true;
-                        stopKosciec1.IsEnabled = true;
-                        pauseKosciec1.IsEnabled = true;
-                        file1LoadedCorrectly = true;
-                    }
-                    else
-                    {
-                        labelKosciec1.Content = "Niepoprawny format pliku";
-                        startKosciec1.IsEnabled = false;
-                        stopKosciec1.IsEnabled = false;
-                        pauseKosciec1.IsEnabled = false;
-                        file1LoadedCorrectly = false;
-                    }
-                }
-            }
-            OpenFileDialog openFileDialog2 = new OpenFileDialog();
-            openFileDialog2.InitialDirectory = "C:\\";
-            //    openFileDialog.Filter = "(*.avi)";
-
-            if (openFileDialog2.ShowDialog() != 0)
-            {
-                //Get the path of specified file
-                if (openFileDialog2.FileName != "")
-                {
-                    kosciecVideoAvi2.Source = new Uri(openFileDialog2.FileName, UriKind.Absolute);
-                    if (openFileDialog2.FileName.EndsWith(".avi"))
-                    {
-                        labelKosciec2.Content = "Nacisnij start";
-                        startKosciec2.IsEnabled = true;
-                        stopKosciec2.IsEnabled = true;
-                        pauseKosciec2.IsEnabled = true;
-                        file2LoadedCorrectly = true;
-                    }
-                    else
-                    {
-                        labelKosciec2.Content = "Niepoprawny format pliku";
-                        startKosciec2.IsEnabled = false;
-                        stopKosciec2.IsEnabled = false;
-                        pauseKosciec2.IsEnabled = false;
-                        file2LoadedCorrectly = false;
-                    }
-                }
-            }
-            startMovieAll.IsEnabled = file1LoadedCorrectly && file2LoadedCorrectly;
-            stopAll.IsEnabled = file1LoadedCorrectly && file2LoadedCorrectly;
-            pauseAll.IsEnabled = file1LoadedCorrectly && file2LoadedCorrectly;
-            isMovieAvi = true;
-            speedLabel1.Visibility = Visibility.Hidden;
-            speedKosciec1.Visibility = Visibility.Hidden;
-            speedLabel2.Visibility = Visibility.Hidden;
-            speedKosciec2.Visibility = Visibility.Hidden;
-        }
-
+      
         private void startKosciec1_Click(object sender, RoutedEventArgs e)
         {
-            if (isMovieAvi)
+            if (isMovieAvi1)
             {
                 if (!movie1IsPlaying)
                 {
@@ -393,7 +326,7 @@ namespace KinectSetupDev
 
         private void startKosciec2_Click(object sender, RoutedEventArgs e)
         {
-            if (isMovieAvi)
+            if (isMovieAvi2)
             {
                 if (!movie2IsPlaying)
                 {
@@ -409,23 +342,29 @@ namespace KinectSetupDev
 
         private void startMovieAll_Click(object sender, RoutedEventArgs e)
         {
-            if (isMovieAvi)
+            if (isMovieAvi1)
             {
                 kosciecVideoAvi1.Play();
-                kosciecVideoAvi2.Play();
                 movie1IsPlaying = true;
-                movie2IsPlaying = true;
             }
             else
             {
                 playKosciecMovie1 = true;
+            }
+            if(isMovieAvi2)
+            {
+                kosciecVideoAvi2.Play();
+                movie2IsPlaying = true;
+            }
+            else
+            {
                 playKosciecMovie2 = true;
             }
         }
 
         private void pauseKosciec1_Click(object sender, RoutedEventArgs e)
         {
-            if (isMovieAvi)
+            if (isMovieAvi1)
             {
                 kosciecVideoAvi1.Pause();
                 movie1IsPlaying = false;
@@ -438,7 +377,7 @@ namespace KinectSetupDev
 
         private void pauseKosciec2_Click(object sender, RoutedEventArgs e)
         {
-            if (isMovieAvi)
+            if (isMovieAvi2)
             {
                 kosciecVideoAvi2.Pause();
                 movie2IsPlaying = false;
@@ -451,23 +390,29 @@ namespace KinectSetupDev
 
         private void pauseAll_Click(object sender, RoutedEventArgs e)
         {
-            if (isMovieAvi)
+            if (isMovieAvi1)
             {
                 kosciecVideoAvi1.Pause();
-                kosciecVideoAvi2.Pause();
                 movie1IsPlaying = false;
-                movie2IsPlaying = false;
             }
             else
             {
                 playKosciecMovie1 = false;
+            }
+            if(isMovieAvi2)
+            {
+                kosciecVideoAvi2.Pause();
+                movie2IsPlaying = false;
+            }
+            else
+            {
                 playKosciecMovie2 = false;
             }
         }
 
         private void stopKosciec1_Click(object sender, RoutedEventArgs e)
         {
-            if (isMovieAvi)
+            if (isMovieAvi1)
             {
                 kosciecVideoAvi1.Stop();
                 movie1IsPlaying = false;
@@ -481,7 +426,7 @@ namespace KinectSetupDev
 
         private void stopKosciec2_Click(object sender, RoutedEventArgs e)
         {
-            if (isMovieAvi)
+            if (isMovieAvi2)
             {
                 kosciecVideoAvi2.Stop();
                 movie2IsPlaying = false;
@@ -495,120 +440,26 @@ namespace KinectSetupDev
 
         private void stopAll_Click(object sender, RoutedEventArgs e)
         {
-            if (isMovieAvi)
+            if (isMovieAvi1)
             {
                 kosciecVideoAvi1.Stop();
                 movie1IsPlaying = false;
-                kosciecVideoAvi2.Stop();
-                movie2IsPlaying = false;
             }
             else
             {
                 playKosciecMovie1 = false;
                 currentFrameKosciec1 = 0;
+            }
+            if(isMovieAvi2)
+            {
+                kosciecVideoAvi2.Stop();
+                movie2IsPlaying = false;
+            }
+            else
+            {
                 playKosciecMovie2 = false;
                 currentFrameKosciec2 = 0;
             }
-        }
-
-        private void uploadSkeletonFiles_Click(object sender, RoutedEventArgs e)
-        {
-            allFrames1.Clear();
-            allFrames2.Clear();
-            kosciecVideoAvi1.Visibility = Visibility.Hidden;
-            kosciecVideoAvi2.Visibility = Visibility.Hidden;
-            kosciecVideoKosciec1.Visibility = Visibility.Visible;
-            kosciecVideoKosciec2.Visibility = Visibility.Visible;
-
-            string path1 = "";
-            string path2 = "";
-            bool file1LoadedCorrectly = false;
-            bool file2LoadedCorrectly = false;
-
-            OpenFileDialog openFileDialog1 = new OpenFileDialog();
-            openFileDialog1.InitialDirectory = "C:\\";
-            //    openFileDialog.Filter = "(*.avi)";
-
-            if (openFileDialog1.ShowDialog() != 0)
-            {
-                //Get the path of specified file
-                if (openFileDialog1.FileName != "")
-                {
-                    path1 = openFileDialog1.FileName;
-                    
-                    if (openFileDialog1.FileName.EndsWith(".kosciec"))
-                    {
-                        labelKosciec1.Content = "Nacisnij start";
-                        startKosciec1.IsEnabled = true;
-                        stopKosciec1.IsEnabled = true;
-                        pauseKosciec1.IsEnabled = true;
-                        file1LoadedCorrectly = true;
-                    }
-                    else
-                    {
-                        labelKosciec1.Content = "Niepoprawny format pliku";
-                        startKosciec1.IsEnabled = false;
-                        stopKosciec1.IsEnabled = false;
-                        pauseKosciec1.IsEnabled = false;
-                        file1LoadedCorrectly = false;
-                    }
-                    using (Stream stream1 = File.Open(path1, FileMode.Open))
-                    {
-                        while (stream1.Position < stream1.Length)
-                        {
-                            SkeletonToRecord object1 = ReadFromBinaryFile<SkeletonToRecord>(stream1, path1);
-                            if (object1 != null)
-                                allFrames1.Add(object1);
-                        }
-                    }
-                }
-            }
-
-            OpenFileDialog openFileDialog2 = new OpenFileDialog();
-            openFileDialog2.InitialDirectory = "C:\\";
-            //    openFileDialog.Filter = "(*.avi)";
-
-            if (openFileDialog2.ShowDialog() != 0)
-            {
-                //Get the path of specified file
-                if (openFileDialog2.FileName != "")
-                {
-                    path2 = openFileDialog1.FileName;
-                    if (openFileDialog2.FileName.EndsWith(".kosciec"))
-                    {
-                        labelKosciec2.Content = "Nacisnij start";
-                        startKosciec2.IsEnabled = true;
-                        stopKosciec2.IsEnabled = true;
-                        pauseKosciec2.IsEnabled = true;
-                        file2LoadedCorrectly = true;
-                    }
-                    else
-                    {
-                        labelKosciec2.Content = "Niepoprawny format pliku";
-                        startKosciec2.IsEnabled = false;
-                        stopKosciec2.IsEnabled = false;
-                        pauseKosciec2.IsEnabled = false;
-                        file2LoadedCorrectly = false;
-                    }
-                    using (Stream stream2 = File.Open(path2, FileMode.Open))
-                    {
-                        while (stream2.Position < stream2.Length)
-                        {
-                            SkeletonToRecord object2 = ReadFromBinaryFile<SkeletonToRecord>(stream2, path2);
-                            if(object2!=null)
-                                allFrames2.Add(object2);
-                        }
-                    }
-                }
-            }
-            startMovieAll.IsEnabled = file1LoadedCorrectly && file2LoadedCorrectly;
-            stopAll.IsEnabled = file1LoadedCorrectly && file2LoadedCorrectly;
-            pauseAll.IsEnabled = file1LoadedCorrectly && file2LoadedCorrectly;
-            isMovieAvi = false;
-            speedLabel1.Visibility = Visibility.Visible;
-            speedKosciec1.Visibility = Visibility.Visible;
-            speedLabel2.Visibility = Visibility.Visible;
-            speedKosciec2.Visibility = Visibility.Visible;
         }
 
         private void recordFakeSkeleton_Click(object sender, RoutedEventArgs e)
@@ -673,7 +524,7 @@ namespace KinectSetupDev
         private void speedKosciec2_TextChanged(object sender, RoutedEventArgs ee)
         {
             int speed2 = 100;
-            if (Int32.TryParse(speedKosciec1.Text, out speed2))
+            if (Int32.TryParse(speedKosciec2.Text, out speed2))
             {
                 if (speed2 < 20)
                 {
@@ -686,11 +537,203 @@ namespace KinectSetupDev
                     speedKosciec2.Text = speed2.ToString();
                 }
                 framesPerSecond2 = 20 * speed2 / 100;
+                if (timer4 != null)
+                    timer4.Stop();
                 timer4 = new DispatcherTimer();
                 timer4.Interval = TimeSpan.FromMilliseconds(1000 / framesPerSecond2);
                 timer4.Tick += timer_Tick4;
                 timer4.Start();
             }
+        }
+
+        private void uploadAvi1_Click(object sender, RoutedEventArgs e)
+        {
+            kosciecVideoAvi1.Visibility = Visibility.Visible;
+            kosciecVideoKosciec1.Visibility = Visibility.Hidden;
+            file1LoadedCorrectly = false;
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.InitialDirectory = "C:\\";
+            //    openFileDialog.Filter = "(*.avi)";
+
+            if (openFileDialog.ShowDialog() != 0)
+            {
+                //Get the path of specified file
+                if (openFileDialog.FileName != "")
+                {
+                    kosciecVideoAvi1.Source = new Uri(openFileDialog.FileName, UriKind.Absolute);
+                    if (openFileDialog.FileName.EndsWith(".avi"))
+                    {
+                        labelKosciec1.Content = "Nacisnij start";
+                        startKosciec1.IsEnabled = true;
+                        stopKosciec1.IsEnabled = true;
+                        pauseKosciec1.IsEnabled = true;
+                        file1LoadedCorrectly = true;
+                    }
+                    else
+                    {
+                        labelKosciec1.Content = "Niepoprawny format pliku";
+                        startKosciec1.IsEnabled = false;
+                        stopKosciec1.IsEnabled = false;
+                        pauseKosciec1.IsEnabled = false;
+                        file1LoadedCorrectly = false;
+                    }
+                }
+            }
+            startMovieAll.IsEnabled = file1LoadedCorrectly && file2LoadedCorrectly;
+            stopAll.IsEnabled = file1LoadedCorrectly && file2LoadedCorrectly;
+            pauseAll.IsEnabled = file1LoadedCorrectly && file2LoadedCorrectly;
+            isMovieAvi1 = true;
+            speedLabel2.Visibility = Visibility.Hidden;
+            speedKosciec2.Visibility = Visibility.Hidden;
+        }
+
+        private void uploadSkeleton1_Click(object sender, RoutedEventArgs e)
+        {
+            allFrames1.Clear();
+            kosciecVideoAvi1.Visibility = Visibility.Hidden;
+            kosciecVideoKosciec1.Visibility = Visibility.Visible;
+
+            string path = "";
+            file1LoadedCorrectly = false;
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.InitialDirectory = "C:\\";
+            //    openFileDialog.Filter = "(*.avi)";
+
+            if (openFileDialog.ShowDialog() != 0)
+            {
+                //Get the path of specified file
+                if (openFileDialog.FileName != "")
+                {
+                    path = openFileDialog.FileName;
+
+                    if (openFileDialog.FileName.EndsWith(".kosciec"))
+                    {
+                        labelKosciec1.Content = "Nacisnij start";
+                        startKosciec1.IsEnabled = true;
+                        stopKosciec1.IsEnabled = true;
+                        pauseKosciec1.IsEnabled = true;
+                        file1LoadedCorrectly = true;
+                    }
+                    else
+                    {
+                        labelKosciec1.Content = "Niepoprawny format pliku";
+                        startKosciec1.IsEnabled = false;
+                        stopKosciec1.IsEnabled = false;
+                        pauseKosciec1.IsEnabled = false;
+                        file1LoadedCorrectly = false;
+                    }
+                    using (Stream stream1 = File.Open(path, FileMode.Open))
+                    {
+                        while (stream1.Position < stream1.Length)
+                        {
+                            SkeletonToRecord object1 = ReadFromBinaryFile<SkeletonToRecord>(stream1, path);
+                            if (object1 != null)
+                                allFrames1.Add(object1);
+                        }
+                    }
+                }
+            }
+            startMovieAll.IsEnabled = file1LoadedCorrectly && file2LoadedCorrectly;
+            stopAll.IsEnabled = file1LoadedCorrectly && file2LoadedCorrectly;
+            pauseAll.IsEnabled = file1LoadedCorrectly && file2LoadedCorrectly;
+            isMovieAvi1 = false;
+            speedLabel1.Visibility = Visibility.Visible;
+            speedKosciec1.Visibility = Visibility.Visible;
+        }
+
+        private void uploadAvi2_Click(object sender, RoutedEventArgs e)
+        {
+            kosciecVideoAvi2.Visibility = Visibility.Visible;
+            kosciecVideoKosciec2.Visibility = Visibility.Hidden;
+            file2LoadedCorrectly = false;
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.InitialDirectory = "C:\\";
+            //    openFileDialog.Filter = "(*.avi)";
+
+            if (openFileDialog.ShowDialog() != 0)
+            {
+                //Get the path of specified file
+                if (openFileDialog.FileName != "")
+                {
+                    kosciecVideoAvi2.Source = new Uri(openFileDialog.FileName, UriKind.Absolute);
+                    if (openFileDialog.FileName.EndsWith(".avi"))
+                    {
+                        labelKosciec2.Content = "Nacisnij start";
+                        startKosciec2.IsEnabled = true;
+                        stopKosciec2.IsEnabled = true;
+                        pauseKosciec2.IsEnabled = true;
+                        file2LoadedCorrectly = true;
+                    }
+                    else
+                    {
+                        labelKosciec2.Content = "Niepoprawny format pliku";
+                        startKosciec2.IsEnabled = false;
+                        stopKosciec2.IsEnabled = false;
+                        pauseKosciec2.IsEnabled = false;
+                        file2LoadedCorrectly = false;
+                    }
+                }
+            }
+            startMovieAll.IsEnabled = file1LoadedCorrectly && file2LoadedCorrectly;
+            stopAll.IsEnabled = file1LoadedCorrectly && file2LoadedCorrectly;
+            pauseAll.IsEnabled = file1LoadedCorrectly && file2LoadedCorrectly;
+            isMovieAvi2 = true;
+            speedLabel2.Visibility = Visibility.Hidden;
+            speedKosciec2.Visibility = Visibility.Hidden;
+        }
+
+        private void uploadSkeleton2_Click(object sender, RoutedEventArgs e)
+        {
+            allFrames2.Clear();
+            kosciecVideoAvi2.Visibility = Visibility.Hidden;
+            kosciecVideoKosciec2.Visibility = Visibility.Visible;
+
+            string path = "";
+            file2LoadedCorrectly = false;
+
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.InitialDirectory = "C:\\";
+            //    openFileDialog.Filter = "(*.avi)";
+
+            if (openFileDialog.ShowDialog() != 0)
+            {
+                //Get the path of specified file
+                if (openFileDialog.FileName != "")
+                {
+                    path = openFileDialog.FileName;
+                    if (openFileDialog.FileName.EndsWith(".kosciec"))
+                    {
+                        labelKosciec2.Content = "Nacisnij start";
+                        startKosciec2.IsEnabled = true;
+                        stopKosciec2.IsEnabled = true;
+                        pauseKosciec2.IsEnabled = true;
+                        file2LoadedCorrectly = true;
+                    }
+                    else
+                    {
+                        labelKosciec2.Content = "Niepoprawny format pliku";
+                        startKosciec2.IsEnabled = false;
+                        stopKosciec2.IsEnabled = false;
+                        pauseKosciec2.IsEnabled = false;
+                        file2LoadedCorrectly = false;
+                    }
+                    using (Stream stream2 = File.Open(path, FileMode.Open))
+                    {
+                        while (stream2.Position < stream2.Length)
+                        {
+                            SkeletonToRecord object2 = ReadFromBinaryFile<SkeletonToRecord>(stream2, path);
+                            if (object2 != null)
+                                allFrames2.Add(object2);
+                        }
+                    }
+                }
+            }
+            startMovieAll.IsEnabled = file1LoadedCorrectly && file2LoadedCorrectly;
+            stopAll.IsEnabled = file1LoadedCorrectly && file2LoadedCorrectly;
+            pauseAll.IsEnabled = file1LoadedCorrectly && file2LoadedCorrectly;
+            isMovieAvi2 = false;
+            speedLabel2.Visibility = Visibility.Visible;
+            speedKosciec2.Visibility = Visibility.Visible;
         }
     }
 }
