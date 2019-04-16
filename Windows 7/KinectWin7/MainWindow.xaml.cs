@@ -109,7 +109,13 @@ namespace KinectSetupDev
         int currentFrameKosciec1 = 0;
         int currentFrameKosciec2 = 0;
 
-        int framesPerSecond = 20;
+        int framesPerSecond1 = 20;
+        int framesPerSecond2 = 20;
+
+        DispatcherTimer timer1;
+        DispatcherTimer timer2;
+        DispatcherTimer timer3;
+        DispatcherTimer timer4;
 
         public MainWindow()
         {
@@ -170,23 +176,23 @@ namespace KinectSetupDev
             this.drawingGroup2 = new DrawingGroup();
             this.skeletonMovie2 = new DrawingImage(this.drawingGroup2);
 
-            DispatcherTimer timer1 = new DispatcherTimer();
+            timer1 = new DispatcherTimer();
             timer1.Interval = TimeSpan.FromSeconds(1);
             timer1.Tick += timer_Tick1;
             timer1.Start();
 
-            DispatcherTimer timer2 = new DispatcherTimer();
+            timer2 = new DispatcherTimer();
             timer2.Interval = TimeSpan.FromSeconds(1);
             timer2.Tick += timer_Tick2;
             timer2.Start();
 
-            DispatcherTimer timer3 = new DispatcherTimer();
-            timer3.Interval = TimeSpan.FromMilliseconds(1000/framesPerSecond);
+            timer3 = new DispatcherTimer();
+            timer3.Interval = TimeSpan.FromMilliseconds(1000/framesPerSecond1);
             timer3.Tick += timer_Tick3;
             timer3.Start();
 
-            DispatcherTimer timer4 = new DispatcherTimer();
-            timer4.Interval = TimeSpan.FromMilliseconds(1000/framesPerSecond);
+            timer4 = new DispatcherTimer();
+            timer4.Interval = TimeSpan.FromMilliseconds(1000/framesPerSecond2);
             timer4.Tick += timer_Tick4;
             timer4.Start();
         }
@@ -236,8 +242,8 @@ namespace KinectSetupDev
                                 kosciecVideoKosciec1.Source = skeletonMovie1;
                             }
                         }
-                        labelKosciec1.Content = String.Format("{0} / {1}", string.Format("{0:F1}",(double)currentFrameKosciec1/allFrames1.Count* (double)allFrames1.Count / framesPerSecond),
-                             string.Format("{0:F1}", (double)allFrames1.Count / framesPerSecond));
+                        labelKosciec1.Content = String.Format("{0} / {1}", string.Format("{0:F1}",(double)currentFrameKosciec1/allFrames1.Count* (double)allFrames1.Count / framesPerSecond1),
+                             string.Format("{0:F1}", (double)allFrames1.Count / framesPerSecond1));
                         currentFrameKosciec1++;
                     }
                 }
@@ -269,8 +275,8 @@ namespace KinectSetupDev
                                 kosciecVideoKosciec2.Source = skeletonMovie2;
                             }
                         }
-                        labelKosciec2.Content = String.Format("{0} / {1}", string.Format("{0:F1}", (double)currentFrameKosciec2 / allFrames2.Count * (double)allFrames2.Count / framesPerSecond),
-                           string.Format("{0:F1}", (double)allFrames2.Count / framesPerSecond));
+                        labelKosciec2.Content = String.Format("{0} / {1}", string.Format("{0:F1}", (double)currentFrameKosciec2 / allFrames2.Count * (double)allFrames2.Count / framesPerSecond2),
+                           string.Format("{0:F1}", (double)allFrames2.Count / framesPerSecond2));
                         currentFrameKosciec2++;
                     }
                 }
@@ -363,6 +369,10 @@ namespace KinectSetupDev
             stopAll.IsEnabled = file1LoadedCorrectly && file2LoadedCorrectly;
             pauseAll.IsEnabled = file1LoadedCorrectly && file2LoadedCorrectly;
             isMovieAvi = true;
+            speedLabel1.Visibility = Visibility.Hidden;
+            speedKosciec1.Visibility = Visibility.Hidden;
+            speedLabel2.Visibility = Visibility.Hidden;
+            speedKosciec2.Visibility = Visibility.Hidden;
         }
 
         private void startKosciec1_Click(object sender, RoutedEventArgs e)
@@ -595,6 +605,10 @@ namespace KinectSetupDev
             stopAll.IsEnabled = file1LoadedCorrectly && file2LoadedCorrectly;
             pauseAll.IsEnabled = file1LoadedCorrectly && file2LoadedCorrectly;
             isMovieAvi = false;
+            speedLabel1.Visibility = Visibility.Visible;
+            speedKosciec1.Visibility = Visibility.Visible;
+            speedLabel2.Visibility = Visibility.Visible;
+            speedKosciec2.Visibility = Visibility.Visible;
         }
 
         private void recordFakeSkeleton_Click(object sender, RoutedEventArgs e)
@@ -628,6 +642,54 @@ namespace KinectSetupDev
                 }
                 skeletonToRecord.addPerson(0, recordedJoints);
                 WriteToBinaryFile<SkeletonToRecord>(recordingPath, skeletonToRecord, true);
+            }
+        }
+
+        private void speedKosciec1_TextChanged(object sender, RoutedEventArgs e)
+        {
+            int speed1 = 100;
+            if (Int32.TryParse(speedKosciec1.Text, out speed1))
+            {
+                if (speed1 < 20)
+                {
+                    speed1 = 20;
+                    speedKosciec1.Text = speed1.ToString();
+                }
+                if (speed1 > 200)
+                {
+                    speed1 = 200;
+                    speedKosciec1.Text = speed1.ToString();
+                }
+                framesPerSecond1 = 20 * speed1 / 100;
+                if (timer3 != null)
+                    timer3.Stop();
+                timer3 = new DispatcherTimer();
+                timer3.Interval = TimeSpan.FromMilliseconds(1000 / framesPerSecond1);
+                timer3.Tick += timer_Tick3;
+                timer3.Start();
+            }
+        }
+
+        private void speedKosciec2_TextChanged(object sender, RoutedEventArgs ee)
+        {
+            int speed2 = 100;
+            if (Int32.TryParse(speedKosciec1.Text, out speed2))
+            {
+                if (speed2 < 20)
+                {
+                    speed2 = 20;
+                    speedKosciec2.Text = speed2.ToString();
+                }
+                if (speed2 > 200)
+                {
+                    speed2 = 200;
+                    speedKosciec2.Text = speed2.ToString();
+                }
+                framesPerSecond2 = 20 * speed2 / 100;
+                timer4 = new DispatcherTimer();
+                timer4.Interval = TimeSpan.FromMilliseconds(1000 / framesPerSecond2);
+                timer4.Tick += timer_Tick4;
+                timer4.Start();
             }
         }
     }
