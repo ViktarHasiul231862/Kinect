@@ -19,3 +19,15 @@ C:\Semestr6\Kinect\KinectSetupDev\Windows 10\KinectWin10\obj\Debug\KinectWin10.p
 C:\Semestr6\Kinect\Kinect\Windows 10\KinectWin10\bin\Debug\KinectWin10.exe.config
 C:\Semestr6\Kinect\Kinect\Windows 10\KinectWin10\obj\Debug\KinectWin10.exe
 C:\Semestr6\Kinect\Kinect\Windows 10\KinectWin10\obj\Debug\KinectWin10.pdb
+C:\Semestr6\Kinect\Kinect\Windows 10\KinectWin10\bin\Debug\KinectWin10.exe
+C:\Semestr6\Kinect\Kinect\Windows 10\KinectWin10\bin\Debug\KinectWin10.pdb
+C:\Semestr6\Kinect\Kinect\Windows 10\KinectWin10\bin\Debug\Microsoft.Kinect.dll
+C:\Semestr6\Kinect\Kinect\Windows 10\KinectWin10\obj\Debug\KinectWin10.csprojResolveAssemblyReference.cache
+C:\Semestr6\Kinect\Kinect\Windows 10\KinectWin10\obj\Debug\MainWindow.g.cs
+C:\Semestr6\Kinect\Kinect\Windows 10\KinectWin10\obj\Debug\App.g.cs
+C:\Semestr6\Kinect\Kinect\Windows 10\KinectWin10\obj\Debug\KinectWin10_MarkupCompile.cache
+C:\Semestr6\Kinect\Kinect\Windows 10\KinectWin10\obj\Debug\KinectWin10_MarkupCompile.lref
+C:\Semestr6\Kinect\Kinect\Windows 10\KinectWin10\obj\Debug\MainWindow.baml
+C:\Semestr6\Kinect\Kinect\Windows 10\KinectWin10\obj\Debug\KinectWin10.g.resources
+C:\Semestr6\Kinect\Kinect\Windows 10\KinectWin10\obj\Debug\KinectWin10.Properties.Resources.resources
+C:\Semestr6\Kinect\Kinect\Windows 10\KinectWin10\obj\Debug\KinectWin10.csproj.GenerateResource.Cache

@@ -27,6 +27,42 @@ namespace KinectSetupDev
     /// </summary>
     public partial class MainWindow : Window
     {
+        [Serializable]
+        public class CustomJoint
+        {
+            double X;
+            double Y;
+            TrackingState state;
+            public enum TrackingState
+            {
+                NotTracked = 0,
+                Inferred = 1,
+                Tracked = 2
+            }
+            public CustomJoint(double X, double Y, TrackingState state)
+            {
+                this.X = X;
+                this.Y = Y;
+                this.state = state;
+            }
+        };
+        [Serializable]
+        public class SkeletonToRecord
+        {
+
+            private Dictionary<int, Dictionary<int, CustomJoint>> frameOfPeople = new Dictionary<int, Dictionary<int, CustomJoint>>();
+
+            public void addJoints(Dictionary<int, CustomJoint> human, int type, double X, double Y, int state)
+            {
+                human.Add(type, new CustomJoint(X, Y, (CustomJoint.TrackingState)state));
+            }
+
+            public void addPerson(int person, Dictionary<int, CustomJoint> joints)
+            {
+                frameOfPeople.Add(person, joints);
+            }
+        };
+
         private KinectSensor kinectSensor = null;
 
         private ColorFrameReader colorFrameReader = null;
@@ -58,7 +94,7 @@ namespace KinectSetupDev
         private readonly Brush trackedJointBrush = new SolidColorBrush(Color.FromArgb(255, 68, 192, 68));
 
         private readonly Brush inferredJointBrush = Brushes.Yellow;
-    
+
         private readonly Pen inferredBonePen = new Pen(Brushes.Gray, 1);
 
         // grupa rysujaca do renderowania obrazu kośćca na wyjściu
@@ -88,9 +124,21 @@ namespace KinectSetupDev
         bool movie1IsPlaying = false;
         bool movie2IsPlaying = false;
 
+        bool kosciec1IsPlaying = false;
+        bool kosciec2IsPlaying = false;
+
+        bool recording = false;
+
+        string recordingPath = "";
+
+        List<SkeletonToRecord> allFrames1 = new List<SkeletonToRecord>();
+        List<SkeletonToRecord> allFrames2 = new List<SkeletonToRecord>();
+
+        bool isMovieAvi = true;
+
         public MainWindow()
         {
-                      
+
             this.kinectSensor = KinectSensor.GetDefault();
 
             this.coordinateMapper = this.kinectSensor.CoordinateMapper;
@@ -160,8 +208,8 @@ namespace KinectSetupDev
 
             this.kinectSensor.Open();
 
-       
-           
+
+
 
             this.drawingGroup = new DrawingGroup();
 
@@ -199,27 +247,42 @@ namespace KinectSetupDev
 
         void timer_Tick1(object sender, EventArgs e)
         {
-            if (kosciecVideo1.Source != null)
+            if (kosciecVideoAvi1.Source != null)
             {
-                if (kosciecVideo1.NaturalDuration.HasTimeSpan)
-                    labelKosciec1.Content = String.Format("{0} / {1}", kosciecVideo1.Position.ToString(@"mm\:ss"), kosciecVideo1.NaturalDuration.TimeSpan.ToString(@"mm\:ss"));
+                if (kosciecVideoAvi1.NaturalDuration.HasTimeSpan)
+                    labelKosciec1.Content = String.Format("{0} / {1}", kosciecVideoAvi1.Position.ToString(@"mm\:ss"), kosciecVideoAvi1.NaturalDuration.TimeSpan.ToString(@"mm\:ss"));
             }
             else
-                labelKosciec1.Content = "No file selected...";
+                labelKosciec1.Content = "Nie wybrano pliku...";
         }
 
         void timer_Tick2(object sender, EventArgs e)
         {
-            if (kosciecVideo2.Source != null)
+            if (kosciecVideoAvi2.Source != null)
             {
-                if (kosciecVideo2.NaturalDuration.HasTimeSpan)
-                    labelKosciec2.Content = String.Format("{0} / {1}", kosciecVideo2.Position.ToString(@"mm\:ss"), kosciecVideo2.NaturalDuration.TimeSpan.ToString(@"mm\:ss"));
+                if (kosciecVideoAvi2.NaturalDuration.HasTimeSpan)
+                    labelKosciec2.Content = String.Format("{0} / {1}", kosciecVideoAvi2.Position.ToString(@"mm\:ss"), kosciecVideoAvi2.NaturalDuration.TimeSpan.ToString(@"mm\:ss"));
             }
             else
-                labelKosciec2.Content = "No file selected...";
+                labelKosciec2.Content = "Nie wybrano pliku...";
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public static void WriteToBinaryFile<T>(string filePath, T objectToWrite, bool append = false)
+        {
+            using (Stream stream = File.Open(filePath, append ? FileMode.Append : FileMode.Create))
+            {
+                var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+                binaryFormatter.Serialize(stream, objectToWrite);
+            }
+        }
+
+        public static T ReadFromBinaryFile<T>(Stream stream, string filePath)
+        {
+            var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+            return (T)binaryFormatter.Deserialize(stream);
+        }
+
+        //public event PropertyChangedEventHandler PropertyChanged;
 
         public ImageSource humanSource
         {
@@ -288,6 +351,7 @@ namespace KinectSetupDev
                     dc.DrawRectangle(Brushes.Black, null, new Rect(0.0, 0.0, this.displayWidth, this.displayHeight));
 
                     int penIndex = 0;
+                    int bodyCounter = 0;
                     foreach (Body body in this.bodies)
                     {
                         Pen drawPen = this.bodyColors[penIndex++];
@@ -312,12 +376,26 @@ namespace KinectSetupDev
                                 jointPoints[jointType] = new Point(depthSpacePoint.X, depthSpacePoint.Y);
                             }
 
+                            if (recording)
+                            {
+                                SkeletonToRecord skeletonToRecord = new SkeletonToRecord();
+                                Dictionary<int, CustomJoint> recordedJoints = new Dictionary<int, CustomJoint>();
+                                for (int bone = 0; bone < bones.Count; ++bone)
+                                {
+                                    skeletonToRecord.addJoints(recordedJoints, bone, jointPoints[(JointType)bone].X,
+                                       jointPoints[(JointType)bone].Y, (int)joints[(JointType)bone].TrackingState);
+                                }
+                                skeletonToRecord.addPerson(bodyCounter, recordedJoints);
+                                WriteToBinaryFile<SkeletonToRecord>(recordingPath, skeletonToRecord, true);
+                            }
+
                             this.DrawBody(joints, jointPoints, dc, drawPen);
 
                             // możliwość dodania znaczników na jakiś punktach np. na rękach
                             /*this.DrawHand(body.HandLeftState, jointPoints[JointType.HandLeft], dc);
                             this.DrawHand(body.HandRightState, jointPoints[JointType.HandRight], dc);*/
                         }
+                        ++bodyCounter;
                     }
                     // ochrona rysowania poza polem renderowania
                     this.drawingGroup.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, this.displayWidth, this.displayHeight));
@@ -489,12 +567,27 @@ namespace KinectSetupDev
 
         private void startRecordingButton_click(object sender, RoutedEventArgs e)
         {
-         //   manager.ToggleRecord();
+            SaveFileDialog openFileDialog1 = new SaveFileDialog();
+            openFileDialog1.InitialDirectory = "C:\\";
+            openFileDialog1.FileName = "Kosciec1.kosciec";
+            if (openFileDialog1.ShowDialog() != 0)
+            {
+                //Get the path of specified file
+                if (openFileDialog1.FileName != "")
+                {
+                    if (File.Exists(openFileDialog1.FileName))
+                    {
+                        File.Delete(openFileDialog1.FileName);
+                    }
+                    recordingPath = openFileDialog1.FileName;
+                }
+            }
+            recording = true;
         }
 
         private void stopRecordingButton_Click(object sender, RoutedEventArgs e)
         {
-         //   manager.ToggleRecord();
+            recording = false;
         }
 
         private void ComboBoxItem_Selected_Left(object sender, RoutedEventArgs e)
@@ -521,8 +614,12 @@ namespace KinectSetupDev
             skeletonViewBox.Margin = new Thickness(677, 42, 142, 180);
         }
 
-        private void uploadFileButton_Click(object sender, RoutedEventArgs e)
+        private void uploadAviFiles_Click(object sender, RoutedEventArgs e)
         {
+            kosciecVideoAvi1.Visibility = Visibility.Visible;
+            kosciecVideoAvi2.Visibility = Visibility.Visible;
+            kosciecVideoKosciec1.Visibility = Visibility.Hidden;
+            kosciecVideoKosciec2.Visibility = Visibility.Hidden;
             bool file1LoadedCorrectly = false;
             bool file2LoadedCorrectly = false;
             OpenFileDialog openFileDialog1 = new OpenFileDialog();
@@ -534,7 +631,7 @@ namespace KinectSetupDev
                 //Get the path of specified file
                 if (openFileDialog1.FileName != "")
                 {
-                    kosciecVideo1.Source = new Uri(openFileDialog1.FileName, UriKind.Absolute);
+                    kosciecVideoAvi1.Source = new Uri(openFileDialog1.FileName, UriKind.Absolute);
                     if (openFileDialog1.FileName.EndsWith(".avi"))
                     {
                         labelKosciec1.Content = "Nacisnij start";
@@ -562,7 +659,7 @@ namespace KinectSetupDev
                 //Get the path of specified file
                 if (openFileDialog2.FileName != "")
                 {
-                    kosciecVideo2.Source = new Uri(openFileDialog2.FileName, UriKind.Absolute);
+                    kosciecVideoAvi2.Source = new Uri(openFileDialog2.FileName, UriKind.Absolute);
                     if (openFileDialog2.FileName.EndsWith(".avi"))
                     {
                         labelKosciec2.Content = "Nacisnij start";
@@ -584,80 +681,234 @@ namespace KinectSetupDev
             startMovieAll.IsEnabled = file1LoadedCorrectly && file2LoadedCorrectly;
             stopAll.IsEnabled = file1LoadedCorrectly && file2LoadedCorrectly;
             pauseAll.IsEnabled = file1LoadedCorrectly && file2LoadedCorrectly;
+            isMovieAvi = true;
         }
 
         private void backButton_Click(object sender, RoutedEventArgs e)
         {
             movieGrid.Visibility = Visibility.Hidden;
             liveGrid.Visibility = Visibility.Visible;
-            if (movie1IsPlaying) kosciecVideo1.Stop();
-            if (movie2IsPlaying) kosciecVideo2.Stop();
+            if (movie1IsPlaying) kosciecVideoAvi1.Stop();
+            if (movie2IsPlaying) kosciecVideoAvi2.Stop();
         }
 
         private void startKosciec1_Click(object sender, RoutedEventArgs e)
         {
-            if (!movie1IsPlaying)
+            if (isMovieAvi)
             {
-                kosciecVideo1.Play();
-                movie1IsPlaying = true;
+                if (!movie1IsPlaying)
+                {
+                    kosciecVideoAvi1.Play();
+                    movie1IsPlaying = true;
+                }
+            }
+            else
+            {
+
             }
         }
 
         private void startKosciec2_Click(object sender, RoutedEventArgs e)
         {
-            if (!movie2IsPlaying)
+            if (isMovieAvi)
             {
-                kosciecVideo2.Play();
-                movie2IsPlaying = true;
+                if (!movie2IsPlaying)
+                {
+                    kosciecVideoAvi2.Play();
+                    movie2IsPlaying = true;
+                }
+            }
+            else
+            {
+
             }
         }
 
         private void startMovieAll_Click(object sender, RoutedEventArgs e)
         {
-            kosciecVideo1.Play();
-            kosciecVideo2.Play();
-            movie1IsPlaying = true;
-            movie2IsPlaying = true;
+            if (isMovieAvi)
+            {
+                kosciecVideoAvi1.Play();
+                kosciecVideoAvi2.Play();
+                movie1IsPlaying = true;
+                movie2IsPlaying = true;
+            }
+            else
+            {
+
+            }
         }
 
         private void pauseKosciec1_Click(object sender, RoutedEventArgs e)
         {
-            kosciecVideo1.Pause();
-            movie1IsPlaying = false;
+            if (isMovieAvi)
+            {
+                kosciecVideoAvi1.Pause();
+                movie1IsPlaying = false;
+            }
+            else
+            {
+
+            }
         }
 
         private void pauseKosciec2_Click(object sender, RoutedEventArgs e)
         {
-            kosciecVideo2.Pause();
-            movie2IsPlaying = false;
+            if (isMovieAvi)
+            {
+                kosciecVideoAvi2.Pause();
+                movie2IsPlaying = false;
+            }
+            else
+            {
+
+            }
         }
 
         private void pauseAll_Click(object sender, RoutedEventArgs e)
         {
-            kosciecVideo1.Pause();
-            kosciecVideo2.Pause();
-            movie1IsPlaying = false;
-            movie2IsPlaying = false;
+            if (isMovieAvi)
+            {
+                kosciecVideoAvi1.Pause();
+                kosciecVideoAvi2.Pause();
+                movie1IsPlaying = false;
+                movie2IsPlaying = false;
+            }
+            else
+            {
+
+            }
         }
 
         private void stopKosciec1_Click(object sender, RoutedEventArgs e)
         {
-            kosciecVideo1.Stop();
-            movie1IsPlaying = false;
+            if (isMovieAvi)
+            {
+                kosciecVideoAvi1.Stop();
+                movie1IsPlaying = false;
+            }
+            else
+            {
+
+            }
         }
 
         private void stopKosciec2_Click(object sender, RoutedEventArgs e)
         {
-            kosciecVideo2.Stop();
-            movie2IsPlaying = false;
+            if (isMovieAvi)
+            {
+                kosciecVideoAvi2.Stop();
+                movie2IsPlaying = false;
+            }
         }
 
         private void stopAll_Click(object sender, RoutedEventArgs e)
         {
-            kosciecVideo1.Stop();
-            movie1IsPlaying = false;
-            kosciecVideo2.Stop();
-            movie2IsPlaying = false;
+            if (isMovieAvi)
+            {
+                kosciecVideoAvi1.Stop();
+                movie1IsPlaying = false;
+                kosciecVideoAvi2.Stop();
+                movie2IsPlaying = false;
+            }
+            else
+            {
+
+            }
+        }
+
+        private void uploadSkeletonFiles_Click(object sender, RoutedEventArgs e)
+        {
+            allFrames1.Clear();
+            allFrames2.Clear();
+            kosciecVideoAvi1.Visibility = Visibility.Hidden;
+            kosciecVideoAvi2.Visibility = Visibility.Hidden;
+            kosciecVideoKosciec1.Visibility = Visibility.Visible;
+            kosciecVideoKosciec2.Visibility = Visibility.Visible;
+
+            string path1 = "";
+            string path2 = "";
+            bool file1LoadedCorrectly = false;
+            bool file2LoadedCorrectly = false;
+
+            OpenFileDialog openFileDialog1 = new OpenFileDialog();
+            openFileDialog1.InitialDirectory = "C:\\";
+            //    openFileDialog.Filter = "(*.avi)";
+
+            if (openFileDialog1.ShowDialog() != 0)
+            {
+                //Get the path of specified file
+                if (openFileDialog1.FileName != "")
+                {
+                    path1 = openFileDialog1.FileName;
+
+                    if (openFileDialog1.FileName.EndsWith(".kosciec"))
+                    {
+                        labelKosciec1.Content = "Nacisnij start";
+                        startKosciec1.IsEnabled = true;
+                        stopKosciec1.IsEnabled = true;
+                        pauseKosciec1.IsEnabled = true;
+                        file1LoadedCorrectly = true;
+                    }
+                    else
+                    {
+                        labelKosciec1.Content = "Niepoprawny format pliku";
+                        startKosciec1.IsEnabled = false;
+                        stopKosciec1.IsEnabled = false;
+                        pauseKosciec1.IsEnabled = false;
+                        file1LoadedCorrectly = false;
+                    }
+                    using (Stream stream1 = File.Open(path1, FileMode.Open))
+                    {
+                        while (stream1.Position < stream1.Length)
+                        {
+                            SkeletonToRecord object1 = ReadFromBinaryFile<SkeletonToRecord>(stream1, path1);
+                            allFrames1.Add(object1);
+                        }
+                    }
+                }
+            }
+
+            OpenFileDialog openFileDialog2 = new OpenFileDialog();
+            openFileDialog2.InitialDirectory = "C:\\";
+            //    openFileDialog.Filter = "(*.avi)";
+
+            if (openFileDialog2.ShowDialog() != 0)
+            {
+                //Get the path of specified file
+                if (openFileDialog2.FileName != "")
+                {
+                    path2 = openFileDialog1.FileName;
+                    if (openFileDialog2.FileName.EndsWith(".kosciec"))
+                    {
+                        labelKosciec2.Content = "Nacisnij start";
+                        startKosciec2.IsEnabled = true;
+                        stopKosciec2.IsEnabled = true;
+                        pauseKosciec2.IsEnabled = true;
+                        file2LoadedCorrectly = true;
+                    }
+                    else
+                    {
+                        labelKosciec2.Content = "Niepoprawny format pliku";
+                        startKosciec2.IsEnabled = false;
+                        stopKosciec2.IsEnabled = false;
+                        pauseKosciec2.IsEnabled = false;
+                        file2LoadedCorrectly = false;
+                    }
+                    using (Stream stream2 = File.Open(path2, FileMode.Open))
+                    {
+                        while (stream2.Position < stream2.Length)
+                        {
+                            SkeletonToRecord object2 = ReadFromBinaryFile<SkeletonToRecord>(stream2, path2);
+                            allFrames2.Add(object2);
+                        }
+                    }
+                }
+            }
+            startMovieAll.IsEnabled = file1LoadedCorrectly && file2LoadedCorrectly;
+            stopAll.IsEnabled = file1LoadedCorrectly && file2LoadedCorrectly;
+            pauseAll.IsEnabled = file1LoadedCorrectly && file2LoadedCorrectly;
+            isMovieAvi = false;
         }
     }
 }

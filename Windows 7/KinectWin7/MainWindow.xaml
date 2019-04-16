@@ -9,12 +9,12 @@
         Title="Kinect Skeleton Analyst" Height="750.453" Width="1198.651">
     <Grid x:Name="mainGrid" VerticalAlignment="Center">
         <Grid x:Name="movieGrid" HorizontalAlignment="Left" Height="710" VerticalAlignment="Top" Width="1181">
-            <Button x:Name="uploadFileButton" Content="Wczytaj pliki" HorizontalAlignment="Left" Margin="136,49,0,615" Width="174" Click="uploadFileButton_Click"/>
+            <Button x:Name="uploadAviFiles" Content="Wczytaj pliki &quot;.avi&quot;" HorizontalAlignment="Left" Margin="98,50,0,614" Width="170" Click="uploadAviFiles_Click"/>
             <Button x:Name="startMovieAll" IsEnabled="False" Content="Start" Margin="534,258,517,0" VerticalAlignment="Top" Height="38" Click="startMovieAll_Click"/>
             <Button x:Name="startKosciec2" IsEnabled="False" Content="Start" Margin="720,540,365,0" VerticalAlignment="Top" Height="38" Click="startKosciec2_Click" Width="95"/>
             <Button x:Name="startKosciec1" IsEnabled="False" Content="Start" Margin="136,540,941,0" VerticalAlignment="Top" Height="38" Click="startKosciec1_Click" Width="95"/>
-            <MediaElement x:Name="kosciecVideo1" HorizontalAlignment="Left" Height="271" Margin="136,203,0,0"  LoadedBehavior="Manual" VerticalAlignment="Top" Width="348"/>
-            <MediaElement x:Name="kosciecVideo2" HorizontalAlignment="Left" Height="271" Margin="708,203,0,0"  LoadedBehavior="Manual" VerticalAlignment="Top" Width="352"/>
+            <MediaElement x:Name="kosciecVideoAvi1" HorizontalAlignment="Left" Height="271" Margin="136,203,0,0"  LoadedBehavior="Manual" VerticalAlignment="Top" Width="348"/>
+            <MediaElement x:Name="kosciecVideoAvi2" HorizontalAlignment="Left" Height="271" Margin="708,203,0,0"  LoadedBehavior="Manual" VerticalAlignment="Top" Width="352"/>
             <Label x:Name="labelKosciec1" HorizontalAlignment="Left" Margin="240,498,0,0" VerticalAlignment="Top" Height="42" Width="152"/>
             <Label x:Name="labelKosciec2" Content="" HorizontalAlignment="Left" Margin="822,498,0,0" VerticalAlignment="Top" Height="42" Width="149"/>
             <Button x:Name="pauseKosciec1" IsEnabled="False" Content="Wstrzymaj" HorizontalAlignment="Left" Margin="261,540,0,0" VerticalAlignment="Top" Width="95" Height="38" Click="pauseKosciec1_Click"/>
@@ -23,6 +23,10 @@
             <Button x:Name="stopKosciec1" IsEnabled="False" Content="Stop" HorizontalAlignment="Left" Margin="382,540,0,0" VerticalAlignment="Top" Width="95" Height="38" Click="stopKosciec1_Click"/>
             <Button x:Name="stopKosciec2" IsEnabled="False" Content="Stop" HorizontalAlignment="Left" Margin="965,540,0,0" VerticalAlignment="Top" Width="95" Height="38" Click="stopKosciec2_Click"/>
             <Button x:Name="stopAll" IsEnabled="False" Content="Stop" HorizontalAlignment="Left" Margin="534,387,0,0" VerticalAlignment="Top" Width="130" Height="38" Click="stopAll_Click"/>
+            <Button x:Name="uploadSkeletonFiles" Content="Wczytaj pliki &quot;.kosciec&quot;" HorizontalAlignment="Left" Margin="314,50,0,614" Width="170" Click="uploadSkeletonFiles_Click"/>
+            <Image x:Name="kosciecVideoKosciec1" Source="{Binding SkeletonSource1}" Stretch="UniformToFill" HorizontalAlignment="Left" Height="306" Margin="151,168,0,0" VerticalAlignment="Top" Width="326"/>
+            <Image x:Name="kosciecVideoKosciec2" Source="{Binding SkeletonSource2}" Stretch="UniformToFill" HorizontalAlignment="Left" Height="306" Margin="734,168,0,0" VerticalAlignment="Top" Width="326"/>
+            <Button x:Name="button" Content="Record&#xD;&#xA;fake skeleton&#xD;&#xA;" HorizontalAlignment="Left" Margin="876,50,0,0" VerticalAlignment="Top" Width="95" Height="46" Click="recordFakeSkeleton_Click" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
         </Grid>
     </Grid>
 </Window>

@@ -11,29 +11,30 @@
         Title="Kinect Skeleton Analyst" Height="750.453" Width="1198.651">
     <Grid x:Name="mainGrid" VerticalAlignment="Center">
         <Grid x:Name="liveGrid" HorizontalAlignment="Left" Height="750" VerticalAlignment="Top" Width="1200">
-            <Button x:Name="startRecordingButton" Content="Rozpocznij&#xA;nagrywanie" HorizontalAlignment="Left" Margin="725,610,0,0" VerticalAlignment="Top" Width="163" Height="56"/>
+            <Button x:Name="startRecordingButton" Content="Rozpocznij&#xA;nagrywanie" HorizontalAlignment="Left" Margin="756,610,0,0" VerticalAlignment="Top" Width="130" Height="56"/>
             <Viewbox x:Name="humanViewBox" Margin="135,42,650,180">
                 <Image Source="{Binding humanSource}" Stretch="UniformToFill" />
             </Viewbox>
             <Viewbox x:Name="skeletonViewBox" Margin="677,42,142,180">
                 <Image Source="{Binding SkeletonSource}" Stretch="UniformToFill" />
             </Viewbox>
-            <ComboBox x:Name="switchSideCombobox" Margin="544,610,538,84" VerticalAlignment="Center" Height="56" RenderTransformOrigin="1.254,1.017" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+            <ComboBox x:Name="switchSideCombobox" Margin="559,610,508,84" VerticalAlignment="Center" Height="56" RenderTransformOrigin="1.254,1.017" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                 <ComboBoxItem Content="Lewa strona" HorizontalAlignment="Left" Width="121" Selected="ComboBoxItem_Selected_Left"/>
                 <ComboBoxItem Content="Prawa strona" HorizontalAlignment="Left" Width="121" Selected="ComboBoxItem_Selected_Right"/>
                 <ComboBoxItem Content="Obie strony" HorizontalAlignment="Left" Width="121" Selected="ComboBoxItem_Selected_Both"/>
             </ComboBox>
-            <Button x:Name="uploadFileButton" Content="Wczytaj pliki" HorizontalAlignment="Left" Margin="308,610,0,84" Width="171" Click="uploadFileButton_Click"/>
-            <Button x:Name="stopRecordingButton1" Content="Zatrzymaj&#xD;&#xA;nagrywanie" HorizontalAlignment="Left" Margin="934,610,0,0" VerticalAlignment="Top" Width="156" Click="stopRecordingButton_Click" Height="56"/>
+            <Button x:Name="uploadAviFiles" Content="Wczytaj pliki &quot;.avi&quot;" HorizontalAlignment="Left" Margin="212,610,0,84" Width="133" Click="uploadAviFiles_Click"/>
+            <Button x:Name="stopRecordingButton1" Content="Zatrzymaj&#xD;&#xA;nagrywanie" HorizontalAlignment="Left" Margin="922,610,0,0" VerticalAlignment="Top" Width="136" Click="stopRecordingButton_Click" Height="56"/>
             <Label x:Name="statusLabel" Background="Red" HorizontalAlignment="Left" Margin="61,610,0,0" VerticalAlignment="Top" Width="128" Height="56" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <Button x:Name="uploadSkeletonFiles" Content="Wczytaj pliki &quot;.kosciec&quot;" HorizontalAlignment="Left" Margin="372,610,0,0" VerticalAlignment="Top" Width="139" Height="56" Click="uploadSkeletonFiles_Click"/>
         </Grid>
         <Grid x:Name="movieGrid" HorizontalAlignment="Left" Height="710" VerticalAlignment="Top" Width="1181" d:IsHidden="True">
             <Button x:Name="backButton" Content="Wstecz" HorizontalAlignment="Left" Margin="1059,601,0,0" VerticalAlignment="Top" Width="95" Height="38" Click="backButton_Click" Visibility="Visible"/>
             <Button x:Name="startMovieAll" IsEnabled="False" Content="Start" Margin="534,258,517,0" VerticalAlignment="Top" Height="38" Click="startMovieAll_Click"/>
             <Button x:Name="startKosciec2" IsEnabled="False" Content="Start" Margin="720,540,365,0" VerticalAlignment="Top" Height="38" Click="startKosciec2_Click" Width="95"/>
             <Button x:Name="startKosciec1" IsEnabled="False" Content="Start" Margin="136,540,941,0" VerticalAlignment="Top" Height="38" Click="startKosciec1_Click" Width="95"/>
-            <MediaElement x:Name="kosciecVideo1" HorizontalAlignment="Left" Height="271" Margin="136,203,0,0"  LoadedBehavior="Manual" VerticalAlignment="Top" Width="348"/>
-            <MediaElement x:Name="kosciecVideo2" HorizontalAlignment="Left" Height="271" Margin="708,203,0,0"  LoadedBehavior="Manual" VerticalAlignment="Top" Width="352"/>
+            <MediaElement x:Name="kosciecVideoAvi1" HorizontalAlignment="Left" Height="271" Margin="136,203,0,0"  LoadedBehavior="Manual" VerticalAlignment="Top" Width="348"/>
+            <MediaElement x:Name="kosciecVideoAvi2" HorizontalAlignment="Left" Height="271" Margin="708,203,0,0"  LoadedBehavior="Manual" VerticalAlignment="Top" Width="352"/>
             <Label x:Name="labelKosciec1" HorizontalAlignment="Left" Margin="240,498,0,0" VerticalAlignment="Top" Height="42" Width="152"/>
             <Label x:Name="labelKosciec2" Content="" HorizontalAlignment="Left" Margin="822,498,0,0" VerticalAlignment="Top" Height="42" Width="149"/>
             <Button x:Name="pauseKosciec1" IsEnabled="False" Content="Wstrzymaj" HorizontalAlignment="Left" Margin="261,540,0,0" VerticalAlignment="Top" Width="95" Height="38" Click="pauseKosciec1_Click"/>
@@ -42,6 +43,8 @@
             <Button x:Name="stopKosciec1" IsEnabled="False" Content="Stop" HorizontalAlignment="Left" Margin="382,540,0,0" VerticalAlignment="Top" Width="95" Height="38" Click="stopKosciec1_Click"/>
             <Button x:Name="stopKosciec2" IsEnabled="False" Content="Stop" HorizontalAlignment="Left" Margin="965,540,0,0" VerticalAlignment="Top" Width="95" Height="38" Click="stopKosciec2_Click"/>
             <Button x:Name="stopAll" IsEnabled="False" Content="Stop" HorizontalAlignment="Left" Margin="534,387,0,0" VerticalAlignment="Top" Width="130" Height="38" Click="stopAll_Click"/>
+            <Image x:Name="kosciecVideoKosciec1" Visibility="Hidden" HorizontalAlignment="Left" Height="340" Margin="184,153,0,0" VerticalAlignment="Top" Width="250"/>
+            <Image x:Name="kosciecVideoKosciec2" Visibility="Hidden" HorizontalAlignment="Left" Height="340" Margin="766,153,0,0" VerticalAlignment="Top" Width="250"/>
         </Grid>
     </Grid>
 </Window>
