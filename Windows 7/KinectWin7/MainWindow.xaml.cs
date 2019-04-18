@@ -5,7 +5,8 @@ using System.Windows.Media;
 using System;
 using System.Collections.Generic;
 using System.Windows.Threading;
-
+using SkeletonFrameManager;
+using ReadLoadManager;
 
 namespace KinectSetupDev
 {
@@ -15,71 +16,7 @@ namespace KinectSetupDev
     /// </summary>
     public partial class MainWindow : Window
     {
-        [Serializable]
-        public class CustomJoint
-        {
-            private double X;
-            private double Y;
-            private TrackingState state;
-            public enum TrackingState
-            {
-                NotTracked = 0,
-                Inferred = 1,
-                Tracked = 2
-            }
-            public CustomJoint(double X, double Y, TrackingState state)
-            {
-                this.X = X;
-                this.Y = Y;
-                this.state = state;
-            }
-
-            public double getX()
-            {
-                return this.X;
-            }
-
-            public double getY()
-            {
-                return this.Y;
-            }
-
-            public void setX(double y)
-            {
-                this.X = y;
-            }
-
-            public void setY(double y)
-            {
-                this.Y = y;
-            }
-        };
-        [Serializable]
-        public class SkeletonFrame
-        {
-            private Dictionary<int, Dictionary<int, CustomJoint>> frame = new Dictionary<int, Dictionary<int, CustomJoint>>();
-
-            public void addJointToPerson(int person, int jointType, double X, double Y, int state)
-            {
-                frame[person].Add(jointType, new CustomJoint(X, Y, (CustomJoint.TrackingState)state));
-            }
-
-            public void addPerson(int person, Dictionary<int, CustomJoint> joints)
-            {
-                frame.Add(person, joints);
-            }
-
-            public int getNumberOfBodies()
-            {
-                return frame.Count;
-            }
-
-            public CustomJoint getJoint(int person, int joint)
-            {
-                return frame[person][joint];
-            }
-
-        };
+    
 
         bool movie1IsPlaying = false;
         bool movie2IsPlaying = false;
@@ -97,35 +34,6 @@ namespace KinectSetupDev
 
         List<SkeletonFrame> allFrames1 = new List<SkeletonFrame>();
         List<SkeletonFrame> allFrames2 = new List<SkeletonFrame>();
-
-        public enum JointType
-        {
-            SpineBase = 0,
-            SpineMid = 1,
-            Neck = 2,
-            Head = 3,
-            ShoulderLeft = 4,
-            ElbowLeft = 5,
-            WristLeft = 6,
-            HandLeft = 7,
-            ShoulderRight = 8,
-            ElbowRight = 9,
-            WristRight = 10,
-            HandRight = 11,
-            HipLeft = 12,
-            KneeLeft = 13,
-            AnkleLeft = 14,
-            FootLeft = 15,
-            HipRight = 16,
-            KneeRight = 17,
-            AnkleRight = 18,
-            FootRight = 19,
-            SpineShoulder = 20,
-            HandTipLeft = 21,
-            ThumbLeft = 22,
-            HandTipRight = 23,
-            ThumbRight = 24
-        }
 
         private List<Tuple<JointType, JointType>> bones;
 
@@ -315,23 +223,6 @@ namespace KinectSetupDev
             //  else
             //       labelKosciec2.Content = "Nie wybrano pliku...";
         }
-
-
-        public static void WriteToBinaryFile<T>(string filePath, T objectToWrite, bool append = false)
-        {
-            using (Stream stream = File.Open(filePath, append ? FileMode.Append : FileMode.Create))
-            {
-                var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-                binaryFormatter.Serialize(stream, objectToWrite);
-            }
-        }
-
-        public static T ReadFromBinaryFile<T>(Stream stream, string filePath)
-        {
-            var binaryFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-            return (T)binaryFormatter.Deserialize(stream);
-        }
-
       
         private void startKosciec1_Click(object sender, RoutedEventArgs e)
         {
@@ -554,7 +445,7 @@ namespace KinectSetupDev
                     skeletonToRecord.getJoint(0, bone).setY(skeletonToRecord.getJoint(0, bone).getY() + temp1);
                 }
 
-                WriteToBinaryFile<SkeletonFrame>(recordingPath, skeletonToRecord, true);
+                RecordManager.WriteToBinaryFile<SkeletonFrame>(recordingPath, skeletonToRecord, true);
             }
         }
 
@@ -573,7 +464,7 @@ namespace KinectSetupDev
                     speed1 = 200;
                     speedMovie1.Text = speed1.ToString();
                 }
-                if (isMovieAvi1)
+                if (!isMovieAvi1)
                 {
                     framesPerSecond1 = 20 * speed1 / 100;
                     if (timer3 != null)
@@ -605,7 +496,7 @@ namespace KinectSetupDev
                     speed2 = 200;
                     speedMovie2.Text = speed2.ToString();
                 }
-                if (isMovieAvi1)
+                if (!isMovieAvi2)
                 {
                     framesPerSecond2 = 20 * speed2 / 100;
                     if (timer4 != null)
@@ -624,13 +515,12 @@ namespace KinectSetupDev
 
         private void uploadAvi1_Click(object sender, RoutedEventArgs e)
         {
-            kosciecVideoAvi1.SpeedRatio = 0.5;
             kosciecVideoAvi1.Visibility = Visibility.Visible;
             kosciecVideoKosciec1.Visibility = Visibility.Hidden;
             file1LoadedCorrectly = false;
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.InitialDirectory = "C:\\";
-            //    openFileDialog.Filter = "(*.avi)";
+            openFileDialog.Filter = "Avi Files (*.avi)|*.avi";
 
             if (openFileDialog.ShowDialog() != 0)
             {
@@ -674,7 +564,7 @@ namespace KinectSetupDev
             file1LoadedCorrectly = false;
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.InitialDirectory = "C:\\";
-            //    openFileDialog.Filter = "(*.avi)";
+            openFileDialog.Filter = "Kosciec Files (*.kosciec)|*.kosciec";
 
             if (openFileDialog.ShowDialog() != 0)
             {
@@ -705,7 +595,7 @@ namespace KinectSetupDev
                     {
                         while (stream1.Position < stream1.Length)
                         {
-                            SkeletonFrame object1 = ReadFromBinaryFile<SkeletonFrame>(stream1, path);
+                            SkeletonFrame object1 = RecordManager.ReadFromBinaryFile<SkeletonFrame>(stream1, path);
                             if (object1 != null)
                                 allFrames1.Add(object1);
                         }
@@ -725,7 +615,7 @@ namespace KinectSetupDev
             file2LoadedCorrectly = false;
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.InitialDirectory = "C:\\";
-            //    openFileDialog.Filter = "(*.avi)";
+            openFileDialog.Filter = "Avi Files (*.avi)|*.avi";
 
             if (openFileDialog.ShowDialog() != 0)
             {
@@ -769,7 +659,7 @@ namespace KinectSetupDev
 
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.InitialDirectory = "C:\\";
-            //    openFileDialog.Filter = "(*.avi)";
+            openFileDialog.Filter = "Kosciec Files (*.kosciec)|*.kosciec";
 
             if (openFileDialog.ShowDialog() != 0)
             {
@@ -799,7 +689,7 @@ namespace KinectSetupDev
                     {
                         while (stream2.Position < stream2.Length)
                         {
-                            SkeletonFrame object2 = ReadFromBinaryFile<SkeletonFrame>(stream2, path);
+                            SkeletonFrame object2 = RecordManager.ReadFromBinaryFile<SkeletonFrame>(stream2, path);
                             if (object2 != null)
                                 allFrames2.Add(object2);
                         }
