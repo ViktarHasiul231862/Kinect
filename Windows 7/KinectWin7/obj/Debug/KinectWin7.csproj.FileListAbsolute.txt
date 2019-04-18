@@ -29,3 +29,4 @@ C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\obj\Debug\MainWindow.baml
 C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\obj\Debug\KinectWin7.g.resources
 C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\obj\Debug\KinectWin7.Properties.Resources.resources
 C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\obj\Debug\KinectWin7.csproj.GenerateResource.Cache
+C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\bin\Debug\RecordManager.dll

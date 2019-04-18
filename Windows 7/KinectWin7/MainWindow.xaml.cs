@@ -35,7 +35,7 @@ namespace KinectSetupDev
         List<SkeletonFrame> allFrames1 = new List<SkeletonFrame>();
         List<SkeletonFrame> allFrames2 = new List<SkeletonFrame>();
 
-        private List<Tuple<JointType, JointType>> bones;
+        private List<Tuple<CustomJointType, CustomJointType>> bones;
 
         private List<Pen> bodyColors;
 
@@ -68,40 +68,40 @@ namespace KinectSetupDev
         public MainWindow()
         {
             this.InitializeComponent();
-            this.bones = new List<Tuple<JointType, JointType>>();
+            this.bones = new List<Tuple<CustomJointType, CustomJointType>>();
             // tors
-            this.bones.Add(new Tuple<JointType, JointType>(JointType.Head, JointType.Neck));
-            this.bones.Add(new Tuple<JointType, JointType>(JointType.Neck, JointType.SpineShoulder));
-            this.bones.Add(new Tuple<JointType, JointType>(JointType.SpineShoulder, JointType.SpineMid));
-            this.bones.Add(new Tuple<JointType, JointType>(JointType.SpineMid, JointType.SpineBase));
-            this.bones.Add(new Tuple<JointType, JointType>(JointType.SpineShoulder, JointType.ShoulderRight));
-            this.bones.Add(new Tuple<JointType, JointType>(JointType.SpineShoulder, JointType.ShoulderLeft));
-            this.bones.Add(new Tuple<JointType, JointType>(JointType.SpineBase, JointType.HipRight));
-            this.bones.Add(new Tuple<JointType, JointType>(JointType.SpineBase, JointType.HipLeft));
+            this.bones.Add(new Tuple<CustomJointType, CustomJointType>(CustomJointType.Head, CustomJointType.Neck));
+            this.bones.Add(new Tuple<CustomJointType, CustomJointType>(CustomJointType.Neck, CustomJointType.SpineShoulder));
+            this.bones.Add(new Tuple<CustomJointType, CustomJointType>(CustomJointType.SpineShoulder, CustomJointType.SpineMid));
+            this.bones.Add(new Tuple<CustomJointType, CustomJointType>(CustomJointType.SpineMid, CustomJointType.SpineBase));
+            this.bones.Add(new Tuple<CustomJointType, CustomJointType>(CustomJointType.SpineShoulder, CustomJointType.ShoulderRight));
+            this.bones.Add(new Tuple<CustomJointType, CustomJointType>(CustomJointType.SpineShoulder, CustomJointType.ShoulderLeft));
+            this.bones.Add(new Tuple<CustomJointType, CustomJointType>(CustomJointType.SpineBase, CustomJointType.HipRight));
+            this.bones.Add(new Tuple<CustomJointType, CustomJointType>(CustomJointType.SpineBase, CustomJointType.HipLeft));
 
             // prawa reka
-            this.bones.Add(new Tuple<JointType, JointType>(JointType.ShoulderRight, JointType.ElbowRight));
-            this.bones.Add(new Tuple<JointType, JointType>(JointType.ElbowRight, JointType.WristRight));
-            this.bones.Add(new Tuple<JointType, JointType>(JointType.WristRight, JointType.HandRight));
-            this.bones.Add(new Tuple<JointType, JointType>(JointType.HandRight, JointType.HandTipRight));
-            this.bones.Add(new Tuple<JointType, JointType>(JointType.WristRight, JointType.ThumbRight));
+            this.bones.Add(new Tuple<CustomJointType, CustomJointType>(CustomJointType.ShoulderRight, CustomJointType.ElbowRight));
+            this.bones.Add(new Tuple<CustomJointType, CustomJointType>(CustomJointType.ElbowRight, CustomJointType.WristRight));
+            this.bones.Add(new Tuple<CustomJointType, CustomJointType>(CustomJointType.WristRight, CustomJointType.HandRight));
+            this.bones.Add(new Tuple<CustomJointType, CustomJointType>(CustomJointType.HandRight, CustomJointType.HandTipRight));
+            this.bones.Add(new Tuple<CustomJointType, CustomJointType>(CustomJointType.WristRight, CustomJointType.ThumbRight));
 
             // lewa reka
-            this.bones.Add(new Tuple<JointType, JointType>(JointType.ShoulderLeft, JointType.ElbowLeft));
-            this.bones.Add(new Tuple<JointType, JointType>(JointType.ElbowLeft, JointType.WristLeft));
-            this.bones.Add(new Tuple<JointType, JointType>(JointType.WristLeft, JointType.HandLeft));
-            this.bones.Add(new Tuple<JointType, JointType>(JointType.HandLeft, JointType.HandTipLeft));
-            this.bones.Add(new Tuple<JointType, JointType>(JointType.WristLeft, JointType.ThumbLeft));
+            this.bones.Add(new Tuple<CustomJointType, CustomJointType>(CustomJointType.ShoulderLeft, CustomJointType.ElbowLeft));
+            this.bones.Add(new Tuple<CustomJointType, CustomJointType>(CustomJointType.ElbowLeft, CustomJointType.WristLeft));
+            this.bones.Add(new Tuple<CustomJointType, CustomJointType>(CustomJointType.WristLeft, CustomJointType.HandLeft));
+            this.bones.Add(new Tuple<CustomJointType, CustomJointType>(CustomJointType.HandLeft, CustomJointType.HandTipLeft));
+            this.bones.Add(new Tuple<CustomJointType, CustomJointType>(CustomJointType.WristLeft, CustomJointType.ThumbLeft));
 
             // prawa noga
-            this.bones.Add(new Tuple<JointType, JointType>(JointType.HipRight, JointType.KneeRight));
-            this.bones.Add(new Tuple<JointType, JointType>(JointType.KneeRight, JointType.AnkleRight));
-            this.bones.Add(new Tuple<JointType, JointType>(JointType.AnkleRight, JointType.FootRight));
+            this.bones.Add(new Tuple<CustomJointType, CustomJointType>(CustomJointType.HipRight, CustomJointType.KneeRight));
+            this.bones.Add(new Tuple<CustomJointType, CustomJointType>(CustomJointType.KneeRight, CustomJointType.AnkleRight));
+            this.bones.Add(new Tuple<CustomJointType, CustomJointType>(CustomJointType.AnkleRight, CustomJointType.FootRight));
 
             // lewa noga
-            this.bones.Add(new Tuple<JointType, JointType>(JointType.HipLeft, JointType.KneeLeft));
-            this.bones.Add(new Tuple<JointType, JointType>(JointType.KneeLeft, JointType.AnkleLeft));
-            this.bones.Add(new Tuple<JointType, JointType>(JointType.AnkleLeft, JointType.FootLeft));
+            this.bones.Add(new Tuple<CustomJointType, CustomJointType>(CustomJointType.HipLeft, CustomJointType.KneeLeft));
+            this.bones.Add(new Tuple<CustomJointType, CustomJointType>(CustomJointType.KneeLeft, CustomJointType.AnkleLeft));
+            this.bones.Add(new Tuple<CustomJointType, CustomJointType>(CustomJointType.AnkleLeft, CustomJointType.FootLeft));
 
             // kolory dla kośćców max 6
             this.bodyColors = new List<Pen>();
@@ -193,11 +193,11 @@ namespace KinectSetupDev
                                 dc.DrawLine(drawPen, new Point(frame.getJoint(body, (int)bone.Item1).getX(), frame.getJoint(body, (int)bone.Item1).getY()),
                                     new Point(frame.getJoint(body, (int)bone.Item2).getX(), frame.getJoint(body, (int)bone.Item2).getY()));
 
-                                //for (int jointType = 0; jointType < 25; ++jointType)
+                                //for (int CustomJointType = 0; CustomJointType < 25; ++CustomJointType)
                                 //{
                                 //    Brush drawBrush = null;
 
-                                //    int trackingState = allFrames1[currentFrameKosciec1].getJoint(body, jointType).getTrackingState();
+                                //    int trackingState = allFrames1[currentFrameKosciec1].getJoint(body, CustomJointType).getTrackingState();
 
                                 //    if (trackingState == (int)CustomJoint.TrackingState.Tracked)
                                 //    {
@@ -210,7 +210,7 @@ namespace KinectSetupDev
 
                                 //    if (drawBrush != null)
                                 //    {
-                                //        dc.DrawEllipse(drawBrush, null, new Point(frame.getJoint(body, jointType).getX(), frame.getJoint(body, jointType).getY()),
+                                //        dc.DrawEllipse(drawBrush, null, new Point(frame.getJoint(body, CustomJointType).getX(), frame.getJoint(body, CustomJointType).getY()),
                                 //            JointThickness, JointThickness);
                                 //    }
                                 //}

@@ -31,3 +31,4 @@ C:\Semestr6\Kinect\Kinect\Windows 10\KinectWin10\obj\Debug\MainWindow.baml
 C:\Semestr6\Kinect\Kinect\Windows 10\KinectWin10\obj\Debug\KinectWin10.g.resources
 C:\Semestr6\Kinect\Kinect\Windows 10\KinectWin10\obj\Debug\KinectWin10.Properties.Resources.resources
 C:\Semestr6\Kinect\Kinect\Windows 10\KinectWin10\obj\Debug\KinectWin10.csproj.GenerateResource.Cache
+C:\Semestr6\Kinect\Kinect\Windows 10\KinectWin10\bin\Debug\RecordManager.dll
