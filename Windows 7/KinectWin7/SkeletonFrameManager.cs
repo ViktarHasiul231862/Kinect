@@ -44,6 +44,10 @@ namespace SkeletonFrameManager
         {
             this.Y = y;
         }
+        public int getTrackingState()
+        {
+            return (int)this.state;
+        }
     };
     [Serializable]
     public class SkeletonFrame

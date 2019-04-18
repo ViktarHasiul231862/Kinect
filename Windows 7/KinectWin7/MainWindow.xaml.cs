@@ -55,6 +55,15 @@ namespace KinectSetupDev
         bool file1LoadedCorrectly = false;
         bool file2LoadedCorrectly = false;
 
+        private readonly Brush trackedJointBrush = new SolidColorBrush(Color.FromArgb(255, 68, 192, 68));
+        private readonly Brush inferredJointBrush = Brushes.Yellow;
+
+        private const double JointThickness = 3;
+
+        private readonly Pen inferredBonePen = new Pen(Brushes.Gray, 1);
+
+        double paintTimeCorrection = 0.2;
+
 
         public MainWindow()
         {
@@ -126,19 +135,19 @@ namespace KinectSetupDev
             timer2.Start();
 
             timer3 = new DispatcherTimer();
-            timer3.Interval = TimeSpan.FromMilliseconds(1000/framesPerSecond1);
+            timer3.Interval = TimeSpan.FromMilliseconds(1000/framesPerSecond1*(1-paintTimeCorrection));
             timer3.Tick += timer_Tick3;
             timer3.Start();
 
             timer4 = new DispatcherTimer();
-            timer4.Interval = TimeSpan.FromMilliseconds(1000/framesPerSecond2);
+            timer4.Interval = TimeSpan.FromMilliseconds(1000/framesPerSecond2 * (1 - paintTimeCorrection));
             timer4.Tick += timer_Tick4;
             timer4.Start();
         }
 
         void timer_Tick1(object sender, EventArgs e)
         {
-            if (kosciecVideoAvi1.Source != null)
+            if (kosciecVideoAvi1.Source != null && isMovieAvi1)
             {
                 if (kosciecVideoAvi1.NaturalDuration.HasTimeSpan)
                     labelKosciec1.Content = String.Format("{0} / {1}", kosciecVideoAvi1.Position.ToString(@"mm\:ss"), kosciecVideoAvi1.NaturalDuration.TimeSpan.ToString(@"mm\:ss"));
@@ -149,7 +158,7 @@ namespace KinectSetupDev
 
         void timer_Tick2(object sender, EventArgs e)
         {
-            if (kosciecVideoAvi2.Source != null)
+            if (kosciecVideoAvi2.Source != null && isMovieAvi2)
             {
                 if (kosciecVideoAvi2.NaturalDuration.HasTimeSpan)
                     labelKosciec2.Content = String.Format("{0} / {1}", kosciecVideoAvi2.Position.ToString(@"mm\:ss"), kosciecVideoAvi2.NaturalDuration.TimeSpan.ToString(@"mm\:ss"));
@@ -172,12 +181,40 @@ namespace KinectSetupDev
 
                         for (int body = 0; body < frame.getNumberOfBodies(); ++body)
                         {
+                            Pen drawPen = this.bodyColors[body];
                             foreach (var bone in this.bones)
                             {
-                                Pen drawPen = this.bodyColors[body];
+                                drawPen = this.bodyColors[body];
+                                if ((frame.getJoint(body, (int)bone.Item1).getTrackingState() != (int)CustomJoint.TrackingState.Tracked) || (frame.getJoint(body, (int)bone.Item2).getTrackingState() != (int)CustomJoint.TrackingState.Tracked))
+                                {
+                                    drawPen = this.inferredBonePen;
+                                }
 
                                 dc.DrawLine(drawPen, new Point(frame.getJoint(body, (int)bone.Item1).getX(), frame.getJoint(body, (int)bone.Item1).getY()),
                                     new Point(frame.getJoint(body, (int)bone.Item2).getX(), frame.getJoint(body, (int)bone.Item2).getY()));
+
+                                //for (int jointType = 0; jointType < 25; ++jointType)
+                                //{
+                                //    Brush drawBrush = null;
+
+                                //    int trackingState = allFrames1[currentFrameKosciec1].getJoint(body, jointType).getTrackingState();
+
+                                //    if (trackingState == (int)CustomJoint.TrackingState.Tracked)
+                                //    {
+                                //        drawBrush = this.trackedJointBrush;
+                                //    }
+                                //    else if (trackingState == (int)CustomJoint.TrackingState.Inferred)
+                                //    {
+                                //        drawBrush = this.inferredJointBrush;
+                                //    }
+
+                                //    if (drawBrush != null)
+                                //    {
+                                //        dc.DrawEllipse(drawBrush, null, new Point(frame.getJoint(body, jointType).getX(), frame.getJoint(body, jointType).getY()),
+                                //            JointThickness, JointThickness);
+                                //    }
+                                //}
+
                                 kosciecVideoKosciec1.Source = skeletonMovie1;
                             }
                         }
@@ -205,9 +242,14 @@ namespace KinectSetupDev
 
                         for (int body = 0; body < frame.getNumberOfBodies(); ++body)
                         {
+                            Pen drawPen = this.bodyColors[body];
                             foreach (var bone in this.bones)
                             {
-                                Pen drawPen = this.bodyColors[body];
+                                drawPen = this.bodyColors[body];
+                                if ((frame.getJoint(body, (int)bone.Item1).getTrackingState() != (int)CustomJoint.TrackingState.Tracked) || (frame.getJoint(body, (int)bone.Item2).getTrackingState() != (int)CustomJoint.TrackingState.Tracked))
+                                {
+                                    drawPen = this.inferredBonePen;
+                                }
 
                                 dc.DrawLine(drawPen, new Point(frame.getJoint(body, (int)bone.Item1).getX(), frame.getJoint(body, (int)bone.Item1).getY()),
                                   new Point(frame.getJoint(body, (int)bone.Item2).getX(), frame.getJoint(body, (int)bone.Item2).getY()));
@@ -427,22 +469,66 @@ namespace KinectSetupDev
                 skeletonToRecord.addJointToPerson(0, 23, 90, 200, 2);
                 skeletonToRecord.addJointToPerson(0, 24, 75, 200, 2);
 
+                if (i > 250)
+                {
+                    skeletonToRecord.addPerson(1, new Dictionary<int, CustomJoint>());
+
+                    skeletonToRecord.addJointToPerson(1, 0, 160, 150, 2);
+                    skeletonToRecord.addJointToPerson(1, 1, 160, 90, 2);
+                    skeletonToRecord.addJointToPerson(1, 2, 145, 30, 2);
+                    skeletonToRecord.addJointToPerson(1, 3, 135, 3, 2);
+                    skeletonToRecord.addJointToPerson(1, 4, 190, 60, 2);
+                    skeletonToRecord.addJointToPerson(1, 5, 205, 105, 2);
+                    skeletonToRecord.addJointToPerson(1, 6, 220, 150, 2);
+                    skeletonToRecord.addJointToPerson(1, 7, 225, 170, 2);
+                    skeletonToRecord.addJointToPerson(1, 8, 115, 60, 2);
+                    skeletonToRecord.addJointToPerson(1, 9, 100, 110, 2);
+                    skeletonToRecord.addJointToPerson(1, 10, 95, 175, 2);
+                    skeletonToRecord.addJointToPerson(1, 11, 90, 195, 2);
+                    skeletonToRecord.addJointToPerson(1, 12, 190, 165, 2);
+                    skeletonToRecord.addJointToPerson(1, 13, 180, 240, 2);
+                    skeletonToRecord.addJointToPerson(1, 14, 175, 315, 2);
+                    skeletonToRecord.addJointToPerson(1, 15, 190, 320, 2);
+                    skeletonToRecord.addJointToPerson(1, 16, 120, 165, 2);
+                    skeletonToRecord.addJointToPerson(1, 17, 120, 240, 2);
+                    skeletonToRecord.addJointToPerson(1, 18, 130, 315, 2);
+                    skeletonToRecord.addJointToPerson(1, 19, 137, 325, 2);
+                    skeletonToRecord.addJointToPerson(1, 20, 150, 45, 2);
+                    skeletonToRecord.addJointToPerson(1, 21, 235, 180, 2);
+                    skeletonToRecord.addJointToPerson(1, 22, 220, 180, 2);
+                    skeletonToRecord.addJointToPerson(1, 23, 100, 200, 2);
+                    skeletonToRecord.addJointToPerson(1, 24, 85, 200, 2);
+                }
+
                 double temp1;
                 double temp2;
+
+                double temp3;
+                double temp4; 
                 for (int bone = 0; bone < 25; ++bone)
                 {
                     if(bone==5 || bone ==6 || bone ==9 || bone ==10)
                     {
                         temp1 = rand.Next(30)-15;
                         temp2 = rand.Next(30)-15;
+                        temp3 = rand.Next(30) - 15;
+                        temp4 = rand.Next(30) - 15;
                     }
                     else
                     {
                         temp1 = rand.Next(10)-5;
                         temp2 = rand.Next(10)-5;
+                        temp3 = rand.Next(30) - 15;
+                        temp4 = rand.Next(30) - 15;
                     }
                     skeletonToRecord.getJoint(0, bone).setX(skeletonToRecord.getJoint(0, bone).getX() + temp1);
-                    skeletonToRecord.getJoint(0, bone).setY(skeletonToRecord.getJoint(0, bone).getY() + temp1);
+                    skeletonToRecord.getJoint(0, bone).setY(skeletonToRecord.getJoint(0, bone).getY() + temp2);
+
+                    if (i > 250)
+                    {
+                        skeletonToRecord.getJoint(1, bone).setX(skeletonToRecord.getJoint(1, bone).getX() + temp3);
+                        skeletonToRecord.getJoint(1, bone).setY(skeletonToRecord.getJoint(1, bone).getY() + temp4);
+                    }
                 }
 
                 RecordManager.WriteToBinaryFile<SkeletonFrame>(recordingPath, skeletonToRecord, true);
@@ -470,7 +556,7 @@ namespace KinectSetupDev
                     if (timer3 != null)
                         timer3.Stop();
                     timer3 = new DispatcherTimer();
-                    timer3.Interval = TimeSpan.FromMilliseconds(1000 / framesPerSecond1);
+                    timer3.Interval = TimeSpan.FromMilliseconds(1000 / framesPerSecond1 * (1 - paintTimeCorrection));
                     timer3.Tick += timer_Tick3;
                     timer3.Start();
                 }
@@ -502,7 +588,7 @@ namespace KinectSetupDev
                     if (timer4 != null)
                         timer4.Stop();
                     timer4 = new DispatcherTimer();
-                    timer4.Interval = TimeSpan.FromMilliseconds(1000 / framesPerSecond2);
+                    timer4.Interval = TimeSpan.FromMilliseconds(1000 / framesPerSecond2 * (1 - paintTimeCorrection));
                     timer4.Tick += timer_Tick4;
                     timer4.Start();
                 }
