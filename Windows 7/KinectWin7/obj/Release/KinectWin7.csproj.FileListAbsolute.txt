@@ -12,3 +12,4 @@ C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\obj\Release\KinectWin7.Properties
 C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\obj\Release\KinectWin7.csproj.GenerateResource.Cache
 C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\obj\Release\KinectWin7.exe
 C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\obj\Release\KinectWin7.pdb
+C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\bin\Release\RecordManager.dll
