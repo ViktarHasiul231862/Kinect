@@ -103,6 +103,16 @@ namespace KinectSetupDev
         // tablica na kośćce 
         private Body[] bodies = null;
 
+        private const int MapDepthToByte = 8000 / 256;
+
+        private DepthFrameReader depthFrameReader = null;
+
+        private FrameDescription depthFrameDescription = null;
+
+        private WriteableBitmap depthBitmap = null;
+
+        private byte[] depthPixels = null;
+
         private int displayWidth;
 
         private int displayHeight;
@@ -187,6 +197,16 @@ namespace KinectSetupDev
 
             this.skeletonSource = new DrawingImage(this.drawingGroup);
 
+            this.depthFrameReader = this.kinectSensor.DepthFrameSource.OpenReader();
+
+            this.depthFrameReader.FrameArrived += this.DepthReader_FrameArrived;
+
+            this.depthFrameDescription = this.kinectSensor.DepthFrameSource.FrameDescription;
+
+            this.depthPixels = new byte[this.depthFrameDescription.Width * this.depthFrameDescription.Height];
+
+            this.depthBitmap = new WriteableBitmap(this.depthFrameDescription.Width, this.depthFrameDescription.Height, 96.0, 96.0, PixelFormats.Gray8, null);
+
             this.DataContext = this;
 
             this.InitializeComponent();
@@ -198,6 +218,7 @@ namespace KinectSetupDev
               : Brushes.Red;
 
             switchSideCombobox.SelectedIndex = 2;
+            colorOrDepthCombobox.SelectedIndex = 0;
             this.MinWidth = 1200;
             this.MinHeight = 750;
             this.MaxWidth = 1200;
@@ -251,6 +272,14 @@ namespace KinectSetupDev
             }
         }
 
+        public ImageSource DepthSource
+        {
+            get
+            {
+                return this.depthBitmap;
+            }
+        }
+
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             if (this.bodyFrameReader != null)
@@ -266,7 +295,17 @@ namespace KinectSetupDev
                 this.colorFrameReader.Dispose();
                 this.colorFrameReader = null;
             }
+            if (this.depthFrameReader != null)
+            {
+                this.depthFrameReader.Dispose();
+                this.depthFrameReader = null;
+            }
 
+            if (this.kinectSensor != null)
+            {
+                this.kinectSensor.Close();
+                this.kinectSensor = null;
+            }
             if (this.kinectSensor != null)
             {
                 this.kinectSensor.Close();
@@ -439,6 +478,56 @@ namespace KinectSetupDev
                     new Rect(this.displayWidth - ClipBoundsThickness, 0, ClipBoundsThickness, this.displayHeight));
             }
         }
+
+        private void DepthReader_FrameArrived(object sender, DepthFrameArrivedEventArgs e)
+        {
+            bool depthFrameProcessed = false;
+
+            using (DepthFrame depthFrame = e.FrameReference.AcquireFrame())
+            {
+                if (depthFrame != null)
+                {
+                    using (Microsoft.Kinect.KinectBuffer depthBuffer = depthFrame.LockImageBuffer())
+                    {
+                        if (((this.depthFrameDescription.Width * this.depthFrameDescription.Height) == (depthBuffer.Size / this.depthFrameDescription.BytesPerPixel)) &&
+                            (this.depthFrameDescription.Width == this.depthBitmap.PixelWidth) && (this.depthFrameDescription.Height == this.depthBitmap.PixelHeight))
+                        {
+                            ushort maxDepth = ushort.MaxValue;
+
+                            this.ProcessDepthFrameData(depthBuffer.UnderlyingBuffer, depthBuffer.Size, depthFrame.DepthMinReliableDistance, maxDepth);
+                            depthFrameProcessed = true;
+                        }
+                    }
+                }
+            }
+
+            if (depthFrameProcessed)
+            {
+                this.RenderDepthPixels();
+            }
+        }
+
+        private unsafe void ProcessDepthFrameData(IntPtr depthFrameData, uint depthFrameDataSize, ushort minDepth, ushort maxDepth)
+        {
+            ushort* frameData = (ushort*)depthFrameData;
+
+            for (int i = 0; i < (int)(depthFrameDataSize / this.depthFrameDescription.BytesPerPixel); ++i)
+            {
+                ushort depth = frameData[i];
+
+                this.depthPixels[i] = (byte)(depth >= minDepth && depth <= maxDepth ? (depth / MapDepthToByte) : 0);
+            }
+        }
+
+        private void RenderDepthPixels()
+        {
+            this.depthBitmap.WritePixels(
+                new Int32Rect(0, 0, this.depthBitmap.PixelWidth, this.depthBitmap.PixelHeight),
+                this.depthPixels,
+                this.depthBitmap.PixelWidth,
+                0);
+        }
+
         // odczyt kolorowego obrazu
         private void Reader_ColorFrameArrived(object sender, ColorFrameArrivedEventArgs e)
         {
@@ -551,6 +640,9 @@ namespace KinectSetupDev
         {
             movieGrid.Visibility = Visibility.Hidden;
             liveGrid.Visibility = Visibility.Visible;
+            humanViewBox.Visibility = Visibility.Visible;
+            depthViewBox.Visibility = Visibility.Hidden;
+            colorOrDepthCombobox.SelectedItem = 0;
             if (movie1IsPlaying) kosciecVideoAvi1.Stop();
             if (movie2IsPlaying) kosciecVideoAvi2.Stop();
         }
@@ -1173,6 +1265,18 @@ namespace KinectSetupDev
             stopAll.IsEnabled = file1LoadedCorrectly && file2LoadedCorrectly;
             pauseAll.IsEnabled = file1LoadedCorrectly && file2LoadedCorrectly;
             isMovieAvi2 = false;
+        }
+
+        private void ComboBoxItem_Selected_Color(object sender, RoutedEventArgs e)
+        {
+            humanViewBox.Visibility = Visibility.Visible;
+            depthViewBox.Visibility = Visibility.Hidden;
+        }
+
+        private void ComboBoxItem_Selected_Depth(object sender, RoutedEventArgs e)
+        {
+            humanViewBox.Visibility = Visibility.Hidden;
+            depthViewBox.Visibility = Visibility.Visible;
         }
     }
 
