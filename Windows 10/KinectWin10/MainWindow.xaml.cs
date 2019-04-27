@@ -374,6 +374,8 @@ namespace KinectSetupDev
                                 {
                                     skeletonToRecord.addJointToPerson(bodyCounter, jointType, jointPoints[(JointType)jointType].X,
                                        jointPoints[(JointType)jointType].Y, (int)joints[(JointType)jointType].TrackingState);
+                                    RecordManager.WriteToBinaryFile<SkeletonFrame>(recordingPath, skeletonToRecord, true);
+
                                 }
                             }
 
@@ -382,7 +384,6 @@ namespace KinectSetupDev
                         ++bodyCounter;
                     }
                     // ochrona rysowania poza polem renderowania
-                    RecordManager.WriteToBinaryFile<SkeletonFrame>(recordingPath, skeletonToRecord, true);
                     this.drawingGroup.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, this.displayWidth, this.displayHeight));
                 }
             }
