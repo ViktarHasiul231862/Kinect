@@ -29,7 +29,7 @@
             <Button x:Name="uploadFilesButton" Content="Wczytaj pliki" HorizontalAlignment="Left" Margin="578,610,0,84" Width="133" Click="uploadFilesButton_Click"/>
             <Button x:Name="stopRecordingButton1" Content="Zatrzymaj&#xD;&#xA;nagrywanie" HorizontalAlignment="Left" Margin="922,610,0,0" VerticalAlignment="Top" Width="136" Click="stopRecordingButton_Click" Height="56"/>
             <Label x:Name="statusLabel" Background="Red" HorizontalAlignment="Left" Margin="61,610,0,0" VerticalAlignment="Top" Width="128" Height="56" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-            <ComboBox x:Name="colorOrDepthCombobox" HorizontalAlignment="Left" Margin="234,610,0,0" VerticalAlignment="Top" Width="120" Height="56">
+            <ComboBox x:Name="colorOrDepthCombobox" HorizontalAlignment="Left" Margin="234,610,0,0" VerticalAlignment="Top" Width="120" Height="56" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                 <ComboBoxItem Content="Kolorowy obraz" HorizontalAlignment="Left" Width="118" Selected="ComboBoxItem_Selected_Color"/>
                 <ComboBoxItem Content="Mapa głębokości" HorizontalAlignment="Left" Width="118" Selected="ComboBoxItem_Selected_Depth"/>
             </ComboBox>

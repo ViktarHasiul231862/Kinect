@@ -176,7 +176,7 @@ namespace KinectSetupDev
                         // czarne tło
                         dc.DrawRectangle(Brushes.Black, null, new Rect(0.0, 0.0, kosciecVideoKosciec1.Width, kosciecVideoKosciec1.Height));
 
-                        for (int body = 0; body < frame.getNumberOfBodies(); ++body)
+                        foreach (int body in frame.getBodyIds())
                         {
                             Pen drawPen = this.bodyColors[body];
                             foreach (var bone in this.bones)
@@ -237,7 +237,7 @@ namespace KinectSetupDev
                         // czarne tło
                         dc.DrawRectangle(Brushes.Black, null, new Rect(0.0, 0.0, kosciecVideoKosciec2.Width, kosciecVideoKosciec2.Height));
 
-                        for (int body = 0; body < frame.getNumberOfBodies(); ++body)
+                        foreach (int body in frame.getBodyIds())
                         {
                             Pen drawPen = this.bodyColors[body];
                             foreach (var bone in this.bones)

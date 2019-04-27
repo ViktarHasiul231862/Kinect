@@ -121,6 +121,10 @@ namespace KinectSetupDev
 
         bool recording = false;
 
+        int penIndex = 0;
+
+        SkeletonFrame skeletonToRecord;
+
         public MainWindow()
         {
 
@@ -340,9 +344,8 @@ namespace KinectSetupDev
                     // czarne tło
                     dc.DrawRectangle(Brushes.Black, null, new Rect(0.0, 0.0, this.displayWidth, this.displayHeight));
 
-                    int penIndex = 0;
-                    int bodyCounter = 0;
-                    SkeletonFrame skeletonToRecord = new SkeletonFrame();
+                    penIndex = 0;
+                    skeletonToRecord = new SkeletonFrame();
                     foreach (Body body in this.bodies)
                     {
                         Pen drawPen = this.bodyColors[penIndex++];
@@ -369,17 +372,11 @@ namespace KinectSetupDev
 
                             if (recording)
                             {
-                                skeletonToRecord.addPerson(bodyCounter, new Dictionary<int, CustomJoint>());
-                                for (int jointType = 0; jointType < 25; ++jointType)
-                                {
-                                    skeletonToRecord.addJointToPerson(bodyCounter, jointType, jointPoints[(JointType)jointType].X,
-                                       jointPoints[(JointType)jointType].Y, (int)joints[(JointType)jointType].TrackingState);
-                                }
+                                skeletonToRecord.addPerson(penIndex, new Dictionary<int, CustomJoint>());
                             }
 
                             this.DrawBody(joints, jointPoints, dc, drawPen);
                         }
-                        ++bodyCounter;
                     }
                     // ochrona rysowania poza polem renderowania
                     if(recording)
@@ -420,6 +417,12 @@ namespace KinectSetupDev
                 if (drawBrush != null)
                 {
                     drawingContext.DrawEllipse(drawBrush, null, jointPoints[jointType], JointThickness, JointThickness);
+                }
+
+                if(recording)
+                {
+                        skeletonToRecord.addJointToPerson(penIndex, (int)jointType, jointPoints[(JointType)jointType].X,
+                           jointPoints[(JointType)jointType].Y, (int)joints[(JointType)jointType].TrackingState);
                 }
             }
         }
@@ -685,7 +688,7 @@ namespace KinectSetupDev
                         // czarne tło
                         dc.DrawRectangle(Brushes.Black, null, new Rect(0.0, 0.0, kosciecVideoKosciec1.Width, kosciecVideoKosciec1.Height));
 
-                        for (int body = 0; body < frame.getNumberOfBodies(); ++body)
+                        foreach (int body in frame.getBodyIds())
                         {
                             Pen drawPen = this.bodyColors[body];
                             foreach (var bone in this.bones)
@@ -746,7 +749,7 @@ namespace KinectSetupDev
                         // czarne tło
                         dc.DrawRectangle(Brushes.Black, null, new Rect(0.0, 0.0, kosciecVideoKosciec2.Width, kosciecVideoKosciec2.Height));
 
-                        for (int body = 0; body < frame.getNumberOfBodies(); ++body)
+                        foreach (int body in frame.getBodyIds())
                         {
                             Pen drawPen = this.bodyColors[body];
                             foreach (var bone in this.bones)
