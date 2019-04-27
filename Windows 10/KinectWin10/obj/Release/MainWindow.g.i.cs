@@ -388,6 +388,12 @@ namespace KinectSetupDev {
             return;
             case 4:
             this.startRecordingButton = ((System.Windows.Controls.Button)(target));
+            
+            #line 14 "..\..\MainWindow.xaml"
+            this.startRecordingButton.Click += new System.Windows.RoutedEventHandler(this.startRecordingButton_click);
+            
+            #line default
+            #line hidden
             return;
             case 5:
             this.humanViewBox = ((System.Windows.Controls.Viewbox)(target));

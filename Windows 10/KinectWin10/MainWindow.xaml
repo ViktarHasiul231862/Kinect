@@ -10,8 +10,8 @@
         Closing="MainWindow_Closing"
         Title="Kinect Skeleton Analyst" Height="750.453" Width="1198.651">
     <Grid x:Name="mainGrid" VerticalAlignment="Center">
-        <Grid x:Name="liveGrid" HorizontalAlignment="Left" Height="750" VerticalAlignment="Top" Width="1200" d:IsHidden="True">
-            <Button x:Name="startRecordingButton" Content="Rozpocznij&#xA;nagrywanie" HorizontalAlignment="Left" Margin="756,610,0,0" VerticalAlignment="Top" Width="130" Height="56"/>
+        <Grid x:Name="liveGrid" HorizontalAlignment="Left" Height="750" VerticalAlignment="Top" Width="1200">
+            <Button x:Name="startRecordingButton" Content="Rozpocznij&#xA;nagrywanie" HorizontalAlignment="Left" Margin="756,610,0,0" VerticalAlignment="Top" Width="130" Height="56" Click="startRecordingButton_click"/>
             <Viewbox x:Name="humanViewBox" Margin="135,42,650,180">
                 <Image Source="{Binding humanSource}" Stretch="UniformToFill" />
             </Viewbox>
@@ -34,7 +34,7 @@
                 <ComboBoxItem Content="Mapa głębokości" HorizontalAlignment="Left" Width="118" Selected="ComboBoxItem_Selected_Depth"/>
             </ComboBox>
         </Grid>
-        <Grid x:Name="movieGrid" HorizontalAlignment="Left" Height="710" VerticalAlignment="Top" Width="1182" Margin="9,0,0,0">
+        <Grid x:Name="movieGrid" HorizontalAlignment="Left" Height="710" VerticalAlignment="Top" Width="1182" Margin="9,0,0,0" d:IsHidden="True">
             <Button x:Name="backButton" Content="Wstecz" HorizontalAlignment="Left" Margin="1059,601,0,0" VerticalAlignment="Top" Width="95" Height="38" Click="backButton_Click" Visibility="Visible"/>
             <Button x:Name="uploadAvi1_Button" Content="Wczytaj plik &quot;.avi&quot;" HorizontalAlignment="Left" Margin="136,70,0,594" Width="140" Click="uploadAvi1_Click"/>
             <Button x:Name="startMovieAll" IsEnabled="False" Content="Start" Margin="534,258,517,0" VerticalAlignment="Top" Height="38" Click="startMovieAll_Click"/>
