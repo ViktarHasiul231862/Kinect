@@ -685,6 +685,15 @@ namespace KinectSetupDev
                         pauseKosciec1.IsEnabled = true;
                         speedMovie1.IsEnabled = true;
                         file1LoadedCorrectly = true;
+                        using (Stream stream1 = File.Open(path, FileMode.Open))
+                        {
+                            while (stream1.Position < stream1.Length)
+                            {
+                                SkeletonFrame object1 = RecordManager.ReadFromBinaryFile<SkeletonFrame>(stream1, path);
+                                if (object1 != null)
+                                    allFrames1.Add(object1);
+                            }
+                        }
                     }
                     else
                     {
@@ -694,15 +703,6 @@ namespace KinectSetupDev
                         pauseKosciec1.IsEnabled = false;
                         speedMovie1.IsEnabled = false;
                         file1LoadedCorrectly = false;
-                    }
-                    using (Stream stream1 = File.Open(path, FileMode.Open))
-                    {
-                        while (stream1.Position < stream1.Length)
-                        {
-                            SkeletonFrame object1 = RecordManager.ReadFromBinaryFile<SkeletonFrame>(stream1, path);
-                            if (object1 != null)
-                                allFrames1.Add(object1);
-                        }
                     }
                 }
             }
@@ -779,6 +779,15 @@ namespace KinectSetupDev
                         pauseKosciec2.IsEnabled = true;
                         speedMovie2.IsEnabled = true;
                         file2LoadedCorrectly = true;
+                        using (Stream stream2 = File.Open(path, FileMode.Open))
+                        {
+                            while (stream2.Position < stream2.Length)
+                            {
+                                SkeletonFrame object2 = RecordManager.ReadFromBinaryFile<SkeletonFrame>(stream2, path);
+                                if (object2 != null)
+                                    allFrames2.Add(object2);
+                            }
+                        }
                     }
                     else
                     {
@@ -788,15 +797,6 @@ namespace KinectSetupDev
                         pauseKosciec2.IsEnabled = false;
                         speedMovie2.IsEnabled = false;
                         file2LoadedCorrectly = false;
-                    }
-                    using (Stream stream2 = File.Open(path, FileMode.Open))
-                    {
-                        while (stream2.Position < stream2.Length)
-                        {
-                            SkeletonFrame object2 = RecordManager.ReadFromBinaryFile<SkeletonFrame>(stream2, path);
-                            if (object2 != null)
-                                allFrames2.Add(object2);
-                        }
                     }
                 }
             }

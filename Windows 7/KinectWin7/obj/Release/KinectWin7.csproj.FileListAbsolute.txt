@@ -13,3 +13,9 @@ C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\obj\Release\KinectWin7.csproj.Gen
 C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\obj\Release\KinectWin7.exe
 C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\obj\Release\KinectWin7.pdb
 C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\bin\Release\RecordManager.dll
+C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\bin\Release\Castle.Core.dll
+C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\bin\Release\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\bin\Release\TestStack.White.dll
+C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\bin\Release\Castle.Core.xml
+C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\bin\Release\TestStack.White.pdb
+C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\bin\Release\TestStack.White.xml

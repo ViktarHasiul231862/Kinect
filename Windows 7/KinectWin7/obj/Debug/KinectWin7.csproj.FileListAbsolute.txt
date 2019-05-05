@@ -20,7 +20,6 @@ C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\obj\Debug\KinectWin7.exe
 C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\obj\Debug\KinectWin7.pdb
 C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\bin\Debug\KinectWin7.exe
 C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\bin\Debug\KinectWin7.pdb
-C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\obj\Debug\KinectWin7.csprojResolveAssemblyReference.cache
 C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\obj\Debug\MainWindow.g.cs
 C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\obj\Debug\App.g.cs
 C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\obj\Debug\KinectWin7_MarkupCompile.cache
@@ -30,3 +29,9 @@ C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\obj\Debug\KinectWin7.g.resources
 C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\obj\Debug\KinectWin7.Properties.Resources.resources
 C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\obj\Debug\KinectWin7.csproj.GenerateResource.Cache
 C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\bin\Debug\RecordManager.dll
+C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\bin\Debug\Castle.Core.dll
+C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\bin\Debug\TestStack.White.dll
+C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\bin\Debug\Castle.Core.xml
+C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\bin\Debug\TestStack.White.pdb
+C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\bin\Debug\TestStack.White.xml

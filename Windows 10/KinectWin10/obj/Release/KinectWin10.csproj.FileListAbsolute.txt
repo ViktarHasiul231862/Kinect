@@ -14,3 +14,9 @@ C:\Semestr6\Kinect\Kinect\Windows 10\KinectWin10\obj\Release\KinectWin10.exe
 C:\Semestr6\Kinect\Kinect\Windows 10\KinectWin10\obj\Release\KinectWin10.pdb
 C:\Semestr6\Kinect\Kinect\Windows 10\KinectWin10\obj\Release\KinectWin10.csprojResolveAssemblyReference.cache
 C:\Semestr6\Kinect\Kinect\Windows 10\KinectWin10\bin\Release\RecordManager.dll
+C:\Semestr6\Kinect\Kinect\Windows 10\KinectWin10\bin\Release\Castle.Core.dll
+C:\Semestr6\Kinect\Kinect\Windows 10\KinectWin10\bin\Release\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\Semestr6\Kinect\Kinect\Windows 10\KinectWin10\bin\Release\TestStack.White.dll
+C:\Semestr6\Kinect\Kinect\Windows 10\KinectWin10\bin\Release\Castle.Core.xml
+C:\Semestr6\Kinect\Kinect\Windows 10\KinectWin10\bin\Release\TestStack.White.pdb
+C:\Semestr6\Kinect\Kinect\Windows 10\KinectWin10\bin\Release\TestStack.White.xml
