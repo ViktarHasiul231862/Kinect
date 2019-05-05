@@ -73,6 +73,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="GuiTests\TestMainWindow.cs" />
     <Compile Include="GuiTests\TestReadMovies.cs" />
     <Compile Include="GuiTests\TestRunMovies.cs" />
     <Page Include="MainWindow.xaml">
