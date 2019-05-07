@@ -644,6 +644,11 @@ namespace KinectSetupDev
         {
             liveGrid.Visibility = Visibility.Hidden;
             movieGrid.Visibility = Visibility.Visible;
+            if(this.kinectSensor != null)
+            {
+                this.kinectSensor.Close();
+                this.kinectSensor = null;
+            }
         }
 
         private void backButton_Click(object sender, RoutedEventArgs e)
@@ -655,6 +660,8 @@ namespace KinectSetupDev
             colorOrDepthCombobox.SelectedItem = 0;
             if (movie1IsPlaying) kosciecVideoAvi1.Stop();
             if (movie2IsPlaying) kosciecVideoAvi2.Stop();
+            this.kinectSensor = KinectSensor.GetDefault();
+            this.kinectSensor.Open();
         }
 
         void timer_Tick1(object sender, EventArgs e)
