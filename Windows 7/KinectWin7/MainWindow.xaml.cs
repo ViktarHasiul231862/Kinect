@@ -176,12 +176,13 @@ namespace KinectSetupDev
                         // czarne tło
                         dc.DrawRectangle(Brushes.Black, null, new Rect(0.0, 0.0, kosciecVideoKosciec1.Width, kosciecVideoKosciec1.Height));
 
+                        int bodyIndex = 0;
                         foreach (int body in frame.getBodyIds())
                         {
-                            Pen drawPen = this.bodyColors[body];
+                            Pen drawPen = this.bodyColors[bodyIndex];
                             foreach (var bone in this.bones)
                             {
-                                drawPen = this.bodyColors[body];
+                                drawPen = this.bodyColors[bodyIndex];
                                 if ((frame.getJoint(body, (int)bone.Item1).getTrackingState() != (int)CustomJoint.TrackingState.Tracked) || (frame.getJoint(body, (int)bone.Item2).getTrackingState() != (int)CustomJoint.TrackingState.Tracked))
                                 {
                                     drawPen = this.inferredBonePen;
@@ -213,6 +214,7 @@ namespace KinectSetupDev
                                         JointThickness, JointThickness);
                                 }
                             }
+                            ++bodyIndex;
                         }
                         labelKosciec1.Content = String.Format("{0} / {1}", string.Format("{0:F1}",(double)currentFrameKosciec1/allFrames1.Count* (double)allFrames1.Count / framesPerSecond1),
                              string.Format("{0:F1}", (double)allFrames1.Count / framesPerSecond1));
@@ -237,12 +239,14 @@ namespace KinectSetupDev
                         // czarne tło
                         dc.DrawRectangle(Brushes.Black, null, new Rect(0.0, 0.0, kosciecVideoKosciec2.Width, kosciecVideoKosciec2.Height));
 
+                        int bodyIndex = 0;
+
                         foreach (int body in frame.getBodyIds())
                         {
-                            Pen drawPen = this.bodyColors[body];
+                            Pen drawPen = this.bodyColors[bodyIndex];
                             foreach (var bone in this.bones)
                             {
-                                drawPen = this.bodyColors[body];
+                                drawPen = this.bodyColors[bodyIndex];
                                 if ((frame.getJoint(body, (int)bone.Item1).getTrackingState() != (int)CustomJoint.TrackingState.Tracked) || (frame.getJoint(body, (int)bone.Item2).getTrackingState() != (int)CustomJoint.TrackingState.Tracked))
                                 {
                                     drawPen = this.inferredBonePen;
@@ -273,6 +277,7 @@ namespace KinectSetupDev
                                         JointThickness, JointThickness);
                                 }
                             }
+                            ++bodyIndex;
                         }
                         labelKosciec2.Content = String.Format("{0} / {1}", string.Format("{0:F1}", (double)currentFrameKosciec2 / allFrames2.Count * (double)allFrames2.Count / framesPerSecond2),
                            string.Format("{0:F1}", (double)allFrames2.Count / framesPerSecond2));

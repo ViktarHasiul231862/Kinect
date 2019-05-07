@@ -35,3 +35,4 @@ C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\bin\Debug\TestStack.White.dll
 C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\bin\Debug\Castle.Core.xml
 C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\bin\Debug\TestStack.White.pdb
 C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\bin\Debug\TestStack.White.xml
+C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\obj\Debug\KinectWin7.csprojResolveAssemblyReference.cache
