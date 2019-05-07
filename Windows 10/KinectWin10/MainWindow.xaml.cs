@@ -610,11 +610,38 @@ namespace KinectSetupDev
                 }
             }
             recording = true;
+
+            if (humanViewBox.Visibility == Visibility.Visible)
+            {
+                if (this.depthFrameReader != null)
+                {
+                    this.depthFrameReader.Dispose();
+                    this.depthFrameReader = null;
+                }
+            }
+            else if (depthViewBox.Visibility == Visibility.Visible)
+            {
+                if (this.colorFrameReader != null)
+                {
+                    this.colorFrameReader.Dispose();
+                    this.colorFrameReader = null;
+                }
+            }
         }
 
         private void stopRecordingButton_Click(object sender, RoutedEventArgs e)
         {
             recording = false;
+            if (humanViewBox.Visibility == Visibility.Visible)
+            {
+                this.depthFrameReader = this.kinectSensor.DepthFrameSource.OpenReader();
+                this.depthFrameReader.FrameArrived += this.DepthReader_FrameArrived;
+            }
+            else if(depthViewBox.Visibility == Visibility.Visible)
+            {
+                this.colorFrameReader = this.kinectSensor.ColorFrameSource.OpenReader();
+                this.colorFrameReader.FrameArrived += this.Reader_ColorFrameArrived;
+            }
         }
 
         private void ComboBoxItem_Selected_Left(object sender, RoutedEventArgs e)

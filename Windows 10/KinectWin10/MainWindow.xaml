@@ -16,7 +16,7 @@
                 <Image Source="{Binding humanSource}" Stretch="UniformToFill" />
             </Viewbox>
             <Viewbox x:Name="depthViewBox" Margin="135,42,650,180" Visibility="Hidden">
-                <Image Source="{Binding depthSource}" Stretch="UniformToFill" />
+                <Image Source="{Binding DepthSource}" Stretch="UniformToFill" />
             </Viewbox>
             <Viewbox x:Name="skeletonViewBox" Margin="677,42,142,180">
                 <Image Source="{Binding SkeletonSource}" Stretch="UniformToFill" />
