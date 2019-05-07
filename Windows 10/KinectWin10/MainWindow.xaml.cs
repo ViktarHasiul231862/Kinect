@@ -130,6 +130,7 @@ namespace KinectSetupDev
 
         public MainWindow()
         {
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
 
             this.kinectSensor = KinectSensor.GetDefault();
 
@@ -1146,6 +1147,8 @@ namespace KinectSetupDev
             allFrames1.Clear();
             kosciecVideoAvi1.Visibility = Visibility.Hidden;
             kosciecVideoKosciec1.Visibility = Visibility.Visible;
+            playKosciecMovie1 = false;
+            currentFrameKosciec1 = 0;
 
             string path = "";
             file1LoadedCorrectly = false;
@@ -1240,6 +1243,8 @@ namespace KinectSetupDev
             allFrames2.Clear();
             kosciecVideoAvi2.Visibility = Visibility.Hidden;
             kosciecVideoKosciec2.Visibility = Visibility.Visible;
+            playKosciecMovie2 = false;
+            currentFrameKosciec2 = 0;
 
             string path = "";
             file2LoadedCorrectly = false;
