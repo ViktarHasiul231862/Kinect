@@ -32,3 +32,9 @@ C:\Semestr6\Kinect\Kinect\Windows 10\KinectWin10\obj\Debug\KinectWin10.g.resourc
 C:\Semestr6\Kinect\Kinect\Windows 10\KinectWin10\obj\Debug\KinectWin10.Properties.Resources.resources
 C:\Semestr6\Kinect\Kinect\Windows 10\KinectWin10\obj\Debug\KinectWin10.csproj.GenerateResource.Cache
 C:\Semestr6\Kinect\Kinect\Windows 10\KinectWin10\bin\Debug\RecordManager.dll
+C:\Semestr6\Kinect\Kinect\Windows 10\KinectWin10\bin\Debug\Castle.Core.dll
+C:\Semestr6\Kinect\Kinect\Windows 10\KinectWin10\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\Semestr6\Kinect\Kinect\Windows 10\KinectWin10\bin\Debug\TestStack.White.dll
+C:\Semestr6\Kinect\Kinect\Windows 10\KinectWin10\bin\Debug\Castle.Core.xml
+C:\Semestr6\Kinect\Kinect\Windows 10\KinectWin10\bin\Debug\TestStack.White.pdb
+C:\Semestr6\Kinect\Kinect\Windows 10\KinectWin10\bin\Debug\TestStack.White.xml
