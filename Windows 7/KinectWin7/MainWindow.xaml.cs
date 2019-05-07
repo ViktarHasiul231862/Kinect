@@ -44,8 +44,11 @@ namespace KinectSetupDev
         int currentFrameKosciec1 = 0;
         int currentFrameKosciec2 = 0;
 
-        int framesPerSecond1 = 35;
-        int framesPerSecond2 = 35;
+        const int defaultFramesPerSecond1 = 35;
+        const int defaultFramesPerSecond2 = 35;
+
+        int framesPerSecond1 = defaultFramesPerSecond1;
+        int framesPerSecond2 = defaultFramesPerSecond2;
 
         DispatcherTimer timer1;
         DispatcherTimer timer2;
@@ -575,7 +578,7 @@ namespace KinectSetupDev
                 }
                 if (!isMovieAvi1)
                 {
-                    framesPerSecond1 = 20 * speed1 / 100;
+                    framesPerSecond1 = defaultFramesPerSecond1 * speed1 / 100;
                     if (timer3 != null)
                         timer3.Stop();
                     timer3 = new DispatcherTimer();
@@ -607,7 +610,7 @@ namespace KinectSetupDev
                 }
                 if (!isMovieAvi2)
                 {
-                    framesPerSecond2 = 20 * speed2 / 100;
+                    framesPerSecond2 = defaultFramesPerSecond2 * speed2 / 100;
                     if (timer4 != null)
                         timer4.Stop();
                     timer4 = new DispatcherTimer();
