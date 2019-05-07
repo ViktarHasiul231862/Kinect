@@ -34,9 +34,30 @@ namespace Tests
             Assert.IsTrue(startRecordingButton.Visible);
             Assert.IsTrue(stopRecordingButton.Visible);
             Assert.IsTrue(statusLabel.Visible);
+            Assert.IsTrue(humanSource.Visible);
+            Assert.IsTrue(skeletonSource.Visible);
+            Assert.IsFalse(depthSource.Visible);
 
             Assert.IsTrue(window.Get<ListView>("liveGrid").Visible);
             Assert.IsFalse(window.Get<ListView>("movieGrid").Visible);
+
+            Assert.IsFalse(window.Get<Button>("startKosciec1").Visible);
+            Assert.IsFalse(window.Get<Button>("stopKosciec1").Visible);
+            Assert.IsFalse(window.Get<Button>("pauseKosciec1").Visible);
+            Assert.IsFalse(window.Get<Button>("startKosciec2").Visible);
+            Assert.IsFalse(window.Get<Button>("stopKosciec2").Visible);
+            Assert.IsFalse(window.Get<Button>("pauseKosciec2").Visible);
+            Assert.IsFalse(window.Get<Button>("startMovieAll").Visible);
+            Assert.IsFalse(window.Get<Button>("stopAll").Visible);
+            Assert.IsFalse(window.Get<Button>("pauseAll").Visible);
+            Assert.IsFalse(window.Get<Button>("backButton").Visible);
+            Assert.IsFalse(window.Get<Image>("kosciecVideoKosciec1").Visible);
+            Assert.IsFalse(window.Get<Image>("kosciecVideoKosciec2").Visible);
+            Assert.IsFalse(window.Get<Button>("uploadAvi1_Button").Visible);
+            Assert.IsFalse(window.Get<Button>("uploadAvi2_Button").Visible);
+            Assert.IsFalse(window.Get<Button>("uploadSkeleton1_Button").Visible);
+            Assert.IsFalse(window.Get<Button>("uploadSkeleton2_Button").Visible);
+           // window.Get<UIItem>("kosciecVideoAvi1");
 
             app.Close();
         }
@@ -51,8 +72,41 @@ namespace Tests
 
             var humanSource = window.Get<ListBox>("humanViewBox");
             var depthSource = window.Get<ListBox>("depthViewBox");
+            var skeletonSource = window.Get<ListBox>("skeletonViewBox");
 
-      //      depthOrColorCombobox.SetValue(depthOrColorCombobox.SetValue(depthOrColorCombobox.Items.ToArray()[0]));
+            depthOrColorCombobox.SetValue("Kolorowy obraz");
+
+            Assert.IsTrue(humanSource.Visible);
+            Assert.IsFalse(depthSource.Visible);
+            Assert.IsTrue(skeletonSource.Visible);
+
+            depthOrColorCombobox.SetValue("Mapa głębokości");
+
+            Assert.IsFalse(humanSource.Visible);
+            Assert.IsTrue(depthSource.Visible);
+            Assert.IsTrue(skeletonSource.Visible);
+
+            app.Close();
+        }
+
+        [TestMethod]
+        public void sideViewComboboxChanged()
+        {
+            var app = Application.Launch("KinectWin10.exe");
+
+            var window = app.GetWindow("Kinect Skeleton Analyst", InitializeOption.NoCache);
+            var switchSideCombobox = window.Get<ComboBox>("switchSideCombobox");
+            var depthOrColorCombobox = window.Get<ComboBox>("colorOrDepthCombobox");
+
+
+            var humanSource = window.Get<ListBox>("humanViewBox");
+            var depthSource = window.Get<ListBox>("depthViewBox");
+            var skeletonSource = window.Get<ListBox>("skeletonViewBox");
+
+            depthOrColorCombobox.SetValue("Kolorowy obraz");
+            switchSideCombobox.SetValue("Obie strony");
+
+         //   Assert.IsTrue(humanSource.VerticalSpan, { 0,0,0,0 });
 
             app.Close();
         }
