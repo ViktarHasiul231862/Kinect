@@ -766,6 +766,9 @@ namespace KinectSetupDev
                             }
                             ++bodyIndex;
                         }
+
+                        this.drawingGroup1.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, kosciecVideoKosciec1.Width, kosciecVideoKosciec1.Height));
+                 
                         labelKosciec1.Content = String.Format("{0} / {1}", string.Format("{0:F1}", (double)currentFrameKosciec1 / allFrames1.Count * (double)allFrames1.Count / framesPerSecond1),
                              string.Format("{0:F1}", (double)allFrames1.Count / framesPerSecond1));
                         currentFrameKosciec1++;
@@ -829,6 +832,9 @@ namespace KinectSetupDev
                             }
                             ++bodyIndex;
                         }
+
+                        this.drawingGroup2.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, kosciecVideoKosciec2.Width, kosciecVideoKosciec2.Height));
+
                         labelKosciec2.Content = String.Format("{0} / {1}", string.Format("{0:F1}", (double)currentFrameKosciec2 / allFrames2.Count * (double)allFrames2.Count / framesPerSecond2),
                            string.Format("{0:F1}", (double)allFrames2.Count / framesPerSecond2));
                         currentFrameKosciec2++;
