@@ -11,28 +11,34 @@
         <Grid x:Name="movieGrid" HorizontalAlignment="Left" Height="710" VerticalAlignment="Top" Width="1182" Margin="9,0,0,0">
             <Button x:Name="uploadAvi1_Button" Content="Wczytaj plik &quot;.avi&quot;" HorizontalAlignment="Left" Margin="136,70,0,594" Width="140" Click="uploadAvi1_Click"/>
             <Button x:Name="startMovieAll" IsEnabled="False" Content="Start" Margin="534,258,517,0" VerticalAlignment="Top" Height="38" Click="startMovieAll_Click"/>
-            <Button x:Name="startKosciec2" IsEnabled="False" Content="Start" Margin="720,540,365,0" VerticalAlignment="Top" Height="38" Click="startKosciec2_Click" Width="95"/>
-            <Button x:Name="startKosciec1" IsEnabled="False" Content="Start" Margin="136,540,941,0" VerticalAlignment="Top" Height="38" Click="startKosciec1_Click" Width="95"/>
+            <Button x:Name="startKosciec2" IsEnabled="False" Content="Start" Margin="717,588,370,0" VerticalAlignment="Top" Height="38" Click="startKosciec2_Click" Width="95"/>
+            <Button x:Name="startKosciec1" IsEnabled="False" Content="Start" Margin="148,588,938,0" VerticalAlignment="Top" Height="38" Click="startKosciec1_Click" Width="95"/>
             <MediaElement x:Name="kosciecVideoAvi1" HorizontalAlignment="Left" Height="325" Margin="136,168,0,0"  LoadedBehavior="Manual" VerticalAlignment="Top" Width="375"/>
             <MediaElement x:Name="kosciecVideoAvi2" HorizontalAlignment="Left" Height="325" Margin="690,168,0,0"  LoadedBehavior="Manual" VerticalAlignment="Top" Width="370"/>
             <Label x:Name="labelKosciec1" HorizontalAlignment="Left" Margin="240,498,0,0" VerticalAlignment="Top" Height="42" Width="152"/>
             <Label x:Name="labelKosciec2" Content="" HorizontalAlignment="Left" Margin="822,498,0,0" VerticalAlignment="Top" Height="42" Width="149"/>
-            <Button x:Name="pauseKosciec1" IsEnabled="False" Content="Wstrzymaj" HorizontalAlignment="Left" Margin="261,540,0,0" VerticalAlignment="Top" Width="95" Height="38" Click="pauseKosciec1_Click"/>
-            <Button x:Name="pauseKosciec2" IsEnabled="False" Content="Wstrzymaj" HorizontalAlignment="Left" Margin="840,540,0,0" VerticalAlignment="Top" Width="95" Height="38" Click="pauseKosciec2_Click"/>
+            <Button x:Name="pauseKosciec1" IsEnabled="False" Content="Wstrzymaj" HorizontalAlignment="Left" Margin="268,588,0,0" VerticalAlignment="Top" Width="96" Height="38" Click="pauseKosciec1_Click"/>
+            <Button x:Name="pauseKosciec2" IsEnabled="False" Content="Wstrzymaj" HorizontalAlignment="Left" Margin="836,588,0,0" VerticalAlignment="Top" Width="95" Height="38" Click="pauseKosciec2_Click"/>
             <Button x:Name="pauseAll" IsEnabled="False" Content="Wstrzymaj" HorizontalAlignment="Left" Margin="534,324,0,0" VerticalAlignment="Top" Width="130" Height="40" Click="pauseAll_Click"/>
-            <Button x:Name="stopKosciec1" IsEnabled="False" Content="Stop" HorizontalAlignment="Left" Margin="382,540,0,0" VerticalAlignment="Top" Width="95" Height="38" Click="stopKosciec1_Click"/>
-            <Button x:Name="stopKosciec2" IsEnabled="False" Content="Stop" HorizontalAlignment="Left" Margin="965,540,0,0" VerticalAlignment="Top" Width="95" Height="38" Click="stopKosciec2_Click"/>
+            <Button x:Name="stopKosciec1" IsEnabled="False" Content="Stop" HorizontalAlignment="Left" Margin="390,588,0,0" VerticalAlignment="Top" Width="94" Height="38" Click="stopKosciec1_Click"/>
+            <Button x:Name="stopKosciec2" IsEnabled="False" Content="Stop" HorizontalAlignment="Left" Margin="961,588,0,0" VerticalAlignment="Top" Width="95" Height="38" Click="stopKosciec2_Click"/>
             <Button x:Name="stopAll" IsEnabled="False" Content="Stop" HorizontalAlignment="Left" Margin="534,387,0,0" VerticalAlignment="Top" Width="130" Height="38" Click="stopAll_Click"/>
             <Button x:Name="uploadSkeleton1_Button" Content="Wczytaj plik &quot;.kosciec&quot;" HorizontalAlignment="Left" Margin="337,70,0,594" Width="140" Click="uploadSkeleton1_Click"/>
             <Image x:Name="kosciecVideoKosciec1" Stretch="UniformToFill" HorizontalAlignment="Left" Height="325" Margin="136,168,0,0" VerticalAlignment="Top" Width="375"/>
             <Image x:Name="kosciecVideoKosciec2" Stretch="UniformToFill" HorizontalAlignment="Left" Height="325" Margin="690,168,0,0" VerticalAlignment="Top" Width="370"/>
             <Button x:Name="readFakeSkeleton" Visibility="Hidden" Content="Nagraj&#xD;&#xA;przykladowy&#xD;&#xA;kosciec&#xA;" HorizontalAlignment="Left" Margin="1077,10,0,0" VerticalAlignment="Top" Width="95" Height="56" Click="recordFakeSkeleton_Click" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-            <TextBox x:Name="speedMovie1" IsEnabled="False" HorizontalAlignment="Left" Height="22" Margin="314,616,0,0" TextWrapping="Wrap" Text="100" VerticalAlignment="Top" Width="53" VerticalContentAlignment="Center" LostFocus="speedKosciec1_TextChanged"/>
-            <Label x:Name="speedLabel1" Content="Szybkosc, %" HorizontalAlignment="Left" Margin="209,612,0,0" VerticalAlignment="Top" Width="84"/>
-            <TextBox x:Name="speedMovie2" IsEnabled="False" HorizontalAlignment="Left" Height="22" Margin="913,616,0,0" TextWrapping="Wrap" Text="100" VerticalAlignment="Top" Width="53" VerticalContentAlignment="Center" LostFocus="speedKosciec2_TextChanged"/>
-            <Label x:Name="speedLabel2" Content="Szybkosc, %" HorizontalAlignment="Left" Margin="808,612,0,0" VerticalAlignment="Top" Width="84"/>
+            <TextBox x:Name="speedMovie1" IsEnabled="False" HorizontalAlignment="Left" Height="22" Margin="322,664,0,0" TextWrapping="Wrap" Text="100" VerticalAlignment="Top" Width="52" VerticalContentAlignment="Center" LostFocus="speedKosciec1_TextChanged"/>
+            <Label x:Name="speedLabel1" Content="Szybkosc, %" HorizontalAlignment="Left" Margin="216,660,0,0" VerticalAlignment="Top" Width="84"/>
+            <TextBox x:Name="speedMovie2" IsEnabled="False" HorizontalAlignment="Left" Height="22" Margin="909,664,0,0" TextWrapping="Wrap" Text="100" VerticalAlignment="Top" Width="53" VerticalContentAlignment="Center" LostFocus="speedKosciec2_TextChanged"/>
+            <Label x:Name="speedLabel2" Content="Szybkosc, %" HorizontalAlignment="Left" Margin="804,660,0,0" VerticalAlignment="Top" Width="84"/>
             <Button x:Name="uploadAvi2_Button" Content="Wczytaj plik &quot;.avi&quot;" HorizontalAlignment="Left" Margin="715,70,0,594" Width="141" Click="uploadAvi2_Click"/>
             <Button x:Name="uploadSkeleton2_Button" Content="Wczytaj plik &quot;.kosciec&quot;" HorizontalAlignment="Left" Margin="913,70,0,594" Width="143" Click="uploadSkeleton2_Click"/>
+            <Label x:Name="framesKosciec2" Visibility="Hidden" Content="0" HorizontalAlignment="Left" Margin="1022,130,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="framesKosciec1" Visibility="Hidden" Content="0" HorizontalAlignment="Left" Margin="473,130,0,0" VerticalAlignment="Top"/>
+            <Label x:Name="labelOfFrame2" Visibility="Hidden" Content="Ramka&#xD;&#xA;" HorizontalAlignment="Left" Margin="972,130,0,0" VerticalAlignment="Top" Height="26"/>
+            <Label x:Name="labelOfFrame1" Visibility="Hidden" Content="Ramka" HorizontalAlignment="Left" Margin="420,130,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5"/>
+            <Slider x:Name="sliderKosciec1" IsEnabled="False" Width="300" HorizontalAlignment="Left" Margin="177,540,0,0" VerticalAlignment="Top" ValueChanged="sliderKosciec1_ValueChanged"/>
+            <Slider x:Name="sliderKosciec2" IsEnabled="False" Width="300" HorizontalAlignment="Left" Margin="738,540,0,0" VerticalAlignment="Top" ValueChanged="sliderKosciec2_ValueChanged"/>
         </Grid>
     </Grid>
 </Window>

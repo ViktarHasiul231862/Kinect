@@ -151,10 +151,11 @@ namespace KinectSetupDev
             if (kosciecVideoAvi1.Source != null && isMovieAvi1)
             {
                 if (kosciecVideoAvi1.NaturalDuration.HasTimeSpan)
+                {
                     labelKosciec1.Content = String.Format("{0} / {1}", kosciecVideoAvi1.Position.ToString(@"mm\:ss"), kosciecVideoAvi1.NaturalDuration.TimeSpan.ToString(@"mm\:ss"));
+                    sliderKosciec1.Value = kosciecVideoAvi1.Position.Seconds / kosciecVideoAvi1.NaturalDuration.TimeSpan.TotalSeconds * 100;
+                }
             }
-            //else
-                //labelKosciec1.Content = "Nie wybrano pliku...";
         }
 
         void timer_Tick2(object sender, EventArgs e)
@@ -162,141 +163,154 @@ namespace KinectSetupDev
             if (kosciecVideoAvi2.Source != null && isMovieAvi2)
             {
                 if (kosciecVideoAvi2.NaturalDuration.HasTimeSpan)
+                {
                     labelKosciec2.Content = String.Format("{0} / {1}", kosciecVideoAvi2.Position.ToString(@"mm\:ss"), kosciecVideoAvi2.NaturalDuration.TimeSpan.ToString(@"mm\:ss"));
+                    sliderKosciec2.Value = kosciecVideoAvi2.Position.Seconds / kosciecVideoAvi2.NaturalDuration.TimeSpan.TotalSeconds * 100;
+                }
             }
-            //  else
-            //       labelKosciec2.Content = "Nie wybrano pliku...";
         }
 
         void timer_Tick3(object sender, EventArgs e)
         {
-            if (!isMovieAvi1 && playKosciecMovie1)
+            if (!isMovieAvi1)
             {
-                if (currentFrameKosciec1 < allFrames1.Count)
+                if (playKosciecMovie1)
                 {
-                    SkeletonFrame frame = allFrames1[currentFrameKosciec1];
-                    using (DrawingContext dc = this.drawingGroup1.Open())
+                    if (currentFrameKosciec1 < allFrames1.Count)
                     {
-                        // czarne tło
-                        dc.DrawRectangle(Brushes.Black, null, new Rect(0.0, 0.0, kosciecVideoKosciec1.Width, kosciecVideoKosciec1.Height));
-
-                        int bodyIndex = 0;
-                        foreach (int body in frame.getBodyIds())
+                        SkeletonFrame frame = allFrames1[currentFrameKosciec1];
+                        using (DrawingContext dc = this.drawingGroup1.Open())
                         {
-                            Pen drawPen = this.bodyColors[bodyIndex];
-                            foreach (var bone in this.bones)
+                            // czarne tło
+                            dc.DrawRectangle(Brushes.Black, null, new Rect(0.0, 0.0, kosciecVideoKosciec1.Width, kosciecVideoKosciec1.Height));
+
+                            int bodyIndex = 0;
+                            foreach (int body in frame.getBodyIds())
                             {
-                                drawPen = this.bodyColors[bodyIndex];
-                                if ((frame.getJoint(body, (int)bone.Item1).getTrackingState() != (int)CustomJoint.TrackingState.Tracked) || (frame.getJoint(body, (int)bone.Item2).getTrackingState() != (int)CustomJoint.TrackingState.Tracked))
+                                Pen drawPen = this.bodyColors[bodyIndex];
+                                foreach (var bone in this.bones)
                                 {
-                                    drawPen = this.inferredBonePen;
+                                    drawPen = this.bodyColors[bodyIndex];
+                                    if ((frame.getJoint(body, (int)bone.Item1).getTrackingState() != (int)CustomJoint.TrackingState.Tracked) || (frame.getJoint(body, (int)bone.Item2).getTrackingState() != (int)CustomJoint.TrackingState.Tracked))
+                                    {
+                                        drawPen = this.inferredBonePen;
+                                    }
+
+                                    dc.DrawLine(drawPen, new Point(frame.getJoint(body, (int)bone.Item1).getX(), frame.getJoint(body, (int)bone.Item1).getY()),
+                                        new Point(frame.getJoint(body, (int)bone.Item2).getX(), frame.getJoint(body, (int)bone.Item2).getY()));
+
                                 }
 
-                                dc.DrawLine(drawPen, new Point(frame.getJoint(body, (int)bone.Item1).getX(), frame.getJoint(body, (int)bone.Item1).getY()),
-                                    new Point(frame.getJoint(body, (int)bone.Item2).getX(), frame.getJoint(body, (int)bone.Item2).getY()));
+                                for (int CustomJointType = 0; CustomJointType < 25; ++CustomJointType)
+                                {
+                                    Brush drawBrush = null;
 
+                                    int trackingState = allFrames1[currentFrameKosciec1].getJoint(body, CustomJointType).getTrackingState();
+
+                                    if (trackingState == (int)CustomJoint.TrackingState.Tracked)
+                                    {
+                                        drawBrush = this.trackedJointBrush;
+                                    }
+                                    else if (trackingState == (int)CustomJoint.TrackingState.Inferred)
+                                    {
+                                        drawBrush = this.inferredJointBrush;
+                                    }
+
+                                    if (drawBrush != null)
+                                    {
+                                        dc.DrawEllipse(drawBrush, null, new Point(frame.getJoint(body, CustomJointType).getX(), frame.getJoint(body, CustomJointType).getY()),
+                                            JointThickness, JointThickness);
+                                    }
+                                }
+                                ++bodyIndex;
                             }
 
-                            for (int CustomJointType = 0; CustomJointType < 25; ++CustomJointType)
-                            {
-                                Brush drawBrush = null;
+                            this.drawingGroup1.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, kosciecVideoKosciec1.Width, kosciecVideoKosciec1.Height));
 
-                                int trackingState = allFrames1[currentFrameKosciec1].getJoint(body, CustomJointType).getTrackingState();
+                            framesKosciec1.Content = currentFrameKosciec1 + 1;
+                            sliderKosciec1.Value = currentFrameKosciec1;
 
-                                if (trackingState == (int)CustomJoint.TrackingState.Tracked)
-                                {
-                                    drawBrush = this.trackedJointBrush;
-                                }
-                                else if (trackingState == (int)CustomJoint.TrackingState.Inferred)
-                                {
-                                    drawBrush = this.inferredJointBrush;
-                                }
-
-                                if (drawBrush != null)
-                                {
-                                    dc.DrawEllipse(drawBrush, null, new Point(frame.getJoint(body, CustomJointType).getX(), frame.getJoint(body, CustomJointType).getY()),
-                                        JointThickness, JointThickness);
-                                }
-                            }
-                            ++bodyIndex;
+                            labelKosciec1.Content = String.Format("{0} / {1}", string.Format("{0:F1}", (double)currentFrameKosciec1 / allFrames1.Count * (double)allFrames1.Count / framesPerSecond1),
+                                 string.Format("{0:F1}", (double)allFrames1.Count / framesPerSecond1));
+                            currentFrameKosciec1++;
                         }
-
-                        this.drawingGroup1.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, kosciecVideoKosciec1.Width, kosciecVideoKosciec1.Height));
-
-                        labelKosciec1.Content = String.Format("{0} / {1}", string.Format("{0:F1}",(double)currentFrameKosciec1/allFrames1.Count* (double)allFrames1.Count / framesPerSecond1),
-                             string.Format("{0:F1}", (double)allFrames1.Count / framesPerSecond1));
-                        currentFrameKosciec1++;
+                        kosciecVideoKosciec1.Source = skeletonMovie1;
                     }
-                    kosciecVideoKosciec1.Source = skeletonMovie1;
+                    if (currentFrameKosciec1 == allFrames1.Count)
+                        playKosciecMovie1 = false;
                 }
             }
-            //  else
-            //       labelKosciec2.Content = "Nie wybrano pliku...";
         }
 
         void timer_Tick4(object sender, EventArgs e)
         {
-            if (!isMovieAvi2 && playKosciecMovie2)
+            if (!isMovieAvi2)
             {
-                if (currentFrameKosciec2 < allFrames2.Count)
+                if (playKosciecMovie2)
                 {
-                    SkeletonFrame frame = allFrames2[currentFrameKosciec2];
-                    using (DrawingContext dc = this.drawingGroup2.Open())
+                    if (currentFrameKosciec2 < allFrames2.Count)
                     {
-                        // czarne tło
-                        dc.DrawRectangle(Brushes.Black, null, new Rect(0.0, 0.0, kosciecVideoKosciec2.Width, kosciecVideoKosciec2.Height));
-
-                        int bodyIndex = 0;
-
-                        foreach (int body in frame.getBodyIds())
+                        SkeletonFrame frame = allFrames2[currentFrameKosciec2];
+                        using (DrawingContext dc = this.drawingGroup2.Open())
                         {
-                            Pen drawPen = this.bodyColors[bodyIndex];
-                            foreach (var bone in this.bones)
+                            // czarne tło
+                            dc.DrawRectangle(Brushes.Black, null, new Rect(0.0, 0.0, kosciecVideoKosciec2.Width, kosciecVideoKosciec2.Height));
+
+                            int bodyIndex = 0;
+
+                            foreach (int body in frame.getBodyIds())
                             {
-                                drawPen = this.bodyColors[bodyIndex];
-                                if ((frame.getJoint(body, (int)bone.Item1).getTrackingState() != (int)CustomJoint.TrackingState.Tracked) || (frame.getJoint(body, (int)bone.Item2).getTrackingState() != (int)CustomJoint.TrackingState.Tracked))
+                                Pen drawPen = this.bodyColors[bodyIndex];
+                                foreach (var bone in this.bones)
                                 {
-                                    drawPen = this.inferredBonePen;
-                                }
+                                    drawPen = this.bodyColors[bodyIndex];
+                                    if ((frame.getJoint(body, (int)bone.Item1).getTrackingState() != (int)CustomJoint.TrackingState.Tracked) || (frame.getJoint(body, (int)bone.Item2).getTrackingState() != (int)CustomJoint.TrackingState.Tracked))
+                                    {
+                                        drawPen = this.inferredBonePen;
+                                    }
 
-                                dc.DrawLine(drawPen, new Point(frame.getJoint(body, (int)bone.Item1).getX(), frame.getJoint(body, (int)bone.Item1).getY()),
-                                  new Point(frame.getJoint(body, (int)bone.Item2).getX(), frame.getJoint(body, (int)bone.Item2).getY()));
-                                kosciecVideoKosciec2.Source = skeletonMovie2;
+                                    dc.DrawLine(drawPen, new Point(frame.getJoint(body, (int)bone.Item1).getX(), frame.getJoint(body, (int)bone.Item1).getY()),
+                                      new Point(frame.getJoint(body, (int)bone.Item2).getX(), frame.getJoint(body, (int)bone.Item2).getY()));
+                                    kosciecVideoKosciec2.Source = skeletonMovie2;
+                                }
+                                for (int CustomJointType = 0; CustomJointType < 25; ++CustomJointType)
+                                {
+                                    Brush drawBrush = null;
+
+                                    int trackingState = allFrames2[currentFrameKosciec2].getJoint(body, CustomJointType).getTrackingState();
+
+                                    if (trackingState == (int)CustomJoint.TrackingState.Tracked)
+                                    {
+                                        drawBrush = this.trackedJointBrush;
+                                    }
+                                    else if (trackingState == (int)CustomJoint.TrackingState.Inferred)
+                                    {
+                                        drawBrush = this.inferredJointBrush;
+                                    }
+
+                                    if (drawBrush != null)
+                                    {
+                                        dc.DrawEllipse(drawBrush, null, new Point(frame.getJoint(body, CustomJointType).getX(), frame.getJoint(body, CustomJointType).getY()),
+                                            JointThickness, JointThickness);
+                                    }
+                                }
+                                ++bodyIndex;
                             }
-                            for (int CustomJointType = 0; CustomJointType < 25; ++CustomJointType)
-                            {
-                                Brush drawBrush = null;
 
-                                int trackingState = allFrames2[currentFrameKosciec2].getJoint(body, CustomJointType).getTrackingState();
+                            this.drawingGroup2.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, kosciecVideoKosciec2.Width, kosciecVideoKosciec2.Height));
 
-                                if (trackingState == (int)CustomJoint.TrackingState.Tracked)
-                                {
-                                    drawBrush = this.trackedJointBrush;
-                                }
-                                else if (trackingState == (int)CustomJoint.TrackingState.Inferred)
-                                {
-                                    drawBrush = this.inferredJointBrush;
-                                }
+                            framesKosciec2.Content = currentFrameKosciec2+1;
+                            sliderKosciec2.Value = currentFrameKosciec2;
 
-                                if (drawBrush != null)
-                                {
-                                    dc.DrawEllipse(drawBrush, null, new Point(frame.getJoint(body, CustomJointType).getX(), frame.getJoint(body, CustomJointType).getY()),
-                                        JointThickness, JointThickness);
-                                }
-                            }
-                            ++bodyIndex;
+                            labelKosciec2.Content = String.Format("{0} / {1}", string.Format("{0:F1}", (double)currentFrameKosciec2 / allFrames2.Count * (double)allFrames2.Count / framesPerSecond2),
+                               string.Format("{0:F1}", (double)allFrames2.Count / framesPerSecond2));
+                            currentFrameKosciec2++;
                         }
-
-                        this.drawingGroup2.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, kosciecVideoKosciec2.Width, kosciecVideoKosciec2.Height));
-
-                        labelKosciec2.Content = String.Format("{0} / {1}", string.Format("{0:F1}", (double)currentFrameKosciec2 / allFrames2.Count * (double)allFrames2.Count / framesPerSecond2),
-                           string.Format("{0:F1}", (double)allFrames2.Count / framesPerSecond2));
-                        currentFrameKosciec2++;
                     }
+                    if (currentFrameKosciec2 == allFrames2.Count)
+                        playKosciecMovie2 = false;
                 }
             }
-            //  else
-            //       labelKosciec2.Content = "Nie wybrano pliku...";
         }
       
         private void startKosciec1_Click(object sender, RoutedEventArgs e)
@@ -307,6 +321,7 @@ namespace KinectSetupDev
                 {
                     kosciecVideoAvi1.Play();
                     movie1IsPlaying = true;
+                    sliderKosciec1.IsEnabled = false;
                 }
             }
             else
@@ -323,6 +338,7 @@ namespace KinectSetupDev
                 {
                     kosciecVideoAvi2.Play();
                     movie2IsPlaying = true;
+                    sliderKosciec2.IsEnabled = false;
                 }
             }
             else
@@ -337,6 +353,7 @@ namespace KinectSetupDev
             {
                 kosciecVideoAvi1.Play();
                 movie1IsPlaying = true;
+                sliderKosciec1.IsEnabled = false;
             }
             else
             {
@@ -346,6 +363,7 @@ namespace KinectSetupDev
             {
                 kosciecVideoAvi2.Play();
                 movie2IsPlaying = true;
+                sliderKosciec2.IsEnabled = false;
             }
             else
             {
@@ -359,6 +377,7 @@ namespace KinectSetupDev
             {
                 kosciecVideoAvi1.Pause();
                 movie1IsPlaying = false;
+                sliderKosciec1.IsEnabled = true;
             }
             else
             {
@@ -372,6 +391,7 @@ namespace KinectSetupDev
             {
                 kosciecVideoAvi2.Pause();
                 movie2IsPlaying = false;
+                sliderKosciec2.IsEnabled = true;
             }
             else
             {
@@ -385,6 +405,7 @@ namespace KinectSetupDev
             {
                 kosciecVideoAvi1.Pause();
                 movie1IsPlaying = false;
+                sliderKosciec1.IsEnabled = true;
             }
             else
             {
@@ -394,6 +415,7 @@ namespace KinectSetupDev
             {
                 kosciecVideoAvi2.Pause();
                 movie2IsPlaying = false;
+                sliderKosciec2.IsEnabled = true;
             }
             else
             {
@@ -407,11 +429,15 @@ namespace KinectSetupDev
             {
                 kosciecVideoAvi1.Stop();
                 movie1IsPlaying = false;
+                sliderKosciec1.IsEnabled = true;
             }
             else
             {
                 playKosciecMovie1 = false;
                 currentFrameKosciec1 = 0;
+                sliderKosciec1.Value = 0;
+                labelKosciec1.Content = String.Format("{0} / {1}", string.Format("{0:F1}", 0),
+                                string.Format("{0:F1}", (double)allFrames1.Count / framesPerSecond1));
             }
         }
 
@@ -421,11 +447,15 @@ namespace KinectSetupDev
             {
                 kosciecVideoAvi2.Stop();
                 movie2IsPlaying = false;
+                sliderKosciec2.IsEnabled = true;
             }
             else
             {
                 playKosciecMovie2 = false;
                 currentFrameKosciec2 = 0;
+                sliderKosciec2.Value = 0;
+                labelKosciec2.Content = String.Format("{0} / {1}", string.Format("{0:F1}", 0),
+                                string.Format("{0:F1}", (double)allFrames2.Count / framesPerSecond2));
             }
         }
 
@@ -435,21 +465,29 @@ namespace KinectSetupDev
             {
                 kosciecVideoAvi1.Stop();
                 movie1IsPlaying = false;
+                sliderKosciec1.IsEnabled = true;
             }
             else
             {
                 playKosciecMovie1 = false;
                 currentFrameKosciec1 = 0;
+                sliderKosciec1.Value = 0;
+                labelKosciec1.Content = String.Format("{0} / {1}", string.Format("{0:F1}", 0),
+                                string.Format("{0:F1}", (double)allFrames1.Count / framesPerSecond1));
             }
             if(isMovieAvi2)
             {
                 kosciecVideoAvi2.Stop();
                 movie2IsPlaying = false;
+                sliderKosciec2.IsEnabled = true;
             }
             else
             {
                 playKosciecMovie2 = false;
                 currentFrameKosciec2 = 0;
+                sliderKosciec2.Value = 0;
+                labelKosciec2.Content = String.Format("{0} / {1}", string.Format("{0:F1}", 0),
+                                string.Format("{0:F1}", (double)allFrames2.Count / framesPerSecond2));
             }
         }
 
@@ -655,6 +693,12 @@ namespace KinectSetupDev
                         pauseKosciec1.IsEnabled = true;
                         speedMovie1.IsEnabled = true;
                         file1LoadedCorrectly = true;
+                        labelOfFrame1.Visibility = Visibility.Hidden;
+                        framesKosciec1.Visibility = Visibility.Hidden;
+                        sliderKosciec1.Value = 0;
+                        sliderKosciec1.IsEnabled = true;
+                        sliderKosciec1.Maximum = 100;
+                        sliderKosciec1.IsEnabled = false;
                     }
                     else
                     {
@@ -711,6 +755,13 @@ namespace KinectSetupDev
                                     allFrames1.Add(object1);
                             }
                         }
+                        labelOfFrame1.Visibility = Visibility.Visible;
+                        framesKosciec1.Visibility = Visibility.Visible;
+                        sliderKosciec1.Value = 0;
+                        sliderKosciec1.Maximum = allFrames1.Count;
+                        sliderKosciec1.TickFrequency = framesPerSecond1;
+                        sliderKosciec1.TickPlacement = System.Windows.Controls.Primitives.TickPlacement.BottomRight;
+                        sliderKosciec1.IsEnabled = true;
                     }
                     else
                     {
@@ -752,6 +803,11 @@ namespace KinectSetupDev
                         pauseKosciec2.IsEnabled = true;
                         speedMovie2.IsEnabled = true;
                         file2LoadedCorrectly = true;
+                        labelOfFrame2.Visibility = Visibility.Hidden;
+                        framesKosciec2.Visibility = Visibility.Hidden;
+                        sliderKosciec2.Value = 0;
+                        sliderKosciec2.Maximum = 100;
+                        sliderKosciec2.IsEnabled = false;
                     }
                     else
                     {
@@ -807,6 +863,13 @@ namespace KinectSetupDev
                                     allFrames2.Add(object2);
                             }
                         }
+                        labelOfFrame2.Visibility = Visibility.Visible;
+                        framesKosciec2.Visibility = Visibility.Visible;
+                        sliderKosciec2.Value = 0;
+                        sliderKosciec2.Maximum = allFrames2.Count;
+                        sliderKosciec2.TickFrequency = framesPerSecond2;
+                        sliderKosciec2.TickPlacement = System.Windows.Controls.Primitives.TickPlacement.BottomRight;
+                        sliderKosciec2.IsEnabled = true;
                     }
                     else
                     {
@@ -823,6 +886,34 @@ namespace KinectSetupDev
             stopAll.IsEnabled = file1LoadedCorrectly && file2LoadedCorrectly;
             pauseAll.IsEnabled = file1LoadedCorrectly && file2LoadedCorrectly;
             isMovieAvi2 = false;
+        }
+
+        private void sliderKosciec1_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (!isMovieAvi1)
+            {
+                framesKosciec1.Content = (int)sliderKosciec1.Value;
+                currentFrameKosciec1 = (int)sliderKosciec1.Value;
+            }
+            else
+            {
+                if(!movie1IsPlaying)
+                 kosciecVideoAvi1.Position = new TimeSpan(0, 0, 0, 0, (int)(kosciecVideoAvi1.NaturalDuration.TimeSpan.TotalMilliseconds / 100 * sliderKosciec1.Value));
+            }
+        }
+
+        private void sliderKosciec2_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (!isMovieAvi2)
+            {
+                framesKosciec2.Content = (int)sliderKosciec2.Value;
+                currentFrameKosciec2 = (int)sliderKosciec2.Value;
+            }
+            else
+            {
+                if (!movie2IsPlaying)
+                    kosciecVideoAvi2.Position = new TimeSpan(0, 0, 0, 0, (int)(kosciecVideoAvi2.NaturalDuration.TimeSpan.TotalMilliseconds / 100 * sliderKosciec2.Value));
+            }
         }
     }
 }
