@@ -35,6 +35,7 @@
             </ComboBox>
         </Grid>
         <Grid x:Name="movieGrid" HorizontalAlignment="Left" Height="710" VerticalAlignment="Top" Width="1182" Margin="9,0,0,0" d:IsHidden="True">
+            <Button x:Name="backButton" Content="Wstecz" HorizontalAlignment="Left" Margin="1058,656,0,0" VerticalAlignment="Top" Width="95" Height="38" Click="backButton_Click" Visibility="Visible"/>
             <Button x:Name="uploadAvi1_Button" Content="Wczytaj plik &quot;.avi&quot;" HorizontalAlignment="Left" Margin="136,70,0,594" Width="140" Click="uploadAvi1_Click"/>
             <Button x:Name="startMovieAll" IsEnabled="False" Content="Start" Margin="534,258,517,0" VerticalAlignment="Top" Height="38" Click="startMovieAll_Click"/>
             <Button x:Name="startKosciec2" IsEnabled="False" Content="Start" Margin="717,588,370,0" VerticalAlignment="Top" Height="38" Click="startKosciec2_Click" Width="95"/>
