@@ -318,6 +318,7 @@ namespace KinectSetupDev
                     kosciecVideoAvi1.Play();
                     movie1IsPlaying = true;
                     sliderKosciec1.IsEnabled = false;
+                    sliderKosciec1.Opacity = 0.4;
                 }
             }
             else
@@ -335,6 +336,7 @@ namespace KinectSetupDev
                     kosciecVideoAvi2.Play();
                     movie2IsPlaying = true;
                     sliderKosciec2.IsEnabled = false;
+                    sliderKosciec2.Opacity = 0.4;
                 }
             }
             else
@@ -350,6 +352,7 @@ namespace KinectSetupDev
                 kosciecVideoAvi1.Play();
                 movie1IsPlaying = true;
                 sliderKosciec1.IsEnabled = false;
+                sliderKosciec1.Opacity = 0.4;
             }
             else
             {
@@ -360,6 +363,7 @@ namespace KinectSetupDev
                 kosciecVideoAvi2.Play();
                 movie2IsPlaying = true;
                 sliderKosciec2.IsEnabled = false;
+                sliderKosciec2.Opacity = 0.4;
             }
             else
             {
@@ -374,6 +378,7 @@ namespace KinectSetupDev
                 kosciecVideoAvi1.Pause();
                 movie1IsPlaying = false;
                 sliderKosciec1.IsEnabled = true;
+                sliderKosciec1.Opacity = 1;
             }
             else
             {
@@ -388,6 +393,7 @@ namespace KinectSetupDev
                 kosciecVideoAvi2.Pause();
                 movie2IsPlaying = false;
                 sliderKosciec2.IsEnabled = true;
+                sliderKosciec2.Opacity = 1;
             }
             else
             {
@@ -402,6 +408,7 @@ namespace KinectSetupDev
                 kosciecVideoAvi1.Pause();
                 movie1IsPlaying = false;
                 sliderKosciec1.IsEnabled = true;
+                sliderKosciec1.Opacity = 1;
             }
             else
             {
@@ -412,6 +419,7 @@ namespace KinectSetupDev
                 kosciecVideoAvi2.Pause();
                 movie2IsPlaying = false;
                 sliderKosciec2.IsEnabled = true;
+                sliderKosciec2.Opacity = 1;
             }
             else
             {
@@ -426,6 +434,7 @@ namespace KinectSetupDev
                 kosciecVideoAvi1.Stop();
                 movie1IsPlaying = false;
                 sliderKosciec1.IsEnabled = true;
+                sliderKosciec1.Opacity = 1;
             }
             else
             {
@@ -444,6 +453,7 @@ namespace KinectSetupDev
                 kosciecVideoAvi2.Stop();
                 movie2IsPlaying = false;
                 sliderKosciec2.IsEnabled = true;
+                sliderKosciec2.Opacity = 1;
             }
             else
             {
@@ -462,6 +472,7 @@ namespace KinectSetupDev
                 kosciecVideoAvi1.Stop();
                 movie1IsPlaying = false;
                 sliderKosciec1.IsEnabled = true;
+                sliderKosciec1.Opacity = 1;
             }
             else
             {
@@ -476,6 +487,7 @@ namespace KinectSetupDev
                 kosciecVideoAvi2.Stop();
                 movie2IsPlaying = false;
                 sliderKosciec2.IsEnabled = true;
+                sliderKosciec2.Opacity = 1;
             }
             else
             {
@@ -689,12 +701,16 @@ namespace KinectSetupDev
                         pauseKosciec1.IsEnabled = true;
                         speedMovie1.IsEnabled = true;
                         file1LoadedCorrectly = true;
+                        startKosciec1.Opacity = 1;
+                        stopKosciec1.Opacity = 1;
+                        pauseKosciec1.Opacity = 1;
+                        speedMovie1.Opacity = 1;
                         labelOfFrame1.Visibility = Visibility.Hidden;
                         framesKosciec1.Visibility = Visibility.Hidden;
                         sliderKosciec1.Value = 0;
-                        sliderKosciec1.IsEnabled = true;
                         sliderKosciec1.Maximum = 100;
                         sliderKosciec1.IsEnabled = false;
+                        sliderKosciec1.Opacity = 0.4;
                     }
                     else
                     {
@@ -703,6 +719,10 @@ namespace KinectSetupDev
                         stopKosciec1.IsEnabled = false;
                         pauseKosciec1.IsEnabled = false;
                         speedMovie1.IsEnabled = false;
+                        startKosciec1.Opacity = 0.4;
+                        stopKosciec1.Opacity = 0.4;
+                        pauseKosciec1.Opacity = 0.4;
+                        speedMovie1.Opacity = 0.4;
                         file1LoadedCorrectly = false;
                     }
                 }
@@ -710,6 +730,9 @@ namespace KinectSetupDev
             startMovieAll.IsEnabled = file1LoadedCorrectly && file2LoadedCorrectly;
             stopAll.IsEnabled = file1LoadedCorrectly && file2LoadedCorrectly;
             pauseAll.IsEnabled = file1LoadedCorrectly && file2LoadedCorrectly;
+            startMovieAll.Opacity = (file1LoadedCorrectly && file2LoadedCorrectly) ? 1 : 0.1;
+            stopAll.Opacity = (file1LoadedCorrectly && file2LoadedCorrectly) ? 1 : 0.1;
+            pauseAll.Opacity = (file1LoadedCorrectly && file2LoadedCorrectly) ? 1 : 0.1;
             isMovieAvi1 = true;
         }
 
@@ -741,6 +764,10 @@ namespace KinectSetupDev
                         stopKosciec1.IsEnabled = true;
                         pauseKosciec1.IsEnabled = true;
                         speedMovie1.IsEnabled = true;
+                        startKosciec1.Opacity = 1;
+                        stopKosciec1.Opacity = 1;
+                        pauseKosciec1.Opacity = 1;
+                        speedMovie1.Opacity = 1;
                         file1LoadedCorrectly = true;
                         using (Stream stream1 = File.Open(path, FileMode.Open))
                         {
@@ -758,6 +785,7 @@ namespace KinectSetupDev
                         sliderKosciec1.TickFrequency = framesPerSecond1;
                         sliderKosciec1.TickPlacement = System.Windows.Controls.Primitives.TickPlacement.BottomRight;
                         sliderKosciec1.IsEnabled = true;
+                        sliderKosciec1.Opacity = 1;
                     }
                     else
                     {
@@ -766,6 +794,10 @@ namespace KinectSetupDev
                         stopKosciec1.IsEnabled = false;
                         pauseKosciec1.IsEnabled = false;
                         speedMovie1.IsEnabled = false;
+                        startKosciec1.Opacity = 0.4;
+                        stopKosciec1.Opacity = 0.4;
+                        pauseKosciec1.Opacity = 0.4;
+                        speedMovie1.Opacity = 0.4;
                         file1LoadedCorrectly = false;
                     }
                 }
@@ -773,6 +805,9 @@ namespace KinectSetupDev
             startMovieAll.IsEnabled = file1LoadedCorrectly && file2LoadedCorrectly;
             stopAll.IsEnabled = file1LoadedCorrectly && file2LoadedCorrectly;
             pauseAll.IsEnabled = file1LoadedCorrectly && file2LoadedCorrectly;
+            startMovieAll.Opacity = (file1LoadedCorrectly && file2LoadedCorrectly) ? 1 : 0.1;
+            stopAll.Opacity = (file1LoadedCorrectly && file2LoadedCorrectly) ? 1 : 0.1;
+            pauseAll.Opacity = (file1LoadedCorrectly && file2LoadedCorrectly) ? 1 : 0.1;
             isMovieAvi1 = false;
         }
 
@@ -798,12 +833,17 @@ namespace KinectSetupDev
                         stopKosciec2.IsEnabled = true;
                         pauseKosciec2.IsEnabled = true;
                         speedMovie2.IsEnabled = true;
+                        startKosciec2.Opacity = 1;
+                        stopKosciec2.Opacity = 1;
+                        pauseKosciec2.Opacity = 1;
+                        speedMovie2.Opacity = 1;
                         file2LoadedCorrectly = true;
                         labelOfFrame2.Visibility = Visibility.Hidden;
                         framesKosciec2.Visibility = Visibility.Hidden;
                         sliderKosciec2.Value = 0;
                         sliderKosciec2.Maximum = 100;
                         sliderKosciec2.IsEnabled = false;
+                        sliderKosciec2.Opacity = 0.4;
                     }
                     else
                     {
@@ -811,6 +851,9 @@ namespace KinectSetupDev
                         startKosciec2.IsEnabled = false;
                         stopKosciec2.IsEnabled = false;
                         pauseKosciec2.IsEnabled = false;
+                        startKosciec2.Opacity = 0.4;
+                        stopKosciec2.Opacity = 0.4;
+                        pauseKosciec2.Opacity = 0.4;
                         file2LoadedCorrectly = false;
                     }
                 }
@@ -818,6 +861,9 @@ namespace KinectSetupDev
             startMovieAll.IsEnabled = file1LoadedCorrectly && file2LoadedCorrectly;
             stopAll.IsEnabled = file1LoadedCorrectly && file2LoadedCorrectly;
             pauseAll.IsEnabled = file1LoadedCorrectly && file2LoadedCorrectly;
+            startMovieAll.Opacity = (file1LoadedCorrectly && file2LoadedCorrectly) ? 1 : 0.1;
+            stopAll.Opacity = (file1LoadedCorrectly && file2LoadedCorrectly) ? 1 : 0.1;
+            pauseAll.Opacity = (file1LoadedCorrectly && file2LoadedCorrectly) ? 1 : 0.1;
             isMovieAvi2 = true;
         }
 
@@ -849,6 +895,10 @@ namespace KinectSetupDev
                         stopKosciec2.IsEnabled = true;
                         pauseKosciec2.IsEnabled = true;
                         speedMovie2.IsEnabled = true;
+                        startKosciec2.Opacity = 1;
+                        stopKosciec2.Opacity = 1;
+                        pauseKosciec2.Opacity = 1;
+                        speedMovie2.Opacity = 1;
                         file2LoadedCorrectly = true;
                         using (Stream stream2 = File.Open(path, FileMode.Open))
                         {
@@ -866,6 +916,7 @@ namespace KinectSetupDev
                         sliderKosciec2.TickFrequency = framesPerSecond2;
                         sliderKosciec2.TickPlacement = System.Windows.Controls.Primitives.TickPlacement.BottomRight;
                         sliderKosciec2.IsEnabled = true;
+                        sliderKosciec2.Opacity = 1;
                     }
                     else
                     {
@@ -874,6 +925,10 @@ namespace KinectSetupDev
                         stopKosciec2.IsEnabled = false;
                         pauseKosciec2.IsEnabled = false;
                         speedMovie2.IsEnabled = false;
+                        startKosciec2.Opacity = 0.4;
+                        stopKosciec2.Opacity = 0.4;
+                        pauseKosciec2.Opacity = 0.4;
+                        speedMovie2.Opacity = 0.4;
                         file2LoadedCorrectly = false;
                     }
                 }
@@ -881,6 +936,9 @@ namespace KinectSetupDev
             startMovieAll.IsEnabled = file1LoadedCorrectly && file2LoadedCorrectly;
             stopAll.IsEnabled = file1LoadedCorrectly && file2LoadedCorrectly;
             pauseAll.IsEnabled = file1LoadedCorrectly && file2LoadedCorrectly;
+            startMovieAll.Opacity = (file1LoadedCorrectly && file2LoadedCorrectly) ? 1 : 0.1;
+            stopAll.Opacity = (file1LoadedCorrectly && file2LoadedCorrectly) ? 1 : 0.1;
+            pauseAll.Opacity = (file1LoadedCorrectly && file2LoadedCorrectly) ? 1 : 0.1;
             isMovieAvi2 = false;
         }
 

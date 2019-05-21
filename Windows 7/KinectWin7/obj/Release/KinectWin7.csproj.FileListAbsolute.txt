@@ -1,7 +1,6 @@
 C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\bin\Release\KinectWin7.exe.config
 C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\bin\Release\KinectWin7.exe
 C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\bin\Release\KinectWin7.pdb
-C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\obj\Release\KinectWin7.csprojResolveAssemblyReference.cache
 C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\obj\Release\MainWindow.g.cs
 C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\obj\Release\App.g.cs
 C:\Semestr6\Kinect\Kinect\Windows 7\KinectWin7\obj\Release\KinectWin7_MarkupCompile.cache
