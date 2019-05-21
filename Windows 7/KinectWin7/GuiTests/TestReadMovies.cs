@@ -222,7 +222,6 @@ namespace Tests
 
             openModalWindow.Keyboard.PressSpecialKey(KeyboardInput.SpecialKeys.RETURN);
 
-            Assert.IsTrue(label.Text == "Nacisnij start");
             Assert.IsTrue(window.Get<Button>("startKosciec1").Enabled);
             Assert.IsTrue(window.Get<Button>("pauseKosciec1").Enabled);
             Assert.IsTrue(window.Get<Button>("stopKosciec1").Enabled);
@@ -268,7 +267,6 @@ namespace Tests
 
             openModalWindow.Keyboard.PressSpecialKey(KeyboardInput.SpecialKeys.RETURN);
 
-            Assert.IsTrue(label.Text == "Nacisnij start");
             Assert.IsFalse(window.Get<Button>("startKosciec1").Enabled);
             Assert.IsFalse(window.Get<Button>("pauseKosciec1").Enabled);
             Assert.IsFalse(window.Get<Button>("stopKosciec1").Enabled);
@@ -493,8 +491,8 @@ namespace Tests
 
             openModalWindow.Keyboard.PressSpecialKey(KeyboardInput.SpecialKeys.RETURN);
 
-            Assert.IsTrue(label1.Text == "Nacisnij start");
-            Assert.IsTrue(label2.Text == "Nacisnij start");
+            Assert.AreNotEqual(label1.Text, "");
+            Assert.AreNotEqual(label2.Text, "");
             Assert.IsTrue(window.Get<Button>("startKosciec1").Enabled);
             Assert.IsTrue(window.Get<Button>("pauseKosciec1").Enabled);
             Assert.IsTrue(window.Get<Button>("stopKosciec1").Enabled);

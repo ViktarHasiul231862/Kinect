@@ -610,6 +610,7 @@ namespace KinectSetupDev
                 }
             }
             recording = true;
+            recordingSign.Visibility = Visibility.Visible;
 
             if (humanViewBox.Visibility == Visibility.Visible)
             {
@@ -632,6 +633,8 @@ namespace KinectSetupDev
         private void stopRecordingButton_Click(object sender, RoutedEventArgs e)
         {
             recording = false;
+            recordingSign.Visibility = Visibility.Hidden;
+
             if (humanViewBox.Visibility == Visibility.Visible)
             {
                 this.depthFrameReader = this.kinectSensor.DepthFrameSource.OpenReader();

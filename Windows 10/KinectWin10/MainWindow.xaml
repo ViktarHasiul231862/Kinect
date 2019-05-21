@@ -33,6 +33,7 @@
                 <ComboBoxItem Content="Kolorowy obraz" HorizontalAlignment="Left" Width="118" Selected="ComboBoxItem_Selected_Color"/>
                 <ComboBoxItem Content="Mapa głębokości" HorizontalAlignment="Left" Width="118" Selected="ComboBoxItem_Selected_Depth"/>
             </ComboBox>
+            <Ellipse x:Name="recordingSign" Visibility="Hidden" Fill="Red" HorizontalAlignment="Left" Height="42" Margin="1131,10,0,0" Stroke="Black" VerticalAlignment="Top" Width="41"/>
         </Grid>
         <Grid x:Name="movieGrid" HorizontalAlignment="Left" Height="710" VerticalAlignment="Top" Width="1182" Margin="9,0,0,0" d:IsHidden="True">
             <Button x:Name="backButton" Content="Wstecz" HorizontalAlignment="Left" Margin="1058,656,0,0" VerticalAlignment="Top" Width="95" Height="38" Click="backButton_Click" Visibility="Visible"/>
