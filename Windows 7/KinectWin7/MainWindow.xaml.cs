@@ -225,10 +225,10 @@ namespace KinectSetupDev
 
                         this.drawingGroup1.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, kosciecVideoKosciec1.Width, kosciecVideoKosciec1.Height));
 
-                        framesKosciec1.Content = currentFrameKosciec1 + 1;
+                        framesKosciec1.Content = (currentFrameKosciec1 + 1).ToString() + " / " + allFrames1.Count.ToString();
                         sliderKosciec1.Value = currentFrameKosciec1;
 
-                        labelKosciec1.Content = String.Format("{0} / {1}", string.Format("{0:F1}", (double)currentFrameKosciec1 / allFrames1.Count * (double)allFrames1.Count / framesPerSecond1),
+                        labelKosciec1.Content = String.Format("{0} / {1} s", string.Format("{0:F1}", (double)currentFrameKosciec1 / allFrames1.Count * (double)allFrames1.Count / framesPerSecond1),
                                 string.Format("{0:F1}", (double)allFrames1.Count / framesPerSecond1));
                         if(playKosciecMovie1)
                             currentFrameKosciec1++;
@@ -295,10 +295,10 @@ namespace KinectSetupDev
 
                         this.drawingGroup2.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, kosciecVideoKosciec2.Width, kosciecVideoKosciec2.Height));
 
-                        framesKosciec2.Content = currentFrameKosciec2+1;
+                        framesKosciec2.Content = (currentFrameKosciec2+1).ToString()+" / " + allFrames2.Count.ToString();
                         sliderKosciec2.Value = currentFrameKosciec2;
 
-                        labelKosciec2.Content = String.Format("{0} / {1}", string.Format("{0:F1}", (double)currentFrameKosciec2 / allFrames2.Count * (double)allFrames2.Count / framesPerSecond2),
+                        labelKosciec2.Content = String.Format("{0} / {1} s", string.Format("{0:F1}", (double)currentFrameKosciec2 / allFrames2.Count * (double)allFrames2.Count / framesPerSecond2),
                             string.Format("{0:F1}", (double)allFrames2.Count / framesPerSecond2));
                         if(playKosciecMovie2)
                                 currentFrameKosciec2++;
@@ -680,9 +680,6 @@ namespace KinectSetupDev
 
         private void uploadAvi1_Click(object sender, RoutedEventArgs e)
         {
-            kosciecVideoAvi1.Visibility = Visibility.Visible;
-            kosciecVideoKosciec1.Visibility = Visibility.Hidden;
-            file1LoadedCorrectly = false;
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.InitialDirectory = "C:\\";
             openFileDialog.Filter = "Avi Files (*.avi)|*.avi";
@@ -695,7 +692,10 @@ namespace KinectSetupDev
                     kosciecVideoAvi1.Source = new Uri(openFileDialog.FileName, UriKind.Absolute);
                     if (openFileDialog.FileName.EndsWith(".avi"))
                     {
-                        labelKosciec1.Content = "Nacisnij start";
+                        kosciecVideoAvi1.Visibility = Visibility.Visible;
+                        kosciecVideoKosciec1.Visibility = Visibility.Hidden;
+                        if(!file1LoadedCorrectly)
+                             labelKosciec1.Content = "Nacisnij start";
                         startKosciec1.IsEnabled = true;
                         stopKosciec1.IsEnabled = true;
                         pauseKosciec1.IsEnabled = true;
@@ -711,6 +711,7 @@ namespace KinectSetupDev
                         sliderKosciec1.Maximum = 100;
                         sliderKosciec1.IsEnabled = false;
                         sliderKosciec1.Opacity = 0.4;
+                        isMovieAvi1 = true;
                     }
                     else
                     {
@@ -733,19 +734,14 @@ namespace KinectSetupDev
             startMovieAll.Opacity = (file1LoadedCorrectly && file2LoadedCorrectly) ? 1 : 0.1;
             stopAll.Opacity = (file1LoadedCorrectly && file2LoadedCorrectly) ? 1 : 0.1;
             pauseAll.Opacity = (file1LoadedCorrectly && file2LoadedCorrectly) ? 1 : 0.1;
-            isMovieAvi1 = true;
         }
 
         private void uploadSkeleton1_Click(object sender, RoutedEventArgs e)
         {
-            allFrames1.Clear();
-            kosciecVideoAvi1.Visibility = Visibility.Hidden;
-            kosciecVideoKosciec1.Visibility = Visibility.Visible;
+
             playKosciecMovie1 = false;
-            currentFrameKosciec1 = 0;
 
             string path = "";
-            file1LoadedCorrectly = false;
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.InitialDirectory = "C:\\";
             openFileDialog.Filter = "Kosciec Files (*.kosciec)|*.kosciec";
@@ -759,6 +755,11 @@ namespace KinectSetupDev
 
                     if (openFileDialog.FileName.EndsWith(".kosciec"))
                     {
+                        currentFrameKosciec1 = 0;
+                        allFrames1.Clear();
+                        kosciecVideoAvi1.Visibility = Visibility.Hidden;
+                        kosciecVideoKosciec1.Visibility = Visibility.Visible;
+
                         labelKosciec1.Content = "Nacisnij start";
                         startKosciec1.IsEnabled = true;
                         stopKosciec1.IsEnabled = true;
@@ -786,6 +787,7 @@ namespace KinectSetupDev
                         sliderKosciec1.TickPlacement = System.Windows.Controls.Primitives.TickPlacement.BottomRight;
                         sliderKosciec1.IsEnabled = true;
                         sliderKosciec1.Opacity = 1;
+                        isMovieAvi1 = false;
                     }
                     else
                     {
@@ -808,14 +810,11 @@ namespace KinectSetupDev
             startMovieAll.Opacity = (file1LoadedCorrectly && file2LoadedCorrectly) ? 1 : 0.1;
             stopAll.Opacity = (file1LoadedCorrectly && file2LoadedCorrectly) ? 1 : 0.1;
             pauseAll.Opacity = (file1LoadedCorrectly && file2LoadedCorrectly) ? 1 : 0.1;
-            isMovieAvi1 = false;
+
         }
 
         private void uploadAvi2_Click(object sender, RoutedEventArgs e)
         {
-            kosciecVideoAvi2.Visibility = Visibility.Visible;
-            kosciecVideoKosciec2.Visibility = Visibility.Hidden;
-            file2LoadedCorrectly = false;
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.InitialDirectory = "C:\\";
             openFileDialog.Filter = "Avi Files (*.avi)|*.avi";
@@ -828,7 +827,10 @@ namespace KinectSetupDev
                     kosciecVideoAvi2.Source = new Uri(openFileDialog.FileName, UriKind.Absolute);
                     if (openFileDialog.FileName.EndsWith(".avi") || openFileDialog.FileName.EndsWith(".mp4"))
                     {
-                        labelKosciec2.Content = "Nacisnij start";
+                        kosciecVideoAvi2.Visibility = Visibility.Visible;
+                        kosciecVideoKosciec2.Visibility = Visibility.Hidden;
+                        if(!file2LoadedCorrectly)
+                             labelKosciec2.Content = "Nacisnij start";
                         startKosciec2.IsEnabled = true;
                         stopKosciec2.IsEnabled = true;
                         pauseKosciec2.IsEnabled = true;
@@ -844,6 +846,7 @@ namespace KinectSetupDev
                         sliderKosciec2.Maximum = 100;
                         sliderKosciec2.IsEnabled = false;
                         sliderKosciec2.Opacity = 0.4;
+                        isMovieAvi2 = true;
                     }
                     else
                     {
@@ -864,19 +867,14 @@ namespace KinectSetupDev
             startMovieAll.Opacity = (file1LoadedCorrectly && file2LoadedCorrectly) ? 1 : 0.1;
             stopAll.Opacity = (file1LoadedCorrectly && file2LoadedCorrectly) ? 1 : 0.1;
             pauseAll.Opacity = (file1LoadedCorrectly && file2LoadedCorrectly) ? 1 : 0.1;
-            isMovieAvi2 = true;
         }
 
         private void uploadSkeleton2_Click(object sender, RoutedEventArgs e)
         {
-            allFrames2.Clear();
-            kosciecVideoAvi2.Visibility = Visibility.Hidden;
-            kosciecVideoKosciec2.Visibility = Visibility.Visible;
+   
             playKosciecMovie2 = false;
-            currentFrameKosciec2 = 0;
 
             string path = "";
-            file2LoadedCorrectly = false;
 
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.InitialDirectory = "C:\\";
@@ -890,6 +888,10 @@ namespace KinectSetupDev
                     path = openFileDialog.FileName;
                     if (openFileDialog.FileName.EndsWith(".kosciec"))
                     {
+                        currentFrameKosciec2 = 0;
+                        allFrames2.Clear();
+                        kosciecVideoAvi2.Visibility = Visibility.Hidden;
+                        kosciecVideoKosciec2.Visibility = Visibility.Visible;
                         labelKosciec2.Content = "Nacisnij start";
                         startKosciec2.IsEnabled = true;
                         stopKosciec2.IsEnabled = true;
@@ -917,6 +919,7 @@ namespace KinectSetupDev
                         sliderKosciec2.TickPlacement = System.Windows.Controls.Primitives.TickPlacement.BottomRight;
                         sliderKosciec2.IsEnabled = true;
                         sliderKosciec2.Opacity = 1;
+                        isMovieAvi2 = false;
                     }
                     else
                     {
@@ -939,14 +942,13 @@ namespace KinectSetupDev
             startMovieAll.Opacity = (file1LoadedCorrectly && file2LoadedCorrectly) ? 1 : 0.1;
             stopAll.Opacity = (file1LoadedCorrectly && file2LoadedCorrectly) ? 1 : 0.1;
             pauseAll.Opacity = (file1LoadedCorrectly && file2LoadedCorrectly) ? 1 : 0.1;
-            isMovieAvi2 = false;
         }
 
         private void sliderKosciec1_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (!isMovieAvi1)
             {
-                framesKosciec1.Content = (int)sliderKosciec1.Value;
+                framesKosciec1.Content = ((int)sliderKosciec1.Value).ToString() + " / " + allFrames1.Count.ToString() ;
                 currentFrameKosciec1 = (int)sliderKosciec1.Value;
                 labelKosciec1.Content = String.Format("{0} / {1}", string.Format("{0:F1}", (double)currentFrameKosciec1 / allFrames1.Count * (double)allFrames1.Count / framesPerSecond1),
                                 string.Format("{0:F1}", (double)allFrames1.Count / framesPerSecond1));
@@ -962,7 +964,7 @@ namespace KinectSetupDev
         {
             if (!isMovieAvi2)
             {
-                framesKosciec2.Content = (int)sliderKosciec2.Value;
+                framesKosciec2.Content = ((int)sliderKosciec2.Value).ToString() + " / " + allFrames2.Count.ToString();
                 currentFrameKosciec2 = (int)sliderKosciec2.Value;
                 labelKosciec2.Content = String.Format("{0} / {1}", string.Format("{0:F1}", (double)currentFrameKosciec2 / allFrames2.Count * (double)allFrames2.Count / framesPerSecond2),
                                 string.Format("{0:F1}", (double)allFrames2.Count / framesPerSecond2));
