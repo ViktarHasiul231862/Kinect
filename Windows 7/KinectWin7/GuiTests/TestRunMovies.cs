@@ -1,4 +1,22 @@
-﻿using System.IO;
+﻿/* Copyright (C) Politechnika Wroclawska
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * 
+ * Sklad grupy:
+ * Viktar Hasiul 231862
+ * Tobiasz Rumian 226131
+ * Łukasz Witowicz 211143
+ * Piotr Pawelski 218370
+ * Mateusz Mikuszewski 209980
+ * 
+ * Przedmiot: Projekt zespolowy
+ * Termin: czwartek, 9-12
+ * Prowadzacy: dr inż. Jan Nikodem
+ * 
+ * Czerwiec, 2019
+ */
+
+using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TestStack.White;
 using TestStack.White.UIItems;

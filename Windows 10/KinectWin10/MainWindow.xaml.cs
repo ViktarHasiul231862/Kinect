@@ -1,4 +1,22 @@
-﻿using SkeletonFrameManager;
+﻿/* Copyright (C) Politechnika Wroclawska
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * 
+ * Sklad grupy:
+ * Viktar Hasiul 231862
+ * Tobiasz Rumian 226131
+ * Łukasz Witowicz 211143
+ * Piotr Pawelski 218370
+ * Mateusz Mikuszewski 209980
+ * 
+ * Przedmiot: Projekt zespolowy
+ * Termin: czwartek, 9-12
+ * Prowadzacy: dr inż. Jan Nikodem
+ * 
+ * Czerwiec, 2019
+ */
+
+using SkeletonFrameManager;
 using ReadLoadManager;
 using System.Windows;
 using System.IO;
@@ -19,30 +37,31 @@ namespace KinectSetupDev
     /// </summary>
     public partial class MainWindow : Window
     {
-        bool movie1IsPlaying = false;
+        bool movie1IsPlaying = false;   // shows if movie .avi is being played at this moment
         bool movie2IsPlaying = false;
 
-        bool isMovieAvi1 = true;
+        bool isMovieAvi1 = true;    // shows if read movie is .avi (true) or .kosciec(false)
         bool isMovieAvi2 = true;
 
-        string recordingPath = "";
+        string recordingPath = "";  // contains path where kosciec will be recorded
 
-        private DrawingGroup drawingGroup1;
+        private DrawingGroup drawingGroup1; // needed for drawing kosciec
         private DrawingGroup drawingGroup2;
 
-        private DrawingImage skeletonMovie1;
+        private DrawingImage skeletonMovie1;    // needed for drawing kosciec
         private DrawingImage skeletonMovie2;
 
-        List<SkeletonFrame> allFrames1 = new List<SkeletonFrame>();
+        List<SkeletonFrame> allFrames1 = new List<SkeletonFrame>(); // structure which contains all frames which were read from file .kosciec
+                                                                    // each SkeletonFrame contains container of people and coordinates of their joints
         List<SkeletonFrame> allFrames2 = new List<SkeletonFrame>();
 
-        private List<Tuple<JointType, JointType>> bones;
+        private List<Tuple<JointType, JointType>> bones;    // structure that shows which joints should be connected
 
-        private List<Pen> bodyColors;
+        private List<Pen> bodyColors;   // colors for drawing skeletons. each person is drawn with another color
 
-        bool playKosciecMovie1 = false;
+        bool playKosciecMovie1 = false; // shows if movie .kosciec is being played at this moment
         bool playKosciecMovie2 = false;
-        int currentFrameKosciec1 = 0;
+        int currentFrameKosciec1 = 0; // current frame of played kosciec
         int currentFrameKosciec2 = 0;
 
         const int defaultFramesPerSecond1 = 35;
@@ -51,10 +70,10 @@ namespace KinectSetupDev
         int framesPerSecond1 = defaultFramesPerSecond1;
         int framesPerSecond2 = defaultFramesPerSecond2;
 
-        DispatcherTimer timer1;
-        DispatcherTimer timer2;
-        DispatcherTimer timer3;
-        DispatcherTimer timer4;
+        DispatcherTimer timer1; // Needed for showing time under .avi movie
+        DispatcherTimer timer2; // Same as timer1
+        DispatcherTimer timer3; // Needed for drawing skeletons which were read from file. Every tick skeletons are being drawn again
+        DispatcherTimer timer4; // Same as timer3
 
         bool file1LoadedCorrectly = false;
         bool file2LoadedCorrectly = false;
@@ -122,7 +141,9 @@ namespace KinectSetupDev
 
         // lista  na kolory dla każdego kośćca
 
-        bool recording = false;
+        bool recording = false; // shows if skeletons should be written to file
+		
+		bool leftSideWasHuman = true;   // needed for correct switching side
 
         int penIndex = 0;
 
@@ -296,7 +317,7 @@ namespace KinectSetupDev
             }
         }
 
-        private void MainWindow_Closing(object sender, CancelEventArgs e)
+        private void MainWindow_Closing(object sender, CancelEventArgs e) // Close all sensord if Kinect
         {
             if (this.colorFrameReader != null)
             {
@@ -349,7 +370,8 @@ namespace KinectSetupDev
                     dc.DrawRectangle(Brushes.Black, null, new Rect(0.0, 0.0, this.displayWidth, this.displayHeight));
 
                     penIndex = 0;
-                    skeletonToRecord = new SkeletonFrame();
+                    skeletonToRecord = new SkeletonFrame(); // Object which contains information about all people and their joint coordinates
+                                                            // Needed for writing this information to file
                     foreach (Body body in this.bodies)
                     {
                         Pen drawPen = this.bodyColors[penIndex++];
@@ -649,25 +671,44 @@ namespace KinectSetupDev
 
         private void ComboBoxItem_Selected_Left(object sender, RoutedEventArgs e)
         {
-            skeletonViewBox.Visibility = Visibility.Collapsed;
-            humanViewBox.Visibility = Visibility.Visible;
-            humanViewBox.Margin = new Thickness(393, 42, 392, 180);
-            skeletonViewBox.Margin = new Thickness(679, 42, 140, 180);
+			humanViewBox.Margin = new Thickness(393, 42, 392, 180);
+			depthViewBox.Margin = new Thickness(393, 42, 392, 180);
+			if(humanViewBox.Visibility == Visibility.Visible)
+			{
+				leftSideWasHuman = true;
+			}
+			else if(depthViewBox.Visibility == Visibility.Visible)
+			{
+				leftSideWasHuman = false;
+			}
+			skeletonViewBox.Visibility = Visibility.Collapsed;
+			skeletonViewBox.Margin = new Thickness(679, 42, 140, 180);
         }
 
         private void ComboBoxItem_Selected_Right(object sender, RoutedEventArgs e)
         {
+			leftSideWasHuman = humanViewBox.Visibility == Visibility.Visible ? true : false;
             humanViewBox.Visibility = Visibility.Collapsed;
+			depthViewBox.Visibility = Visibility.Collapsed;
             skeletonViewBox.Visibility = Visibility.Visible;
             humanViewBox.Margin = new Thickness(171, 42, 614, 180);
+			depthViewBox.Margin = new Thickness(171, 42, 614, 180);
             skeletonViewBox.Margin = new Thickness(393, 42, 392, 180);
         }
 
         private void ComboBoxItem_Selected_Both(object sender, RoutedEventArgs e)
         {
-            humanViewBox.Visibility = Visibility.Visible;
-            skeletonViewBox.Visibility = Visibility.Visible;
-            humanViewBox.Margin = new Thickness(135, 42, 650, 180);
+			if(leftSideWasHuman)
+			{
+				humanViewBox.Visibility = Visibility.Visible;
+			}
+			else
+			{
+				depthViewBox.Visibility = Visibility.Visible;
+			}
+			humanViewBox.Margin = new Thickness(135, 42, 650, 180);
+			depthViewBox.Margin = new Thickness(135, 42, 650, 180);
+			skeletonViewBox.Visibility = Visibility.Visible;
             skeletonViewBox.Margin = new Thickness(677, 42, 142, 180);
         }
 
@@ -701,6 +742,7 @@ namespace KinectSetupDev
             this.kinectSensor.Open();
         }
 
+        // Tick1 and Tick2 are needed for showing timespan under avi movie
         void timer_Tick1(object sender, EventArgs e)
         {
             if (kosciecVideoAvi1.Source != null && isMovieAvi1)
@@ -725,11 +767,12 @@ namespace KinectSetupDev
             }
         }
 
+        // Tick3 and Tick4 are needed for drawing skeleton from file, which was read. 
         void timer_Tick3(object sender, EventArgs e)
         {
             if (!isMovieAvi1)
             {
-                if (currentFrameKosciec1 < allFrames1.Count)
+                if (currentFrameKosciec1 < allFrames1.Count) 
                 {
                     SkeletonFrame frame = allFrames1[currentFrameKosciec1];
                     using (DrawingContext dc = this.drawingGroup1.Open())
@@ -748,7 +791,7 @@ namespace KinectSetupDev
                                 {
                                     drawPen = this.inferredBonePen;
                                 }
-
+                                // Draw bones
                                 dc.DrawLine(drawPen, new Point(frame.getJoint(body, (int)bone.Item1).getX(), frame.getJoint(body, (int)bone.Item1).getY()),
                                     new Point(frame.getJoint(body, (int)bone.Item2).getX(), frame.getJoint(body, (int)bone.Item2).getY()));
 
@@ -780,9 +823,11 @@ namespace KinectSetupDev
 
                         this.drawingGroup1.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, kosciecVideoKosciec1.Width, kosciecVideoKosciec1.Height));
 
+                        // Update slider and frame label values
                         framesKosciec1.Content = (currentFrameKosciec1 + 1).ToString() + " / " + allFrames1.Count.ToString();
                         sliderKosciec1.Value = currentFrameKosciec1;
 
+                        // Show timespan under skeleton movie
                         labelKosciec1.Content = String.Format("{0} / {1} s", string.Format("{0:F1}", (double)currentFrameKosciec1 / allFrames1.Count * (double)allFrames1.Count / framesPerSecond1),
                                 string.Format("{0:F1}", (double)allFrames1.Count / framesPerSecond1));
                         if (playKosciecMovie1)
