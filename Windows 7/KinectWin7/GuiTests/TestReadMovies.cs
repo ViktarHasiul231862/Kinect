@@ -1,4 +1,22 @@
-﻿using System.IO;
+﻿/* Copyright (C) Politechnika Wroclawska
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ * 
+ * Sklad grupy:
+ * Viktar Hasiul 231862
+ * Tobiasz Rumian 226131
+ * Łukasz Witowicz 211143
+ * Piotr Pawelski 218370
+ * Mateusz Mikuszewski 209980
+ * 
+ * Przedmiot: Projekt zespolowy
+ * Termin: czwartek, 9-12
+ * Prowadzacy: dr inż. Jan Nikodem
+ * 
+ * Czerwiec, 2019
+ */
+
+using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TestStack.White;
 using TestStack.White.UIItems;
@@ -222,7 +240,6 @@ namespace Tests
 
             openModalWindow.Keyboard.PressSpecialKey(KeyboardInput.SpecialKeys.RETURN);
 
-            Assert.IsTrue(label.Text == "Nacisnij start");
             Assert.IsTrue(window.Get<Button>("startKosciec1").Enabled);
             Assert.IsTrue(window.Get<Button>("pauseKosciec1").Enabled);
             Assert.IsTrue(window.Get<Button>("stopKosciec1").Enabled);
@@ -268,7 +285,6 @@ namespace Tests
 
             openModalWindow.Keyboard.PressSpecialKey(KeyboardInput.SpecialKeys.RETURN);
 
-            Assert.IsTrue(label.Text == "Nacisnij start");
             Assert.IsFalse(window.Get<Button>("startKosciec1").Enabled);
             Assert.IsFalse(window.Get<Button>("pauseKosciec1").Enabled);
             Assert.IsFalse(window.Get<Button>("stopKosciec1").Enabled);
@@ -493,8 +509,8 @@ namespace Tests
 
             openModalWindow.Keyboard.PressSpecialKey(KeyboardInput.SpecialKeys.RETURN);
 
-            Assert.IsTrue(label1.Text == "Nacisnij start");
-            Assert.IsTrue(label2.Text == "Nacisnij start");
+            Assert.AreNotEqual(label1.Text, "");
+            Assert.AreNotEqual(label2.Text, "");
             Assert.IsTrue(window.Get<Button>("startKosciec1").Enabled);
             Assert.IsTrue(window.Get<Button>("pauseKosciec1").Enabled);
             Assert.IsTrue(window.Get<Button>("stopKosciec1").Enabled);
