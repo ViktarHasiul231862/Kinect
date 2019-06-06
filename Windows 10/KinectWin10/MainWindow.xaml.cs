@@ -37,6 +37,8 @@ namespace KinectSetupDev
     /// </summary>
     public partial class MainWindow : Window
     {
+
+        string rememberedPath = "C:\\";
         bool movie1IsPlaying = false;   // shows if movie .avi is being played at this moment
         bool movie2IsPlaying = false;
 
@@ -733,8 +735,21 @@ namespace KinectSetupDev
         {
             movieGrid.Visibility = Visibility.Hidden;
             liveGrid.Visibility = Visibility.Visible;
-            humanViewBox.Visibility = Visibility.Visible;
-            depthViewBox.Visibility = Visibility.Hidden;
+            if (leftSideWasHuman)
+            {
+                humanViewBox.Visibility = Visibility.Visible;
+                depthViewBox.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                depthViewBox.Visibility = Visibility.Visible;
+                humanViewBox.Visibility = Visibility.Hidden;
+            }
+            humanViewBox.Margin = new Thickness(135, 42, 650, 180);
+            depthViewBox.Margin = new Thickness(135, 42, 650, 180);
+            skeletonViewBox.Visibility = Visibility.Visible;
+            skeletonViewBox.Margin = new Thickness(677, 42, 142, 180);
+
             colorOrDepthCombobox.SelectedItem = 0;
             if (movie1IsPlaying) kosciecVideoAvi1.Stop();
             if (movie2IsPlaying) kosciecVideoAvi2.Stop();
@@ -1237,7 +1252,7 @@ namespace KinectSetupDev
         private void uploadAvi1_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.InitialDirectory = "C:\\";
+            openFileDialog.InitialDirectory = rememberedPath;
             openFileDialog.Filter = "Avi Files (*.avi)|*.avi";
 
             if (openFileDialog.ShowDialog() != 0)
@@ -1252,6 +1267,7 @@ namespace KinectSetupDev
                         kosciecVideoKosciec1.Visibility = Visibility.Hidden;
                         if (!file1LoadedCorrectly)
                             labelKosciec1.Content = "Nacisnij start";
+                        rememberedPath = openFileDialog.InitialDirectory + openFileDialog.FileName;
                         startKosciec1.IsEnabled = true;
                         stopKosciec1.IsEnabled = true;
                         pauseKosciec1.IsEnabled = true;
@@ -1299,7 +1315,7 @@ namespace KinectSetupDev
 
             string path = "";
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.InitialDirectory = "C:\\";
+            openFileDialog.InitialDirectory = rememberedPath;
             openFileDialog.Filter = "Kosciec Files (*.kosciec)|*.kosciec";
 
             if (openFileDialog.ShowDialog() != 0)
@@ -1317,6 +1333,7 @@ namespace KinectSetupDev
                         kosciecVideoKosciec1.Visibility = Visibility.Visible;
 
                         labelKosciec1.Content = "Nacisnij start";
+                        rememberedPath = openFileDialog.InitialDirectory + openFileDialog.FileName;
                         startKosciec1.IsEnabled = true;
                         stopKosciec1.IsEnabled = true;
                         pauseKosciec1.IsEnabled = true;
@@ -1372,7 +1389,7 @@ namespace KinectSetupDev
         private void uploadAvi2_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.InitialDirectory = "C:\\";
+            openFileDialog.InitialDirectory = rememberedPath;
             openFileDialog.Filter = "Avi Files (*.avi)|*.avi";
 
             if (openFileDialog.ShowDialog() != 0)
@@ -1387,6 +1404,7 @@ namespace KinectSetupDev
                         kosciecVideoKosciec2.Visibility = Visibility.Hidden;
                         if (!file2LoadedCorrectly)
                             labelKosciec2.Content = "Nacisnij start";
+                        rememberedPath = openFileDialog.InitialDirectory + openFileDialog.FileName;
                         startKosciec2.IsEnabled = true;
                         stopKosciec2.IsEnabled = true;
                         pauseKosciec2.IsEnabled = true;
@@ -1433,7 +1451,7 @@ namespace KinectSetupDev
             string path = "";
 
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.InitialDirectory = "C:\\";
+            openFileDialog.InitialDirectory = rememberedPath;
             openFileDialog.Filter = "Kosciec Files (*.kosciec)|*.kosciec";
 
             if (openFileDialog.ShowDialog() != 0)
@@ -1449,6 +1467,7 @@ namespace KinectSetupDev
                         kosciecVideoAvi2.Visibility = Visibility.Hidden;
                         kosciecVideoKosciec2.Visibility = Visibility.Visible;
                         labelKosciec2.Content = "Nacisnij start";
+                        rememberedPath = openFileDialog.InitialDirectory + openFileDialog.FileName;
                         startKosciec2.IsEnabled = true;
                         stopKosciec2.IsEnabled = true;
                         pauseKosciec2.IsEnabled = true;
