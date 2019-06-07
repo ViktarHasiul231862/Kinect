@@ -33,7 +33,6 @@ C:\Semestr6\Kinect\merge\Kinect\Windows 10\KinectWin10\bin\Release\TestStack.Whi
 C:\Semestr6\Kinect\merge\Kinect\Windows 10\KinectWin10\bin\Release\Castle.Core.xml
 C:\Semestr6\Kinect\merge\Kinect\Windows 10\KinectWin10\bin\Release\TestStack.White.pdb
 C:\Semestr6\Kinect\merge\Kinect\Windows 10\KinectWin10\bin\Release\TestStack.White.xml
-C:\Semestr6\Kinect\merge\Kinect\Windows 10\KinectWin10\obj\Release\KinectWin10.csprojResolveAssemblyReference.cache
 C:\Semestr6\Kinect\merge\Kinect\Windows 10\KinectWin10\obj\Release\MainWindow.g.cs
 C:\Semestr6\Kinect\merge\Kinect\Windows 10\KinectWin10\obj\Release\App.g.cs
 C:\Semestr6\Kinect\merge\Kinect\Windows 10\KinectWin10\obj\Release\KinectWin10_MarkupCompile.cache
